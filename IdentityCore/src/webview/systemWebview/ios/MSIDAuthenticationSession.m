@@ -35,22 +35,21 @@
 #import "MSIDTelemetryUIEvent.h"
 #import "MSIDTelemetryEventStrings.h"
 #import "MSIDNotifications.h"
-/*
+
 #if !MSID_EXCLUDE_WEBKIT
 #import <SafariServices/SafariServices.h>
 #import <AuthenticationServices/AuthenticationServices.h>
-#endif*/
+#endif
 
 @implementation MSIDAuthenticationSession
 {
-    /*
 #if !MSID_EXCLUDE_WEBKIT
     API_AVAILABLE(ios(11.0))
     SFAuthenticationSession *_authSession;
     
     API_AVAILABLE(ios(12.0))
     ASWebAuthenticationSession *_webAuthSession;
-#endif*/
+#endif
     
     NSURL *_startURL;
     NSString *_callbackURLScheme;
@@ -85,7 +84,7 @@
         return NO;
     }
 
-    /*
+#if !MSID_EXCLUDE_WEBKIT
     if (@available(iOS 12.0, *))
     {
         if (error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) return YES;
@@ -93,7 +92,8 @@
     else if (@available(iOS 11.0, *))
     {
         if (error.code == SFAuthenticationErrorCanceledLogin) return YES;
-    }*/
+    }
+#endif
     
     return NO;
 }
@@ -106,7 +106,6 @@
         return;
     }
 
-    /*
 #if !MSID_EXCLUDE_WEBKIT
 
     NSError *error = nil;
@@ -160,7 +159,7 @@
     
     [self notifyEndWebAuthWithURL:nil error:error];
     completionHandler(nil, error);
-#endif*/
+#endif
 }
 
 
