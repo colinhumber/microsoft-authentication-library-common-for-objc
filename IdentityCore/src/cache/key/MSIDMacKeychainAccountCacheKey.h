@@ -21,57 +21,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "MSIDDefaultAccountCacheKey.h"
+#import "MSIDCacheKey.h"
+#import "MSIDAccountType.h"
 
-static NSString *keyDelimiter = @"-";
-static NSInteger kAccountTypePrefix = 1000;
+NS_ASSUME_NONNULL_BEGIN
 
-@implementation MSIDDefaultAccountCacheKey
+@interface MSIDMacKeychainAccountCacheKey : MSIDCacheKey
 
-- (NSNumber *)accountTypeNumber:(MSIDAccountType)accountType
-{
-    return @(kAccountTypePrefix + accountType);
-}
+@property (nullable, nonatomic) NSString *homeAccountId;
+@property (nullable, nonatomic) NSString *environment;
+@property (nullable, nonatomic) NSString *username;
+@property (nullable, nonatomic) NSString *realm;
+@property (nullable, nonatomic) NSNumber *accountType;
 
 - (instancetype)initWithHomeAccountId:(NSString *)homeAccountId
                           environment:(NSString *)environment
                                 realm:(NSString *)realm
-                                 type:(MSIDAccountType)type
-{
-    self = [super init];
-
-    if (self)
-    {
-        _homeAccountId = homeAccountId;
-        _environment = environment;
-        _realm = realm ? realm : @"";
-        _accountType = type;
-    }
-
-    return self;
-}
-
-- (NSData *)generic
-{
-    return [self.username.msidTrimmedString.lowercaseString dataUsingEncoding:NSUTF8StringEncoding];
-}
-
-- (NSNumber *)type
-{
-    return [self accountTypeNumber:self.accountType];
-}
-
-- (NSString *)account
-{
-    NSString *uniqueId = self.homeAccountId.msidTrimmedString.lowercaseString;
-
-    return [NSString stringWithFormat:@"%@%@%@",
-            uniqueId, keyDelimiter, self.environment.msidTrimmedString.lowercaseString];
-}
-
-- (NSString *)service
-{
-    return self.realm.msidTrimmedString.lowercaseString;
-}
+                                 type:(nullable NSNumber *)type;
 
 @end
+
+NS_ASSUME_NONNULL_END

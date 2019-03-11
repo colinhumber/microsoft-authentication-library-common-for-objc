@@ -21,33 +21,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "MSIDDefaultAccountCacheKey.h"
+#import "MSIDMacKeychainAccountCacheKey.h"
 
 static NSString *keyDelimiter = @"-";
 static NSInteger kAccountTypePrefix = 1000;
 
-@implementation MSIDDefaultAccountCacheKey
-
-- (NSNumber *)accountTypeNumber:(MSIDAccountType)accountType
-{
-    return @(kAccountTypePrefix + accountType);
-}
+@implementation MSIDMacKeychainAccountCacheKey
 
 - (instancetype)initWithHomeAccountId:(NSString *)homeAccountId
                           environment:(NSString *)environment
                                 realm:(NSString *)realm
-                                 type:(MSIDAccountType)type
+                                 type:(nullable NSNumber *)type
 {
     self = [super init];
-
+    
     if (self)
     {
         _homeAccountId = homeAccountId;
         _environment = environment;
-        _realm = realm ? realm : @"";
+        _realm = realm;
         _accountType = type;
     }
-
+    
     return self;
 }
 
@@ -58,13 +53,20 @@ static NSInteger kAccountTypePrefix = 1000;
 
 - (NSNumber *)type
 {
-    return [self accountTypeNumber:self.accountType];
+    if (_accountType)
+    {
+        return @([_accountType integerValue] + kAccountTypePrefix);
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 - (NSString *)account
 {
     NSString *uniqueId = self.homeAccountId.msidTrimmedString.lowercaseString;
-
+    
     return [NSString stringWithFormat:@"%@%@%@",
             uniqueId, keyDelimiter, self.environment.msidTrimmedString.lowercaseString];
 }
