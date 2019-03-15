@@ -167,7 +167,7 @@
     _familyId = json[MSID_FAMILY_ID_CACHE_KEY];
     _homeAccountId = json[MSID_HOME_ACCOUNT_ID_CACHE_KEY];
     _enrollmentId = json[MSID_ENROLLMENT_ID_CACHE_KEY];
-    _speInfo = [MSID_SPE_INFO_CACHE_KEY];
+    _speInfo = json[MSID_SPE_INFO_CACHE_KEY];
 
     return self;
 }

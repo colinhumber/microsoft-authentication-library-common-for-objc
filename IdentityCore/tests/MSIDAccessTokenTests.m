@@ -201,7 +201,6 @@
     cacheItem.credentialType = MSIDAccessTokenType;
     cacheItem.environment = @"login.microsoftonline.com";
     cacheItem.realm = @"contoso.com";
-    cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     cacheItem.target = @"target";
@@ -216,7 +215,6 @@
     cacheItem.credentialType = MSIDAccessTokenType;
     cacheItem.environment = @"login.microsoftonline.com";
     cacheItem.realm = @"contoso.com";
-    cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     cacheItem.secret = @"access token";
@@ -231,7 +229,6 @@
     cacheItem.credentialType = MSIDAccessTokenType;
     cacheItem.environment = @"login.microsoftonline.com";
     cacheItem.realm = @"contoso.com";
-    cacheItem.additionalInfo = @{@"test": @"test2", @"test3": @"test4"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     cacheItem.secret = @"token";
@@ -272,7 +269,6 @@
     cacheItem.credentialType = MSIDAccessTokenType;
     cacheItem.environment = @"login.microsoftonline.com";
     cacheItem.realm = @"contoso.com";
-    cacheItem.additionalInfo = @{@"test": @"test2", @"test3": @"test4"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     cacheItem.secret = @"token";

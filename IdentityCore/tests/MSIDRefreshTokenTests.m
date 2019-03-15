@@ -119,7 +119,6 @@
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDRefreshTokenType;
     cacheItem.environment = @"login.microsoftonline.com";
-    cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     
@@ -132,7 +131,6 @@
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDRefreshTokenType;
     cacheItem.environment = @"login.microsoftonline.com";
-    cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     cacheItem.secret = @"refresh token";
@@ -141,7 +139,6 @@
     XCTAssertNotNil(token);
     XCTAssertEqualObjects(token.authority.url, [NSURL URLWithString:@"https://login.microsoftonline.com/common"]);
     XCTAssertEqualObjects(token.clientId, @"client id");
-    XCTAssertEqualObjects(token.additionalServerInfo, @{@"test": @"test2"});
     XCTAssertEqualObjects(token.accountIdentifier.homeAccountId, @"uid.utid");
     XCTAssertEqualObjects(token.refreshToken, @"refresh token");
     

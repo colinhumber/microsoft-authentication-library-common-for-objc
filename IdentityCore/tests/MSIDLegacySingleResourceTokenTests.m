@@ -241,7 +241,6 @@
     cacheItem.credentialType = MSIDLegacySingleResourceTokenType;
     cacheItem.environment = @"login.microsoftonline.com";
     cacheItem.realm = @"common";
-    cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     cacheItem.secret = @"token";
@@ -258,7 +257,6 @@
     XCTAssertNotNil(token);
     XCTAssertEqualObjects(token.authority.url.absoluteString, @"https://login.microsoftonline.com/common");
     XCTAssertEqualObjects(token.clientId, @"client id");
-    XCTAssertEqualObjects(token.additionalServerInfo, @{@"test": @"test2"});
     XCTAssertEqualObjects(token.accountIdentifier.homeAccountId, @"uid.utid");
     XCTAssertEqualObjects(token.expiresOn, expiresOn);
     XCTAssertEqualObjects(token.cachedAt, cachedAt);

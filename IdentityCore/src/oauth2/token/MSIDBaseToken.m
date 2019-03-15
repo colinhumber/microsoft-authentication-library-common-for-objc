@@ -143,8 +143,11 @@
             return nil;
         }
         
-        _additionalServerInfo = tokenCacheItem.additionalInfo;
-
+        if(tokenCacheItem.speInfo)
+        {
+            _additionalServerInfo = @{MSID_SPE_INFO_CACHE_KEY : tokenCacheItem.speInfo};
+        }
+        
         if (tokenCacheItem.homeAccountId)
         {
             _accountIdentifier = [[MSIDAccountIdentifier alloc] initWithDisplayableId:nil homeAccountId:tokenCacheItem.homeAccountId];
@@ -170,7 +173,7 @@
 
     cacheItem.realm = self.authority.url.msidTenant;
     cacheItem.clientId = self.clientId;
-    cacheItem.additionalInfo = self.additionalServerInfo;
+    cacheItem.speInfo = self.additionalServerInfo[MSID_SPE_INFO_CACHE_KEY];
     cacheItem.homeAccountId = self.accountIdentifier.homeAccountId;
     return cacheItem;
 }

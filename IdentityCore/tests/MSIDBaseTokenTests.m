@@ -216,7 +216,6 @@
     cacheItem.credentialType = MSIDCredentialTypeOther;
     cacheItem.environment = @"login.microsoftonline.com";
     cacheItem.realm = @"contoso.com";
-    cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     
@@ -236,7 +235,6 @@
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDCredentialTypeOther;
     cacheItem.environment = @"login.microsoftonline.com";
-    cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
 
