@@ -59,11 +59,10 @@
 // Unique user ID
 @property (readwrite, nonnull) NSString *homeAccountId;
 
-// Enrollment ID (access tokens only)
+// Enrollment ID (access tokens only, not supported on macOS)
 @property (readwrite, nullable) NSString *enrollmentId;
 
-// Additional fields
-@property (readwrite, nullable) NSDictionary *additionalInfo;
+@property (readwrite, nullable) NSString *speInfo;
 
 // Storing for latter token deletion purpose, not serialized
 @property (readwrite, nullable) NSString *appKey;
