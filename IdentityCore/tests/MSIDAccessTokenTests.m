@@ -246,8 +246,7 @@
     XCTAssertNotNil(token);
     XCTAssertEqualObjects(token.authority, [@"https://login.microsoftonline.com/contoso.com" authority]);
     XCTAssertEqualObjects(token.clientId, @"client id");
-    NSDictionary *additionalServerInfo = @{@"test": @"test2", @"test3": @"test4"};
-    XCTAssertEqualObjects(token.additionalServerInfo, additionalServerInfo);
+    XCTAssertNil(token.additionalServerInfo);
     XCTAssertEqualObjects(token.extendedExpiresOn, extExpireTime);
     XCTAssertEqualObjects(token.accountIdentifier.homeAccountId, @"uid.utid");
     XCTAssertEqualObjects(token.expiresOn, expiresOn);
@@ -287,8 +286,7 @@
     XCTAssertNotNil(token);
     XCTAssertEqualObjects(token.authority, [@"https://login.microsoftonline.com/contoso.com" authority]);
     XCTAssertEqualObjects(token.clientId, @"client id");
-    NSDictionary *additionalServerInfo = @{@"test": @"test2", @"test3": @"test4"};
-    XCTAssertEqualObjects(token.additionalServerInfo, additionalServerInfo);
+    XCTAssertNil(token.additionalServerInfo);
     XCTAssertEqualObjects(token.extendedExpiresOn, extExpireTime);
     XCTAssertEqualObjects(token.accountIdentifier.homeAccountId, @"uid.utid");
     XCTAssertEqualObjects(token.expiresOn, expiresOn);

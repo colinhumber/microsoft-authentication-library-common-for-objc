@@ -143,7 +143,7 @@
             return nil;
         }
         
-        if(tokenCacheItem.speInfo)
+        if(tokenCacheItem.speInfo.length > 0)
         {
             _additionalServerInfo = @{MSID_SPE_INFO_CACHE_KEY : tokenCacheItem.speInfo};
         }

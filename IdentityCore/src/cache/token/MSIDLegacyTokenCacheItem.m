@@ -131,6 +131,10 @@
         [additionalServer removeObjectForKey:MSID_EXTENDED_EXPIRES_ON_CACHE_KEY];
         self.additionalInfo = additionalServer;
     }
+    if(self.additionalInfo.count == 0)
+    {
+        self.additionalInfo = nil;
+    }
 
     self.accessToken = [coder decodeObjectOfClass:[NSString class] forKey:@"accessToken"];
     self.refreshToken = [coder decodeObjectOfClass:[NSString class] forKey:@"refreshToken"];
