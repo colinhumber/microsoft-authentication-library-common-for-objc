@@ -32,7 +32,7 @@
     {
         return [super type];
     }
-    
+
     return nil;
 }
 
@@ -42,7 +42,7 @@
     {
         return [super service];
     }
-    
+
     return nil;
 }
 

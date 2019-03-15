@@ -40,10 +40,10 @@ static NSUInteger const s_kCodeVerifierByteSize = 32;
     {
         return nil;
     }
-    
+
     self->_codeVerifier = [self.class createCodeVerifier];
     self->_codeChallenge = [self.class createChallangeFromCodeVerifier:self->_codeVerifier];
-    
+
     return self;
 }
 
@@ -67,7 +67,7 @@ static NSUInteger const s_kCodeVerifierByteSize = 32;
     MSIDPkce *copyObject = [MSIDPkce new];
     copyObject->_codeVerifier = [_codeVerifier copyWithZone:zone];
     copyObject->_codeChallenge = [_codeChallenge copyWithZone:zone];
-    
+
     return copyObject;
 }
 

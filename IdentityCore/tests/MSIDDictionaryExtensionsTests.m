@@ -46,7 +46,7 @@
 {
     NSString *string = @"key=val+val";
     NSDictionary *dict = [NSDictionary msidDictionaryFromURLEncodedString:string];
-    
+
     XCTAssertTrue([[dict allKeys] containsObject:@"key"]);
     XCTAssertEqualObjects(dict[@"key"], @"val+val");
 }
@@ -55,7 +55,7 @@
 {
     NSString *string = @"key=Some+interesting+test%2F%2B-%29%28%2A%26%5E%25%24%23%40%21~%7C";
     NSDictionary *dict = [NSDictionary msidDictionaryFromWWWFormURLEncodedString:string];
-    
+
     XCTAssertTrue([[dict allKeys] containsObject:@"key"]);
     XCTAssertEqualObjects(dict[@"key"], @"Some interesting test/+-)(*&^%$#@!~|");
 }
@@ -64,10 +64,10 @@
 {
     NSString *string = @"key=val+val&malformed=v1=v2&=noval";
     NSDictionary *dict = [NSDictionary msidDictionaryFromURLEncodedString:string];
-    
+
     XCTAssertTrue(dict.count == 1);
     XCTAssertTrue([dict.allKeys containsObject:@"key"]);
-    
+
     XCTAssertEqualObjects(dict[@"key"], @"val+val");
 }
 
@@ -87,7 +87,7 @@
     NSDictionary *inputDictionary = @{@"key1": @"value1",
                                       @"key2": @"value2",
                                       @"key3": @"value3"};
-    
+
     NSDictionary *resultDictionary = [inputDictionary dictionaryByRemovingFields:@[]];
     XCTAssertEqualObjects(inputDictionary, resultDictionary);
 }
@@ -97,10 +97,10 @@
     NSDictionary *inputDictionary = @{@"key1": @"value1",
                                       @"key2": @"value2",
                                       @"key3": @"value3"};
-    
+
     NSArray *keysArray = @[@"key2", @"key1"];
     NSDictionary *resultDictionary = [inputDictionary dictionaryByRemovingFields:keysArray];
-    
+
     NSDictionary *expectedDictionary = @{@"key3": @"value3"};
     XCTAssertEqualObjects(resultDictionary, expectedDictionary);
 }
@@ -110,10 +110,10 @@
     NSDictionary *inputDictionary = @{@"key1": @"value1",
                                       @"key2": @"value2",
                                       @"key3": @"value3"};
-    
+
     NSError *error;
     BOOL result = [inputDictionary msidAssertContainsField:@"key1" context:nil error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertTrue(result);
 }
@@ -123,10 +123,10 @@
     NSDictionary *inputDictionary = @{@"key4": @"value1",
                                       @"key2": @"value2",
                                       @"key3": @"value3"};
-    
+
     NSError *error;
     BOOL result = [inputDictionary msidAssertContainsField:@"key1" context:nil error:&error];
-    
+
     XCTAssertFalse(result);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(error.userInfo[MSIDErrorDescriptionKey], @"key1 is missing.");
@@ -139,10 +139,10 @@
     NSDictionary *inputDictionary = @{@"key1": @"value1",
                                       @"key2": @"value2",
                                       @"key3": @"value3"};
-    
+
     NSError *error;
     BOOL result = [inputDictionary msidAssertType:NSString.class ofField:@"key1" context:nil errorCode:1 error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertTrue(result);
 }
@@ -152,10 +152,10 @@
     NSDictionary *inputDictionary = @{@"key1": @1,
                                       @"key2": @"value2",
                                       @"key3": @"value3"};
-    
+
     NSError *error;
     BOOL result = [inputDictionary msidAssertType:NSString.class ofField:@"key1" context:nil errorCode:1 error:&error];
-    
+
     XCTAssertFalse(result);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(error.userInfo[MSIDErrorDescriptionKey], @"key1 is not a NSString.");

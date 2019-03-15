@@ -41,9 +41,9 @@
 
 {
     if (!(identity && certificateIssuer && certificate && certificateSubject && certificateData && privateKey)) return nil;
-    
+
     if (!(self = [super init])) return nil;
-    
+
     // ARC is not aware of Core Foundation objects, so they still have to be
     // manually retained and released.
     _securityIdentity = identity;
@@ -52,11 +52,11 @@
     CFRetain(certificate);
     _privateKey = privateKey;
     CFRetain(privateKey);
-    
+
     _certificateSubject = certificateSubject;
     _certificateData = certificateData;
     _certificateIssuer = certificateIssuer;
-    
+
     return self;
 }
 
@@ -66,10 +66,10 @@
     // manually retained and released.
     CFRelease(_securityIdentity);
     _securityIdentity = NULL;
-    
+
     CFRelease(_certificate);
     _certificate = NULL;
-    
+
     CFRelease(_privateKey);
     _privateKey = NULL;
 }

@@ -83,7 +83,7 @@ MSIDErrorCode MSIDErrorCodeForOAuthError(NSString *oauthError, MSIDErrorCode def
     {
         return MSIDErrorServerUnauthorizedClient;
     }
-    
+
     return defaultCode;
 }
 
@@ -98,14 +98,14 @@ NSDictionary* MSIDErrorDomainsAndCodes()
                       @(MSIDErrorInteractionRequired),
                       @(MSIDErrorServerNonHttpsRedirect),
                       @(MSIDErrorMismatchedAccount),
-                      
+
                       // Cache Errors
                       @(MSIDErrorCacheMultipleUsers),
                       @(MSIDErrorCacheBadFormat),
-                      
+
                       // Authority Validation Errors
                       @(MSIDErrorAuthorityValidation),
-                      
+
                       // Interactive flow errors
                       @(MSIDErrorUserCancel),
                       @(MSIDErrorSessionCanceledProgrammatically),

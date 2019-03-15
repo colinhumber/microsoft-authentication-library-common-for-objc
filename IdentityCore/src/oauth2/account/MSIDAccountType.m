@@ -31,13 +31,13 @@
     {
         case MSIDAccountTypeAADV1:
             return @"AAD";
-            
+
         case MSIDAccountTypeMSA:
             return @"MSA";
-            
+
         case MSIDAccountTypeMSSTS:
             return @"MSSTS";
-            
+
         default:
             return @"Other";
     }
@@ -48,14 +48,14 @@ static NSDictionary *sAccountTypes = nil;
 + (MSIDAccountType)accountTypeFromString:(NSString *)type
 {
     static dispatch_once_t sAccountTypesOnce;
-    
+
     dispatch_once(&sAccountTypesOnce, ^{
-        
+
         sAccountTypes = @{@"aad": @(MSIDAccountTypeAADV1),
                           @"msa": @(MSIDAccountTypeMSA),
                           @"mssts": @(MSIDAccountTypeMSSTS)};
     });
-    
+
     NSNumber *accountType = sAccountTypes[type.lowercaseString];
     return accountType != nil ? [accountType integerValue] : MSIDAccountTypeOther;
 }

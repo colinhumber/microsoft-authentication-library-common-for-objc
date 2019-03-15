@@ -50,10 +50,10 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADAuthorityMetadataResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDAADAuthorityMetadataResponse *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertEqualObjects(response.openIdConfigurationEndpoint.absoluteString, @"https://login.microsoftonline.com/common/.well-known/openid-configuration");
 }
@@ -65,10 +65,10 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADAuthorityMetadataResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDAADAuthorityMetadataResponse *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(response);
 }
@@ -78,10 +78,10 @@
     __auto_type responseJson = @{ @"tenant_discovery_endpoint" : @1 };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADAuthorityMetadataResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDAADAuthorityMetadataResponse *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(response);
 }
@@ -89,10 +89,10 @@
 - (void)testResponseObjectForResponse_whenJsonNil_shouldReturnNilWithNilError
 {
     __auto_type responseSerializer = [MSIDAADAuthorityMetadataResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDAADAuthorityMetadataResponse *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:nil context:nil error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertNil(response);
 }
@@ -106,13 +106,13 @@
                                   @"trace_id": @"d855",
                                   @"correlation_id": @"6f62"
                                   };
-    
+
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADAuthorityMetadataResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDAADAuthorityMetadataResponse *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNil(response);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(error.domain, MSIDErrorDomain);

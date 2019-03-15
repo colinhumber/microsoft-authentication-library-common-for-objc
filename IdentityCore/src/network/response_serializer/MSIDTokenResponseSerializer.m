@@ -39,13 +39,13 @@
                                                            data:data
                                                         context:context
                                                           error:&localError];
-    
+
     if (localError)
     {
         if (error) *error = localError;
         return nil;
     }
-    
+
     MSIDTokenResponse *tokenResponse = [self.oauth2Factory tokenResponseFromJSON:jsonObject
                                                                          context:context
                                                                            error:error];
@@ -54,7 +54,7 @@
         MSID_LOG_ERROR(context, @"Failed to parse token response.");
         return nil;
     }
-    
+
     return tokenResponse;
 }
 

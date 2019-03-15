@@ -41,7 +41,7 @@
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     [dict setObject:(__bridge id)secClass forKey:(__bridge id)kSecClass];
     OSStatus result = SecItemDelete((__bridge CFDictionaryRef) dict);
-    
+
     assert(result == noErr || result == errSecItemNotFound);
 }
 

@@ -42,7 +42,7 @@
 {
     MSIDTelemetryCacheEvent *cacheEvent = [[MSIDTelemetryCacheEvent alloc] initWithName:@"test" context:nil];
     [cacheEvent setToken:nil];
-    
+
     NSDictionary *properties = [cacheEvent getProperties];
     XCTAssertEqual([[properties allKeys] count], 4);
 }
@@ -52,10 +52,10 @@
     MSIDAccessToken *accessToken = [MSIDAccessToken new];
     NSDictionary *serverInfo = @{@"spe_info" : @"I"};
     [accessToken setValue:serverInfo forKey:@"additionalServerInfo"];
-    
+
     MSIDTelemetryCacheEvent *cacheEvent = [[MSIDTelemetryCacheEvent alloc] initWithName:@"test" context:nil];
     [cacheEvent setToken:accessToken];
-    
+
     NSDictionary *properties = [cacheEvent getProperties];
     XCTAssertEqual([[properties allKeys] count], 6);
     XCTAssertEqualObjects(properties[MSID_TELEMETRY_KEY_SPE_INFO], @"I");
@@ -67,10 +67,10 @@
     MSIDLegacySingleResourceToken *token = [MSIDLegacySingleResourceToken new];
     NSDictionary *serverInfo = @{@"spe_info" : @"I"};
     [token setValue:serverInfo forKey:@"additionalServerInfo"];
-    
+
     MSIDTelemetryCacheEvent *cacheEvent = [[MSIDTelemetryCacheEvent alloc] initWithName:@"test" context:nil];
     [cacheEvent setToken:token];
-    
+
     NSDictionary *properties = [cacheEvent getProperties];
     XCTAssertEqual([[properties allKeys] count], 7);
     XCTAssertEqualObjects(properties[MSID_TELEMETRY_KEY_SPE_INFO], @"I");
@@ -86,10 +86,10 @@
     [token setValue:serverInfo forKey:@"additionalServerInfo"];
     [token setValue:@"client" forKey:@"clientId"];
     [token setValue:@"1" forKey:@"familyId"];
-    
+
     MSIDTelemetryCacheEvent *cacheEvent = [[MSIDTelemetryCacheEvent alloc] initWithName:@"test" context:nil];
     [cacheEvent setToken:token];
-    
+
     NSDictionary *properties = [cacheEvent getProperties];
     XCTAssertEqual([[properties allKeys] count], 7);
     XCTAssertEqualObjects(properties[MSID_TELEMETRY_KEY_SPE_INFO], @"I");
@@ -105,10 +105,10 @@
     [token setValue:serverInfo forKey:@"additionalServerInfo"];
     [token setValue:@"foci-1" forKey:@"clientId"];
     [token setValue:@"1" forKey:@"familyId"];
-    
+
     MSIDTelemetryCacheEvent *cacheEvent = [[MSIDTelemetryCacheEvent alloc] initWithName:@"test" context:nil];
     [cacheEvent setToken:token];
-    
+
     NSDictionary *properties = [cacheEvent getProperties];
     XCTAssertEqual([[properties allKeys] count], 7);
     XCTAssertEqualObjects(properties[MSID_TELEMETRY_KEY_SPE_INFO], @"I");

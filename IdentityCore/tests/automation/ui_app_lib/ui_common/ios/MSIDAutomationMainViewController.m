@@ -57,14 +57,14 @@
         resultVC.resultInfoString = sender[MSID_RESULT_INFO_SEGUE_KEY];
         resultVC.resultLogsString = sender[MSID_RESULT_LOGS_SEGUE_KEY];
     }
-    
+
     if ([segue.identifier isEqualToString:MSID_SHOW_REQUEST_SEGUE])
     {
         MSIDAutomationRequestViewController *requestVC = segue.destinationViewController;
         requestVC.requestInfo.text = nil;
         requestVC.completionBlock = sender[MSID_COMPLETION_BLOCK_SEGUE_KEY];
     }
-    
+
     if ([segue.identifier isEqualToString:MSID_SHOW_PASSED_IN_WEBVIEW_SEGUE])
     {
         MSIDAutomationPassedInWebViewController *requestVC = segue.destinationViewController;

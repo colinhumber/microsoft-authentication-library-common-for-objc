@@ -47,10 +47,10 @@
                                @"login.windows.net": @"https://www.microsoft.com/windowsIntune"
                                };
     [self.inMemoryStorage setObject:dictionary forKey:@"intune_mam_resource_V1"];
-    
+
     __auto_type dataSource = [[MSIDIntuneInMemoryCacheDataSource alloc] initWithCache:self.inMemoryStorage];
     self.cache = [[MSIDIntuneMAMResourcesCache alloc] initWithDataSource:dataSource];
-    
+
     __auto_type authorityUrl = [@"https://login.microsoftonline.com/common" msidUrl];
     self.authority = [[MSIDAuthorityMock alloc] initWithURL:authorityUrl context:nil error:nil];
     self.authority.environmentAliases = @[@"login.microsoftonline.com"];
@@ -65,10 +65,10 @@
 - (void)testResourceForAuthority_whenCacheEmpty_shoudlReturnNil
 {
     [self.inMemoryStorage removeAllObjects];
-    
+
     NSError *error;
     __auto_type resource = [self.cache resourceForAuthority:self.authority context:nil error:&error];
-    
+
     XCTAssertNil(resource);
     XCTAssertNil(error);
 }
@@ -77,10 +77,10 @@
 {
     MSIDAuthority *authority = nil;
     [self.inMemoryStorage removeAllObjects];
-    
+
     NSError *error;
     __auto_type resource = [self.cache resourceForAuthority:authority context:nil error:&error];
-    
+
     XCTAssertNil(resource);
     XCTAssertNil(error);
 }
@@ -90,10 +90,10 @@
     __auto_type authorityUrl = [@"https://example.com/common" msidUrl];
     __auto_type authority = [[MSIDAuthorityMock alloc] initWithURL:authorityUrl context:nil error:nil];
     authority.environmentAliases = @[@"example.com"];
-    
+
     NSError *error;
     __auto_type resource = [self.cache resourceForAuthority:authority context:nil error:&error];
-    
+
     XCTAssertNil(resource);
     XCTAssertNil(error);
 }
@@ -102,7 +102,7 @@
 {
     NSError *error;
     __auto_type resource = [self.cache resourceForAuthority:self.authority context:nil error:&error];
-    
+
     XCTAssertEqualObjects(resource, @"https://www.microsoft.com/intune");
     XCTAssertNil(error);
 }
@@ -112,10 +112,10 @@
     __auto_type authorityUrl = [@"https://login.microsoftonlineAlias.com/common" msidUrl];
     __auto_type authority = [[MSIDAuthorityMock alloc] initWithURL:authorityUrl context:nil error:nil];
     authority.environmentAliases = @[@"login.microsoftonline.com"];
-    
+
     NSError *error;
     __auto_type resource = [self.cache resourceForAuthority:authority context:nil error:&error];
-    
+
     XCTAssertEqualObjects(resource, @"https://www.microsoft.com/intune");
     XCTAssertNil(error);
     XCTAssertEqual(authority.defaultCacheEnvironmentAliasesInvokedCount, 1);
@@ -126,10 +126,10 @@
 - (void)testSetResourcesJsonDictionary_whenJsonValid_shouldSetItInCache
 {
     __auto_type jsonDicionary = @{@"key": @"value"};
-    
+
     NSError *error;
     [self.cache setResourcesJsonDictionary:jsonDicionary context:nil error:&error];
-    
+
     NSDictionary *jsonDicionaryResult = [self.inMemoryStorage objectForKey:@"intune_mam_resource_V1"];
     XCTAssertEqualObjects(jsonDicionary, jsonDicionaryResult);
     XCTAssertNil(error);
@@ -139,10 +139,10 @@
 {
     __auto_type jsonDicionary = @{@"key": @1};
     [self.inMemoryStorage removeAllObjects];
-    
+
     NSError *error;
     [self.cache setResourcesJsonDictionary:jsonDicionary context:nil error:&error];
-    
+
     NSDictionary *jsonDicionaryResult = [self.inMemoryStorage objectForKey:@"intune_mam_resource_V1"];
     XCTAssertNil(jsonDicionaryResult);
     XCTAssertNotNil(error);
@@ -154,7 +154,7 @@
 {
     __auto_type jsonDicionary = @{@"key": @"value"};
     [self.inMemoryStorage setObject:jsonDicionary forKey:@"intune_mam_resource_V1"];
-    
+
     NSError *error;
     NSDictionary *jsonDicionaryResult = [self.cache resourcesJsonDictionaryWithContext:nil error:&error];
     XCTAssertEqualObjects(jsonDicionary, jsonDicionaryResult);
@@ -165,7 +165,7 @@
 {
     __auto_type jsonDicionary = @{@"key": @1};
     [self.inMemoryStorage setObject:jsonDicionary forKey:@"intune_mam_resource_V1"];
-    
+
     NSError *error;
     NSDictionary *jsonDicionaryResult = [self.cache resourcesJsonDictionaryWithContext:nil error:&error];
     XCTAssertNil(jsonDicionaryResult);
@@ -179,9 +179,9 @@
     [self.inMemoryStorage setObject:@{@"key2": @"value2"} forKey:@"intune_mam_resource_V1"];
     __auto_type jsonDicionary = @{@"key": @"value"};
     [self.inMemoryStorage setObject:jsonDicionary forKey:@"custom_key"];
-    
+
     [self.cache clear];
-    
+
     XCTAssertEqual(self.inMemoryStorage.count, 1);
     XCTAssertEqualObjects(jsonDicionary, [self.inMemoryStorage objectForKey:@"custom_key"]);
 }
@@ -191,10 +191,10 @@
 - (void)testResourceForAuthority_whenCacheContainsNotJsonObject_shoudlReturnNilAndError
 {
     [self.inMemoryStorage setObject:@"not a json dictionary" forKey:@"intune_mam_resource_V1"];
-    
+
     NSError *error;
     __auto_type resource = [self.cache resourceForAuthority:self.authority context:nil error:&error];
-    
+
     XCTAssertNil(resource);
     XCTAssertNotNil(error);
 }
@@ -202,10 +202,10 @@
 - (void)testResourceForAuthority_whenCacheContainsJsonButKeysAreNotString_shoudlReturnNilAndError
 {
     [self.inMemoryStorage setObject:@{@1: @"some string"} forKey:@"intune_mam_resource_V1"];
-    
+
     NSError *error;
     __auto_type resource = [self.cache resourceForAuthority:self.authority context:nil error:&error];
-    
+
     XCTAssertNil(resource);
     XCTAssertNotNil(error);
 }
@@ -213,10 +213,10 @@
 - (void)testResourceForAuthority_whenCacheContainsJsonButValuesAreNotString_shoudlReturnNilAndError
 {
     [self.inMemoryStorage setObject:@{@"some string": @1} forKey:@"intune_mam_resource_V1"];
-    
+
     NSError *error;
     __auto_type resource = [self.cache resourceForAuthority:self.authority context:nil error:&error];
-    
+
     XCTAssertNil(resource);
     XCTAssertNotNil(error);
 }

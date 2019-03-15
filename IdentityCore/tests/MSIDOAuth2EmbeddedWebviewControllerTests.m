@@ -50,9 +50,9 @@
 - (void)testInitWithStartURL_whenURLisNil_shouldFail
 {
     MSIDOAuth2EmbeddedWebviewController *webVC = [[MSIDOAuth2EmbeddedWebviewController alloc] initWithStartURL:nil endURL:[NSURL URLWithString:@"endurl://host"] webview:nil customHeaders:nil context:nil];
-    
+
     XCTAssertNil(webVC);
-    
+
 }
 
 
@@ -61,7 +61,7 @@
     MSIDOAuth2EmbeddedWebviewController *webVC = [[MSIDOAuth2EmbeddedWebviewController alloc] initWithStartURL:[NSURL URLWithString:@"https://contoso.com/oauth/authorize"]
                                                                                                         endURL:nil webview:nil customHeaders:nil context:nil];
     XCTAssertNil(webVC);
-    
+
 }
 
 
@@ -71,7 +71,7 @@
                                                                                                         endURL:[NSURL URLWithString:@"endurl://host"]
                                                                                                        webview:nil customHeaders:nil context:nil];
     XCTAssertNotNil(webVC);
-    
+
 }
 
 @end

@@ -45,13 +45,13 @@
 {
     [super setUp];
     _receivedEvents = [NSMutableArray array];
-    
+
     MSIDTelemetryTestDispatcher* dispatcher = [MSIDTelemetryTestDispatcher new];
     [dispatcher setTestCallback:^(id<MSIDTelemetryEventInterface> event)
      {
          [_receivedEvents addObject:event];
      }];
-    
+
     // register the dispatcher
     [[MSIDTelemetry sharedInstance] addDispatcher:dispatcher];
 }
@@ -59,7 +59,7 @@
 - (void)tearDown
 {
     [super tearDown];
-    
+
     _receivedEvents = nil;
     [[MSIDTelemetry sharedInstance] removeAllDispatchers];
     [MSIDTelemetry sharedInstance].piiEnabled = NO;
@@ -68,18 +68,18 @@
 - (void)testDispatchEvent_whenPiiEnabled_shouldReturnUnhashedOiiAndHashedPii
 {
     [MSIDTelemetry sharedInstance].piiEnabled = YES;
-    
+
     NSString *requestId = [[MSIDTelemetry sharedInstance] generateRequestId];
     [[MSIDTelemetry sharedInstance] startEvent:requestId
                                      eventName:MSID_TELEMETRY_EVENT_API_EVENT];
-    
+
     MSIDTelemetryAPIEvent *event = [[MSIDTelemetryAPIEvent alloc] initWithName:MSID_TELEMETRY_EVENT_API_EVENT
                                                                      requestId:requestId
                                                                  correlationId:nil];
     [event setUserId:@"user"]; //Pii
     [event setClientId:@"clientid"]; //Oii
     [[MSIDTelemetry sharedInstance] stopEvent:requestId event:event];
-    
+
     XCTAssertEqual(_receivedEvents.count, 1);
     //expect hashed Pii
     XCTAssertEqualObjects([_receivedEvents[0] propertyWithName:MSID_TELEMETRY_KEY_USER_ID], [[[@"user" dataUsingEncoding:NSUTF8StringEncoding] msidSHA256] msidHexString]);
@@ -90,18 +90,18 @@
 - (void)testDispatchEvent_whenPiiDisabled_shouldNotReturnOiiPii
 {
     [MSIDTelemetry sharedInstance].piiEnabled = NO;
-    
+
     NSString *requestId = [[MSIDTelemetry sharedInstance] generateRequestId];
     [[MSIDTelemetry sharedInstance] startEvent:requestId
                                      eventName:MSID_TELEMETRY_EVENT_API_EVENT];
-    
+
     MSIDTelemetryAPIEvent *event = [[MSIDTelemetryAPIEvent alloc] initWithName:MSID_TELEMETRY_EVENT_API_EVENT
                                                                      requestId:requestId
                                                                  correlationId:nil];
     [event setUserId:@"user"]; //Pii
     [event setClientId:@"clientid"]; //Oii
     [[MSIDTelemetry sharedInstance] stopEvent:requestId event:event];
-    
+
     XCTAssertEqual(_receivedEvents.count, 1);
     //no Pii or Oii is returned
     XCTAssertEqualObjects([_receivedEvents[0] propertyWithName:MSID_TELEMETRY_KEY_USER_ID], nil);

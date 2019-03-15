@@ -60,12 +60,12 @@ static NSString *const s_adalServiceFormat = @"%@|%@|%@|%@";
                          authorityString.msidBase64UrlEncode,
                          [self getAttributeName:resource],
                          clientId.msidBase64UrlEncode];
-    
+
     if (![NSString msidIsStringNilOrBlank:appKey])
     {
         service  = [NSString stringWithFormat:@"%@|%@", service, appKey];
     }
-    
+
     return service;
 }
 
@@ -150,7 +150,7 @@ static NSString *const s_adalServiceFormat = @"%@|%@|%@|%@";
 
         _service = self.service;
     }
-    
+
     return self;
 }
 
@@ -175,12 +175,12 @@ static NSString *const s_adalServiceFormat = @"%@|%@|%@|%@";
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:MSIDCacheKey.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToTokenCacheKey:(MSIDLegacyTokenCacheKey *)object];
 }
 
@@ -190,12 +190,12 @@ static NSString *const s_adalServiceFormat = @"%@|%@|%@|%@";
     {
         return NO;
     }
-    
+
     BOOL result = YES;
     result &= (!self.account && !key.account) || [self.account isEqualToString:key.account];
     result &= (!self.service && !key.service) || [self.service isEqualToString:key.service];
     result &= (self.type == nil && key.type == nil) || [self.type isEqualToNumber:key.type];
-    
+
     return result;
 }
 
@@ -205,7 +205,7 @@ static NSString *const s_adalServiceFormat = @"%@|%@|%@|%@";
     hash = hash * 31 + self.account.hash;
     hash = hash * 31 + self.service.hash;
     hash = hash * 31 + self.type.hash;
-    
+
     return hash;
 }
 
@@ -237,11 +237,11 @@ static NSString *const s_adalServiceFormat = @"%@|%@|%@|%@";
     {
         userId = [MSIDHelpers normalizeUserId:userId];
     }
-    
+
 #if TARGET_OS_IPHONE
     return [userId msidBase64UrlEncode];
 #endif
-    
+
     return userId;
 }
 

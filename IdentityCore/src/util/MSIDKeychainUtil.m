@@ -31,17 +31,17 @@
 {
     static dispatch_once_t once;
     static NSString *keychainTeamId = nil;
-    
+
     dispatch_once(&once, ^{
         NSString *accessGroup = [MSIDKeychainUtil appDefaultAccessGroup];
         NSArray *components = [accessGroup componentsSeparatedByString:@"."];
         NSString *bundleSeedID = [components firstObject];
         keychainTeamId = [bundleSeedID length] ? bundleSeedID : nil;
-        
+
         MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, nil, @"Using \"%@\" Team ID.", _PII_NULLIFY(keychainTeamId));
         MSID_LOG_PII(MSIDLogLevelInfo, nil, nil, @"Using \"%@\" Team ID.", keychainTeamId);
     });
-    
+
     return keychainTeamId;
 }
 
@@ -49,14 +49,14 @@
 {
     static dispatch_once_t once;
     static NSString *appDefaultAccessGroup = nil;
-    
+
     dispatch_once(&once, ^{
         NSDictionary *query = @{ (id)kSecClass : (id)kSecClassGenericPassword,
                                  (id)kSecAttrAccount : @"SDK.ObjC.teamIDHint",
                                  (id)kSecAttrService : @"",
                                  (id)kSecReturnAttributes : @YES };
         CFDictionaryRef result = nil;
-        
+
         OSStatus readStatus = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
 
         if (readStatus == errSecInteractionNotAllowed)
@@ -74,7 +74,7 @@
         }
 
         OSStatus status = readStatus;
-        
+
         if (readStatus == errSecItemNotFound
             || readStatus == errSecInteractionNotAllowed)
         {
@@ -82,13 +82,13 @@
             [addQuery setObject:(id)kSecAttrAccessibleAlways forKey:(id)kSecAttrAccessible];
             status = SecItemAdd((__bridge CFDictionaryRef)addQuery, (CFTypeRef *)&result);
         }
-        
+
         if (status == errSecSuccess)
         {
             appDefaultAccessGroup = [(__bridge NSDictionary *)result objectForKey:(__bridge id)(kSecAttrAccessGroup)];
             MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, nil, @"Defaul app's acces group: \"%@\".", _PII_NULLIFY(appDefaultAccessGroup));
             MSID_LOG_PII(MSIDLogLevelInfo, nil, nil, @"Defaul app's acces group: \"%@\".", appDefaultAccessGroup);
-            
+
             CFRelease(result);
         }
         else
@@ -96,7 +96,7 @@
             MSID_LOG_ERROR(nil, @"Encountered an error when reading teamIDHint in keychain. Keychain status %ld, read status %ld", (long)status, (long)readStatus);
         }
     });
-    
+
     return appDefaultAccessGroup;
 }
 
@@ -106,12 +106,12 @@
     {
         return nil;
     }
-    
+
     if (!MSIDKeychainUtil.teamId)
     {
         return nil;
     }
-    
+
 #if TARGET_OS_SIMULATOR
     // In simulator team id can be "FAKETEAMID" (for example in UT without host app).
     if ([MSIDKeychainUtil.teamId isEqualToString:@"FAKETEAMID"])
@@ -119,7 +119,7 @@
         return [MSIDKeychainUtil appDefaultAccessGroup];
     }
 #endif
-    
+
     return [[NSString alloc] initWithFormat:@"%@.%@", MSIDKeychainUtil.teamId, group];
 }
 

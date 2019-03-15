@@ -71,7 +71,7 @@
         }
         return NO;
     }
-    
+
     if (response.error)
     {
         if (error)
@@ -87,7 +87,7 @@
         }
         return NO;
     }
-    
+
     if ([NSString msidIsStringNilOrBlank:response.accessToken])
     {
         if (error)
@@ -96,7 +96,7 @@
         }
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -187,7 +187,7 @@
 {
     MSIDAppMetadataCacheItem *metadata = [[MSIDAppMetadataCacheItem alloc] init];
     BOOL result = [self fillAppMetadata:metadata fromResponse:response configuration:configuration];
-    
+
     if (!result) return nil;
     return metadata;
 }
@@ -203,7 +203,7 @@
     {
         return NO;
     }
-    
+
     token.authority = configuration.authority;
     token.clientId = configuration.clientId;
     token.additionalServerInfo = response.additionalServerInfo;
@@ -226,20 +226,20 @@
     // We want to keep case as it comes from the server side
     token.scopes = [response.target msidScopeSet];
     token.accessToken = response.accessToken;
-    
+
     if (!token.accessToken)
     {
         MSID_LOG_ERROR(nil, @"Trying to initialize access token when missing access token field");
         return NO;
     }
     NSDate *expiresOn = response.expiryDate;
-    
+
     if (!expiresOn)
     {
         MSID_LOG_WARN(nil, @"The server did not return the expiration time for the access token.");
         expiresOn = [NSDate dateWithTimeIntervalSinceNow:3600.0]; //Assume 1hr expiration
     }
-    
+
     token.expiresOn = [NSDate dateWithTimeIntervalSince1970:(uint64_t)[expiresOn timeIntervalSince1970]];
     token.cachedAt = [NSDate dateWithTimeIntervalSince1970:(uint64_t)[[NSDate date] timeIntervalSince1970]];
 
@@ -256,14 +256,14 @@
     {
         return NO;
     }
-    
+
     if (!response.isMultiResource)
     {
         return NO;
     }
-    
+
     token.refreshToken = response.refreshToken;
-    
+
     if (!token.refreshToken)
     {
         MSID_LOG_ERROR(nil, @"Trying to initialize refresh token when missing refresh token field");
@@ -283,9 +283,9 @@
     {
         return NO;
     }
-    
+
     token.rawIdToken = response.idToken;
-    
+
     if (!token.rawIdToken)
     {
         MSID_LOG_ERROR(nil, @"Trying to initialize ID token when missing ID token field");
@@ -305,7 +305,7 @@
     {
         return NO;
     }
-    
+
     token.refreshToken = response.refreshToken;
     token.idToken = response.idToken;
     token.accountIdentifier = [[MSIDAccountIdentifier alloc] initWithDisplayableId:response.idTokenObj.userId homeAccountId:token.accountIdentifier.homeAccountId];
@@ -409,7 +409,7 @@
                                                                                                   extraParameters:parameters.extraTokenRequestParameters
                                                                                                           context:parameters];
     tokenRequest.responseSerializer = [[MSIDTokenResponseSerializer alloc] initWithOauth2Factory:self];
-    
+
     return tokenRequest;
 }
 
@@ -425,7 +425,7 @@
                                                                                         extraParameters:parameters.extraTokenRequestParameters
                                                                                                 context:parameters];
     tokenRequest.responseSerializer = [[MSIDTokenResponseSerializer alloc] initWithOauth2Factory:self];
-    
+
     return tokenRequest;
 }
 

@@ -48,7 +48,7 @@
         }
         return nil;
     }
-    
+
     return [self initWithURL:url context:context error:error];
 }
 
@@ -58,12 +58,12 @@
                       error:(NSError **)error
 {
     self = [super initWithURL:url context:context error:error];
-    
+
     if (self)
     {
         NSString *authCode = self.parameters[MSID_OAUTH2_CODE];
         NSError *oauthError = [self.class oauthErrorFromParameters:self.parameters];
-        
+
         if ([NSString msidIsStringNilOrBlank:authCode] && !oauthError)
         {
             if (error)
@@ -75,14 +75,14 @@
             }
             return nil;
         }
-        
+
         // populate auth code
         _authorizationCode = [NSString msidIsStringNilOrBlank:authCode] ? nil : authCode;
-        
+
         // populate oauth error
         _oauthError = oauthError;
     }
-    
+
     return self;
 }
 
@@ -90,7 +90,7 @@
 {
     NSUUID *correlationId = [parameters objectForKey:MSID_OAUTH2_CORRELATION_ID_RESPONSE] ?
     [[NSUUID alloc] initWithUUIDString:[parameters objectForKey:MSID_OAUTH2_CORRELATION_ID_RESPONSE]]:nil;
-    
+
     NSString *serverOAuth2Error = [parameters objectForKey:MSID_OAUTH2_ERROR];
 
     if (serverOAuth2Error)
@@ -98,10 +98,10 @@
         NSString *errorDescription = parameters[MSID_OAUTH2_ERROR_DESCRIPTION];
         NSString *subError = parameters[MSID_OAUTH2_SUB_ERROR];
         MSIDErrorCode errorCode = MSIDErrorCodeForOAuthError(serverOAuth2Error, MSIDErrorAuthorizationFailed);
-        
+
         return MSIDCreateError(MSIDOAuthErrorDomain, errorCode, errorDescription, serverOAuth2Error, subError, nil, correlationId, nil);
     }
-    
+
     return nil;
 }
 
@@ -113,14 +113,14 @@
     // Try both the URL and the fragment parameters:
     NSDictionary *parameters = [self msidWebResponseParametersFromURL:url];
     NSString *stateReceived = parameters[MSID_OAUTH2_STATE];
-    
+
     if (!requestState && !stateReceived)
     {
         return YES;
     }
-    
+
     BOOL result = [requestState isEqualToString:stateReceived.msidBase64UrlDecode];
-    
+
     if (!result)
     {
         MSID_LOG_WARN(nil, @"Missing or invalid state returned state: %@", stateReceived);
@@ -132,7 +132,7 @@
                                      nil, nil, nil, nil, nil);
         }
     }
-    
+
     return result;
 }
 

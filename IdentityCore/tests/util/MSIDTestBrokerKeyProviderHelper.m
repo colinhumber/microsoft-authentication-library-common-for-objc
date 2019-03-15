@@ -42,7 +42,7 @@ applicationTag:(NSString *)applicationTag
 applicationTagData:(NSData *)applicationTagData
 {
     NSString *keychainGroup = [MSIDKeychainUtil accessGroup:accessGroup];
-    
+
     NSDictionary *symmetricKeyAttr =
     @{
       (id)kSecClass : (id)kSecClassKey,
@@ -57,7 +57,7 @@ applicationTagData:(NSData *)applicationTagData
       (id)kSecAttrAccessible : (id)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
       (id)kSecAttrAccessGroup : keychainGroup
       };
-    
+
     SecItemAdd((__bridge CFDictionaryRef)symmetricKeyAttr, NULL);
 }
 

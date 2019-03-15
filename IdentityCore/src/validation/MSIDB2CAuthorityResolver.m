@@ -35,16 +35,16 @@
          completionBlock:(MSIDAuthorityInfoBlock)completionBlock
 {
     NSParameterAssert([authority isKindOfClass:MSIDB2CAuthority.self]);
-    
+
     if (validate && ![authority isKnown])
     {
         __auto_type error = MSIDCreateError(MSIDErrorDomain, MSIDErrorUnsupportedFunctionality, @"Authority validation is not supported for this type of authority", nil, nil, nil, context.correlationId, nil);
         if (completionBlock) completionBlock(nil, NO, error);
         return;
     }
-    
+
     __auto_type endpoint = [MSIDAADNetworkConfiguration.defaultConfiguration.endpointProvider openIdConfigurationEndpointWithUrl:authority.url];
-    
+
     if (completionBlock) completionBlock(endpoint, validate, nil);
 }
 

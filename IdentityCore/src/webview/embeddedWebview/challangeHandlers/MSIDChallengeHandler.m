@@ -34,20 +34,20 @@ static NSMutableDictionary *s_handlers = nil;
       completionHandler:(ChallengeCompletionHandler)completionHandler
 {
     NSString *authMethod = [challenge.protectionSpace.authenticationMethod lowercaseString];
-    
+
     BOOL handled = NO;
     Class<MSIDChallengeHandling> handler = nil;
     @synchronized (self)
     {
         handler = [s_handlers objectForKey:authMethod];
     }
-    
+
     if (!handler)
     {
         completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
         return;
     }
-    
+
     handled = [handler handleChallenge:challenge
                                webview:webview
                                context:context
@@ -67,16 +67,16 @@ static NSMutableDictionary *s_handlers = nil;
     {
         return;
     }
-    
+
     authMethod = [authMethod lowercaseString];
-    
+
     @synchronized(self)
     {
         static dispatch_once_t once;
         dispatch_once(&once, ^{
             s_handlers = [NSMutableDictionary new];
         });
-        
+
         [s_handlers setValue:handler forKey:authMethod];
     }
 }

@@ -46,10 +46,10 @@
     {
         return nil;
     }
-    
+
     NSArray *queries = [string componentsSeparatedByString:@"&"];
     NSMutableDictionary *queryDict = [NSMutableDictionary new];
-    
+
     for (NSString *query in queries)
     {
         NSArray *queryElements = [query componentsSeparatedByString:@"="];
@@ -58,23 +58,23 @@
             MSID_LOG_WARN(nil, @"Query parameter must be a form key=value: %@", query);
             continue;
         }
-        
+
         NSString *key = isFormEncoded ? [queryElements[0] msidTrimmedString].msidWWWFormURLDecode : [queryElements[0] msidTrimmedString].msidURLDecode;
         if ([NSString msidIsStringNilOrBlank:key])
         {
             MSID_LOG_WARN(nil, @"Query parameter must have a key");
             continue;
         }
-        
+
         NSString *value = @"";
         if (queryElements.count == 2)
         {
             value = isFormEncoded ? [queryElements[1] msidTrimmedString].msidWWWFormURLDecode : [queryElements[1] msidTrimmedString].msidURLDecode;
         }
-        
+
         [queryDict setValue:value forKey:key];
     }
-    
+
     return queryDict;
 }
 
@@ -83,7 +83,7 @@
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
                                                          options:NSJSONReadingMutableContainers
                                                            error:error];
-    
+
     return json;
 }
 
@@ -116,7 +116,7 @@
     if (![fieldValue isKindOfClass:type])
     {
         __auto_type message = [NSString stringWithFormat:@"%@ is not a %@.", field, type];
-        
+
         if (error)
         {
             *error = MSIDCreateError(MSIDErrorDomain,
@@ -125,11 +125,11 @@
                                      nil,
                                      nil, nil, context.correlationId, nil);
         }
-        
+
         MSID_LOG_ERROR(nil, @"%@", message);
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -141,7 +141,7 @@
     if (!fieldValue)
     {
         __auto_type message = [NSString stringWithFormat:@"%@ is missing.", field];
-        
+
         if (error)
         {
             *error = MSIDCreateError(MSIDErrorDomain,
@@ -150,11 +150,11 @@
                                      nil,
                                      nil, nil, context.correlationId, nil);
         }
-        
+
         MSID_LOG_ERROR(nil, @"%@", message);
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -167,7 +167,7 @@
     {
         MSID_LOG_NO_PII(MSIDLogLevelWarning, nil, context, @"Failed to serialize data with error %ld, %@", (long)serializationError.code, serializationError.domain);
         MSID_LOG_PII(MSIDLogLevelWarning, nil, context, @"Failed to serialize data with error %@", serializationError);
-        
+
         return nil;
     }
 

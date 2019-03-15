@@ -44,16 +44,16 @@
     {
         [headers addEntriesFromDictionary:customHeaders];
     }
-    
+
 #if TARGET_OS_IPHONE
     // Currently Apple has a bug in iOS about WKWebview handling NSURLAuthenticationMethodClientCertificate.
     // It swallows the challenge response rather than sending it to server.
     // Therefore we work around the bug by using PKeyAuth for WPJ challenge in iOS
 
     [headers setValue:kMSIDPKeyAuthHeaderVersion forKey:kMSIDPKeyAuthHeader];
-    
+
 #endif
-    
+
     return [super initWithStartURL:startURL endURL:endURL
                            webview:webview
                      customHeaders:headers
@@ -66,24 +66,24 @@
 {
     //AAD specific policy for handling navigation action
     NSURL *requestURL = navigationAction.request.URL;
-    
+
     // Stop at broker
     if ([requestURL.scheme.lowercaseString isEqualToString:@"msauth"] ||
         [requestURL.scheme.lowercaseString isEqualToString:@"browser"] )
     {
         self.complete = YES;
-        
+
         NSURL *url = navigationAction.request.URL;
         [self completeWebAuthWithURL:url];
-        
+
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }
-    
+
 #if TARGET_OS_IPHONE
     // check for pkeyauth challenge.
     NSString *requestURLString = [requestURL.absoluteString lowercaseString];
-    
+
     if ([requestURLString hasPrefix:[kMSIDPKeyAuthUrn lowercaseString]])
     {
         decisionHandler(WKNavigationActionPolicyCancel);
@@ -100,7 +100,7 @@
         return;
     }
 #endif
-    
+
     [super decidePolicyForNavigationAction:navigationAction webview:webView decisionHandler:decisionHandler];
 }
 

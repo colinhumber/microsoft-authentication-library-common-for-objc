@@ -44,7 +44,7 @@
         if (completionBlock) completionBlock(nil, error);
         return;
     }
-    
+
     BOOL shouldRetry = YES;
     shouldRetry &= httpRequest.retryCounter > 0;
     // 5xx Server errors.
@@ -53,21 +53,21 @@
     if (shouldRetry)
     {
         httpRequest.retryCounter--;
-        
+
         MSID_LOG_VERBOSE(context, @"Retrying network request, retryCounter: %ld", (long)httpRequest.retryCounter);
-        
+
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(httpRequest.retryInterval * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [httpRequest sendWithBlock:completionBlock];
         });
-        
+
         return;
     }
-    
+
     // pkeyauth challenge
     if (httpResponse.statusCode == 400 || httpResponse.statusCode == 401)
     {
         NSString *wwwAuthValue = [httpResponse.allHeaderFields valueForKey:kMSIDWwwAuthenticateHeader];
-        
+
         if (![NSString msidIsStringNilOrBlank:wwwAuthValue] && [wwwAuthValue containsString:kMSIDPKeyAuthName])
         {
             [MSIDPKeyAuthHandler handleWwwAuthenticateHeader:wwwAuthValue
@@ -80,22 +80,22 @@
                                                    NSMutableURLRequest *newRequest = [httpRequest.urlRequest mutableCopy];
                                                    [newRequest setValue:authHeader forHTTPHeaderField:@"Authorization"];
                                                    httpRequest.urlRequest = newRequest;
-                                                   
+
                                                    // resend the request
                                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                        [httpRequest sendWithBlock:completionBlock];
                                                    });
                                                    return;
                                                }
-                                               
+
                                                if (completionBlock) { completionBlock(nil, error); }
                                            }];
             return;
         }
-        
+
         NSError *responseError = nil;
         id responseObject = [responseSerializer responseObjectForResponse:httpResponse data:data context:context error:&responseError];
-        
+
         if (completionBlock)
         {
             completionBlock(responseObject, responseError);
@@ -107,10 +107,10 @@
 
     NSString *message = [NSString stringWithFormat:@"Http error raised: Http Code: %ld \n", (long)httpResponse.statusCode];
     NSString *messagePII = [NSString stringWithFormat:@"Http error raised: Http Code: %ld \n%@", (long)httpResponse.statusCode, errorDescription];
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelWarning, nil, context, @"%@", message);
     MSID_LOG_PII(MSIDLogLevelWarning, nil, context, @"%@", messagePII);
-    
+
     NSMutableDictionary *additionalInfo = [NSMutableDictionary new];
     [additionalInfo setValue:httpResponse.allHeaderFields
                       forKey:MSIDHTTPHeadersKey];
@@ -122,9 +122,9 @@
     {
         [additionalInfo setValue:@1 forKey:MSIDServerUnavailableStatusKey];
     }
-    
+
     NSError *httpError = MSIDCreateError(MSIDHttpErrorCodeDomain, MSIDErrorServerUnhandledResponse, errorDescription, nil, nil, nil, context.correlationId, additionalInfo);
-    
+
     if (completionBlock) completionBlock(nil, httpError);
 }
 

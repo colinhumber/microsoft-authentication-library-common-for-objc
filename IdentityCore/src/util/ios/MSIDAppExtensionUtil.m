@@ -28,14 +28,14 @@
 + (BOOL)isExecutingInAppExtension
 {
     NSString *mainBundlePath = [[NSBundle mainBundle] bundlePath];
-    
+
     if (mainBundlePath.length == 0)
     {
         MSID_LOG_ERROR(nil, @"Expected `[[NSBundle mainBundle] bundlePath]` to be non-nil. Defaulting to non-application-extension safe API.");
-        
+
         return NO;
     }
-    
+
     return [mainBundlePath hasSuffix:@"appex"];
 }
 
@@ -48,7 +48,7 @@
         // The caller should do this check but we will double check to fail safely
         return nil;
     }
-    
+
     return [UIApplication performSelector:NSSelectorFromString(@"sharedApplication")];
 }
 
@@ -59,7 +59,7 @@
         // The caller should do this check but we will double check to fail safely
         return;
     }
-    
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     dispatch_async( dispatch_get_main_queue(), ^{

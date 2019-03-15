@@ -58,7 +58,7 @@
 {
     NSString* testJson = @"{ \"testKey\" : \"testValue\" }";
     NSData* testJsonData = [testJson dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     NSError* error = nil;
     MSIDJsonObject* obj = [[MSIDJsonObject alloc] initWithJSONData:testJsonData error:&error];
     XCTAssertNotNil(obj);
@@ -75,7 +75,7 @@
     NSData *data = [obj serialize:&error];
     XCTAssertNotNil(data);
     XCTAssertNil(error);
-    
+
     MSIDJsonObject *obj2 = [[MSIDJsonObject alloc] initWithJSONData:data error:&error];
     XCTAssertNotNil(obj2);
     XCTAssertNil(error);
@@ -94,7 +94,7 @@
 {
     NSString* testJson = @"{ sdgahsdujkiohasoldikasjdl;asjmdas }";
     NSData* testJsonData = [testJson dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     NSError* error = nil;
     MSIDJsonObject* obj = [[MSIDJsonObject alloc] initWithJSONData:testJsonData error:&error];
     XCTAssertNil(obj);

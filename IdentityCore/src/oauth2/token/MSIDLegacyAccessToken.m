@@ -96,7 +96,7 @@
     if (self)
     {
         __auto_type authority = [MSIDAuthorityFactory authorityFromUrl:tokenCacheItem.authority context:nil error:nil];
-        
+
         _accessToken = tokenCacheItem.accessToken;
         _idToken = tokenCacheItem.idToken;
         _accessTokenType = tokenCacheItem.oauthTokenType;

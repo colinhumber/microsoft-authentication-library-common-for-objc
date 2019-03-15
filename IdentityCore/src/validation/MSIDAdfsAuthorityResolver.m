@@ -57,24 +57,24 @@ static MSIDCache <NSString *, MSIDAuthorityCacheRecord *> *s_cache;
         if (completionBlock) completionBlock(openIdConfigurationEndpoint, NO, nil);
         return;
     }
-    
+
     __auto_type record = [s_cache objectForKey:authority.url.absoluteString.lowercaseString];
     if (record)
     {
         if (completionBlock) completionBlock(record.openIdConfigurationEndpoint, record.validated, nil);
         return;
     }
-    
+
     // Check for upn suffix
     NSString *domain = [self getDomain:upn];
     if ([NSString msidIsStringNilOrBlank:domain])
     {
         __auto_type error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, @"'upn' is a required parameter and must not be nil or empty.", nil, nil, nil, context.correlationId, nil);
-        
+
         if (completionBlock) completionBlock(nil, NO, error);
         return;
     }
-    
+
     [self sendDrsDiscoveryWithDomain:domain context:context completionBlock:^(NSURL *issuer, NSError *error)
      {
          if (error)
@@ -82,7 +82,7 @@ static MSIDCache <NSString *, MSIDAuthorityCacheRecord *> *s_cache;
              if (completionBlock) completionBlock(nil, NO, error);
              return;
          }
-         
+
          __auto_type webFingerRequest = [[MSIDWebFingerRequest alloc] initWithIssuer:issuer
                                                                            authority:authority.url
                                                                              context:context];
@@ -93,16 +93,16 @@ static MSIDCache <NSString *, MSIDAuthorityCacheRecord *> *s_cache;
                   if (completionBlock) completionBlock(nil, NO, error);
                   return;
               }
-              
+
               if ([self isRealmTrustedFromWebFingerPayload:response authority:authority.url])
               {
                   __auto_type openIdConfigurationEndpoint = [self openIdConfigurationEndpointForAuthority:authority.url];
-                  
+
                   __auto_type cacheRecord = [MSIDAuthorityCacheRecord new];
                   cacheRecord.validated = YES;
                   cacheRecord.openIdConfigurationEndpoint = openIdConfigurationEndpoint;
                   [s_cache setObject:cacheRecord forKey:authority.url.absoluteString.lowercaseString];
-                  
+
                   if (completionBlock) completionBlock(openIdConfigurationEndpoint, YES, nil);
               }
               else
@@ -128,7 +128,7 @@ static MSIDCache <NSString *, MSIDAuthorityCacheRecord *> *s_cache;
              if (completionBlock) completionBlock(response, error);
              return;
          }
-         
+
          __auto_type drsCloudRequest = [[MSIDDRSDiscoveryRequest alloc] initWithDomain:domain adfsType:MSIDDRSTypeInCloud context:context];
          [drsCloudRequest sendWithBlock:^(id response, NSError *error)
           {
@@ -145,9 +145,9 @@ static MSIDCache <NSString *, MSIDAuthorityCacheRecord *> *s_cache;
     {
         NSString *rel = [link objectForKey:@"rel"];
         NSString *target = [link objectForKey:@"href"];
-        
+
         NSURL *targetURL = [NSURL URLWithString:target];
-        
+
         if ([rel caseInsensitiveCompare:s_kTrustedRelation] == NSOrderedSame &&
             [targetURL msidIsEquivalentAuthorityHost:authority])
         {
@@ -160,7 +160,7 @@ static MSIDCache <NSString *, MSIDAuthorityCacheRecord *> *s_cache;
 - (NSURL *)openIdConfigurationEndpointForAuthority:(NSURL *)authority
 {
     if (!authority) return nil;
-    
+
     return [authority URLByAppendingPathComponent:MSID_OPENID_CONFIGURATION_SUFFIX];
 }
 
@@ -170,13 +170,13 @@ static MSIDCache <NSString *, MSIDAuthorityCacheRecord *> *s_cache;
     {
         return nil;
     }
-    
+
     NSArray *array = [upn componentsSeparatedByString:@"@"];
     if (array.count != 2)
     {
         return nil;
     }
-    
+
     return array[1];
 }
 

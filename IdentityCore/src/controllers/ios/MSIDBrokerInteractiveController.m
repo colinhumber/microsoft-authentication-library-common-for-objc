@@ -92,15 +92,15 @@ static MSIDBrokerInteractiveController *s_currentExecutingController;
 - (void)acquireToken:(MSIDRequestCompletionBlock)completionBlock
 {
     MSID_LOG_INFO(self.requestParameters, @"Beginning broker flow.");
-    
+
     if (!completionBlock)
     {
         MSID_LOG_ERROR(self.requestParameters, @"Passed nil completionBlock. End broker flow.");
         return;
     }
-    
+
     NSString *upn = self.interactiveParameters.accountIdentifier.displayableId ?: self.interactiveParameters.loginHint;
-    
+
     [self.interactiveParameters.authority resolveAndValidate:self.interactiveParameters.validateAuthority
                                            userPrincipalName:upn
                                                      context:self.interactiveParameters
@@ -112,7 +112,7 @@ static MSIDBrokerInteractiveController *s_currentExecutingController;
              completionBlock(nil, error);
              return;
          }
-         
+
          [self acquireTokenImpl:completionBlock];
      }];
 }
@@ -183,7 +183,7 @@ static MSIDBrokerInteractiveController *s_currentExecutingController;
 - (void)callBrokerWithRequest:(MSIDBrokerTokenRequest *)brokerRequest
 {
     MSID_LOG_INFO(self.requestParameters, @"Invoking broker for authentication, correlationId %@", brokerRequest.requestParameters.correlationId.UUIDString);
-    
+
     [self.class setCurrentBrokerController:self];
     [self.class startTrackingAppState];
     [[MSIDTelemetry sharedInstance] startEvent:self.requestParameters.telemetryRequestId eventName:MSID_TELEMETRY_EVENT_LAUNCH_BROKER];

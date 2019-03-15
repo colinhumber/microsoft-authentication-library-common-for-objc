@@ -45,12 +45,12 @@
             NSString *errorDescription = [NSString stringWithFormat:@"Attempt to initialize URL form object (%@) with nil string", NSStringFromClass(self.class)];
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, errorDescription, nil, nil, nil,nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSDictionary *form = [NSDictionary msidDictionaryFromWWWFormURLEncodedString:encodedString];
-    
+
     if (!form)
     {
         if (error)
@@ -58,10 +58,10 @@
             NSString *errorDescription = @"Failed to decode input string";
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, errorDescription, nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     return [self initWithDictionary:form error:error];
 }
 
@@ -74,17 +74,17 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, @"Attempt to initialize URL form object with nil dictionary", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     if (!(self = [super init]))
     {
         return nil;
     }
-    
+
     _urlForm = [form mutableCopy];
-    
+
     return self;
 }
 

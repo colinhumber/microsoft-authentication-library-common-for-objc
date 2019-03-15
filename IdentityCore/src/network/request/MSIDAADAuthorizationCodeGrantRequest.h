@@ -25,7 +25,7 @@
 
 /**
  Redeem code request.
- 
+
  @see https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-protocols-oauth-code#use-the-authorization-code-to-request-an-access-token
  */
 @interface MSIDAADAuthorizationCodeGrantRequest : MSIDAuthorizationCodeGrantRequest

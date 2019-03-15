@@ -44,15 +44,15 @@
     {
         return nil;
     }
-    
+
     _errorInEvent = NO;
-    
+
     _propertyMap = [NSMutableDictionary dictionary];
-    
+
     [self setProperty:MSID_TELEMETRY_KEY_REQUEST_ID value:requestId];
     [self setProperty:MSID_TELEMETRY_KEY_CORRELATION_ID value:[correlationId UUIDString]];
     [self setProperty:MSID_TELEMETRY_KEY_EVENT_NAME value:eventName];
-    
+
     return self;
 }
 
@@ -69,12 +69,12 @@
     {
         return;
     }
-    
+
     if ([MSIDTelemetryPiiOiiRules isPii:name])
     {
         value = [[value dataUsingEncoding:NSUTF8StringEncoding] msidSHA256].msidHexString;
     }
-    
+
     [_propertyMap setValue:value forKey:name];
 }
 
@@ -84,7 +84,7 @@
     {
         return nil;
     }
-    
+
     return _propertyMap[name];
 }
 
@@ -94,7 +94,7 @@
     {
         return;
     }
-    
+
     [_propertyMap removeObjectForKey:name];
 }
 
@@ -109,7 +109,7 @@
     {
         return;
     }
-    
+
     [self setProperty:MSID_TELEMETRY_KEY_START_TIME value:[time msidToString]];
 }
 
@@ -119,7 +119,7 @@
     {
         return;
     }
-    
+
     [self setProperty:MSID_TELEMETRY_KEY_END_TIME value:[time msidToString]];
 }
 
@@ -137,7 +137,7 @@
 + (NSDictionary *)defaultParameters
 {
     NSMutableDictionary *defaultParameters = [NSMutableDictionary new];
-    
+
     NSDictionary *rawParameters = [[self class] rawDefaultParameters];
     for (NSString *key in [rawParameters allKeys])
     {
@@ -147,17 +147,17 @@
         {
             continue;
         }
-        
+
         // hash Pii
         NSString *value = rawParameters[key];
         if ([MSIDTelemetryPiiOiiRules isPii:key])
         {
             value = [[value dataUsingEncoding:NSUTF8StringEncoding] msidSHA256].msidHexString;
         }
-        
+
         [defaultParameters setValue:value forKey:key];
     }
-    
+
     return defaultParameters;
 }
 
@@ -165,31 +165,31 @@
 {
     static NSMutableDictionary *s_defaultParameters;
     static dispatch_once_t s_configurationOnce;
-    
+
     dispatch_once(&s_configurationOnce, ^{
-        
+
         s_defaultParameters = [NSMutableDictionary new];
-        
+
         NSString *deviceId = [MSIDDeviceId deviceTelemetryId];
         NSString *applicationName = [MSIDDeviceId applicationName];
         NSString *applicationVersion = [MSIDDeviceId applicationVersion];
-        
+
         [s_defaultParameters msidSetObjectIfNotNil:deviceId
                                             forKey:MSID_TELEMETRY_KEY_DEVICE_ID];
         [s_defaultParameters msidSetObjectIfNotNil:applicationName
                                             forKey:MSID_TELEMETRY_KEY_APPLICATION_NAME];
         [s_defaultParameters msidSetObjectIfNotNil:applicationVersion
                                             forKey:MSID_TELEMETRY_KEY_APPLICATION_VERSION];
-        
+
         NSDictionary *adalId = [MSIDDeviceId deviceId];
-        
+
         for (NSString *key in adalId)
         {
             NSString *propertyName = [[key lowercaseString] stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
             [s_defaultParameters msidSetObjectIfNotNil:[adalId objectForKey:key] forKey:propertyName];
         }
     });
-    
+
     return s_defaultParameters;
 }
 

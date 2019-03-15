@@ -45,11 +45,11 @@
 {
     NSString *test = @"bWljcm9zb2Z0IHRlc3RjYQ";
     NSData *data = [NSData msidDataFromBase64UrlEncodedString:test];
-    
+
     // expected, with a padding and conversion of 62 and 63rd characted
     NSString *expected = @"bWljcm9zb2Z0IHRlc3RjYQ==";
     NSData *expectedData = [[NSData alloc] initWithBase64EncodedString:expected options:0];
-    
+
     XCTAssertNotNil(data);
     XCTAssertEqualObjects(data, expectedData);
 }
@@ -58,11 +58,11 @@
 {
     NSString *test = @"bWljcm9zb2Z0IHRlc3RjYXM";
     NSData *data = [NSData msidDataFromBase64UrlEncodedString:test];
-    
+
     // expected, with a padding and conversion of 62 and 63rd characted
     NSString *expected = @"bWljcm9zb2Z0IHRlc3RjYXM=";
     NSData *expectedData = [[NSData alloc] initWithBase64EncodedString:expected options:0];
-    
+
     XCTAssertNotNil(data);
     XCTAssertEqualObjects(data, expectedData);
 }
@@ -71,11 +71,11 @@
 {
     NSString *test = @"bWljcm9zb2Z0IHRlc3RjYXNl";
     NSData *data = [NSData msidDataFromBase64UrlEncodedString:test];
-    
+
     // expected, with a padding and conversion of 62 and 63rd characted
     NSString *expected = @"bWljcm9zb2Z0IHRlc3RjYXNl";
     NSData *expectedData = [[NSData alloc] initWithBase64EncodedString:expected options:0];
-    
+
     XCTAssertNotNil(data);
     XCTAssertEqualObjects(data, expectedData);
 }
@@ -83,11 +83,11 @@
 {
     NSString *test = @"bWljcm9zb2Z0IHRlc3RjYXNlLg";
     NSData *data = [NSData msidDataFromBase64UrlEncodedString:test];
-    
+
     // expected, with a padding and conversion of 62 and 63rd characted
     NSString *expected = @"bWljcm9zb2Z0IHRlc3RjYXNlLg==";
     NSData *expectedData = [[NSData alloc] initWithBase64EncodedString:expected options:0];
-    
+
     XCTAssertNotNil(data);
     XCTAssertEqualObjects(data, expectedData);
 }
@@ -96,11 +96,11 @@
 {
     NSString *test = @"bWljcm9zb2Z0IHRlc3RjYXNlLiE";
     NSData *data = [NSData msidDataFromBase64UrlEncodedString:test];
-    
+
     // expected, with a padding and conversion of 62 and 63rd characted
     NSString *expected = @"bWljcm9zb2Z0IHRlc3RjYXNlLiE=";
     NSData *expectedData = [[NSData alloc] initWithBase64EncodedString:expected options:0];
-    
+
     XCTAssertNotNil(data);
     XCTAssertEqualObjects(data, expectedData);
 }

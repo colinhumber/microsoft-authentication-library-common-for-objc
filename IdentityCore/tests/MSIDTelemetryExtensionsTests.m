@@ -36,9 +36,9 @@
 - (void)testParsedClientTelemetry_whenBlankTelemetry_shouldReturnEmptyDictionary
 {
     NSString *clientTelemetry = @" ";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertTrue([parsedTelemetry count] == 0);
 }
@@ -46,9 +46,9 @@
 - (void)testParsedClientTelemetry_whenTooLittleComponents_shouldReturnEmptyDictionary
 {
     NSString *clientTelemetry = @"1,0,0";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertTrue([parsedTelemetry count] == 0);
 }
@@ -56,9 +56,9 @@
 - (void)testParsedClientTelemetry_whenTooManyComponents_shouldReturnDictionaryWithFirstElements
 {
     NSString *clientTelemetry = @"1,123,1234,255.0643,0,0,1234,";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertEqualObjects([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SPE_INFO], @"0");
     XCTAssertEqualObjects([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_ERROR_CODE], @"123");
@@ -69,9 +69,9 @@
 - (void)testParsedClientTelemetry_whenWrongVersionNumberButEnoughElements_shouldReturnDictionaryWithFirstElements
 {
     NSString *clientTelemetry = @"2,123,1234,255.0643,";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertNil([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SPE_INFO]);
     XCTAssertEqualObjects([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_ERROR_CODE], @"123");
@@ -82,9 +82,9 @@
 - (void)testParsedClientTelemetry_whenAllComponentsNoSPEInfo_shouldReturnAllOtherPropertiesNilSPEInfo
 {
     NSString *clientTelemetry = @"1,123,1234,255.0643,";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertNil([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SPE_INFO]);
     XCTAssertEqualObjects([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_ERROR_CODE], @"123");
@@ -95,9 +95,9 @@
 - (void)testParsedClientTelemetry_whenAllComponentsNoSPEInfoNoRTAge_shouldReturnAllOtherPropertiesNilSPEInfoNilRTAge
 {
     NSString *clientTelemetry = @"1,123,1234,,";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertNil([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SPE_INFO]);
     XCTAssertNil([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_RT_AGE]);
@@ -106,9 +106,9 @@
 - (void)testParsedClientTelemetry_whenAllComponentsWithSPEInfo_shouldReturnAllProperties
 {
     NSString *clientTelemetry = @"1,123,1234,255.0643,I";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertEqualObjects([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_ERROR_CODE], @"123");
     XCTAssertEqualObjects([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_SUBERROR_CODE], @"1234");
@@ -119,9 +119,9 @@
 - (void)testParsedClientTelemetry_whenErrorSubErrorHaveZeroesRtAgeEmpty_shouldReturnOnlySpeInfo
 {
     NSString *clientTelemetry = @"1,0,0,,I";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertNil([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_ERROR_CODE]);
     XCTAssertNil([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_SUBERROR_CODE]);
@@ -132,9 +132,9 @@
 - (void)testParsedClientTelemetry_whenErrorHasZeroes_shouldReturnAllPropertiesButErrorCode
 {
     NSString *clientTelemetry = @"1,0,5,200.5,I";
-    
+
     NSDictionary *parsedTelemetry = [clientTelemetry msidParsedClientTelemetry];
-    
+
     XCTAssertNotNil(parsedTelemetry);
     XCTAssertNil([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_ERROR_CODE]);
     XCTAssertEqualObjects([parsedTelemetry objectForKey:MSID_TELEMETRY_KEY_SERVER_SUBERROR_CODE], @"5");

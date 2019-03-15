@@ -39,12 +39,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:self.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDAppMetadataCacheItem *)object];
 }
 
@@ -87,15 +87,15 @@
     {
         return nil;
     }
-    
+
     if (!json)
     {
         MSID_LOG_WARN(nil, @"Tried to decode an account cache item from nil json");
         return nil;
     }
-    
+
     _json = json;
-    
+
     _clientId = json[MSID_CLIENT_ID_CACHE_KEY];
     _environment = json[MSID_ENVIRONMENT_CACHE_KEY];
     _familyId = json[MSID_FAMILY_ID_CACHE_KEY];
@@ -105,12 +105,12 @@
 - (NSDictionary *)jsonDictionary
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    
+
     if (_json)
     {
         [dictionary addEntriesFromDictionary:_json];
     }
-    
+
     dictionary[MSID_CLIENT_ID_CACHE_KEY] = _clientId;
     dictionary[MSID_ENVIRONMENT_CACHE_KEY] = _environment;
     dictionary[MSID_FAMILY_ID_CACHE_KEY] = _familyId;
@@ -125,7 +125,7 @@
     {
         return NO;
     }
-    
+
     return [self matchByEnvironment:environment environmentAliases:environmentAliases];
 }
 
@@ -136,12 +136,12 @@
     {
         return NO;
     }
-    
+
     if ([environmentAliases count] && ![self.environment msidIsEquivalentWithAnyAlias:environmentAliases])
     {
         return NO;
     }
-    
+
     return YES;
 }
 

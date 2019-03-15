@@ -55,7 +55,7 @@ static dispatch_queue_t s_aadValidationQueue;
     {
         _aadCache = [MSIDAadAuthorityCache sharedInstance];
     }
-    
+
     return self;
 }
 
@@ -67,30 +67,30 @@ static dispatch_queue_t s_aadValidationQueue;
 {
     NSParameterAssert(completionBlock);
     NSParameterAssert([authority isKindOfClass:MSIDAADAuthority.self]);
-    
+
     MSIDAadAuthorityCacheRecord *record = [self.aadCache objectForKey:authority.environment];
     if (record)
     {
         [self handleRecord:record authority:authority completionBlock:completionBlock];
         return;
     }
-    
+
     dispatch_async(s_aadValidationQueue, ^{
-        
+
         // If we didn't have anything in the cache then we need to hold onto the queue until we
         // get a response back from the server, or timeout, or fail for any other reason
         __block dispatch_semaphore_t dsem = dispatch_semaphore_create(0);
-        
+
         [self sendDiscoverRequestWithAuthority:authority validate:validate context:context completionBlock:^(NSURL *openIdConfigurationEndpoint, BOOL validated, NSError *error)
          {
              // Because we're on a serialized queue here to ensure that we don't have more then one
              // validation network request at a time, we want to jump off this queue as quick as
              // possible whenever we hit an error to unblock the queue
              completionBlock(openIdConfigurationEndpoint, validated, error);
-             
+
              dispatch_semaphore_signal(dsem);
          }];
-        
+
         // We're blocking the AAD Validation queue here so that we only process one authority validation
         // request at a time. As an application typically only uses a single AAD authority, this cuts
         // down on the amount of simultaneous requests that go out on multi threaded app launch
@@ -113,7 +113,7 @@ static dispatch_queue_t s_aadValidationQueue;
                          completionBlock:(MSIDAuthorityInfoBlock)completionBlock
 {
     NSParameterAssert(completionBlock);
-    
+
     // Before we make the request, check the cache again, as these requests happen on a serial queue
     // and it's possible we were waiting on a request that got the information we're looking for.
     MSIDAadAuthorityCacheRecord *record = [self.aadCache objectForKey:authority.environment];
@@ -122,15 +122,15 @@ static dispatch_queue_t s_aadValidationQueue;
         [self handleRecord:record authority:authority completionBlock:completionBlock];
         return;
     }
-    
+
     __auto_type trustedHost = MSIDTrustedAuthorityWorldWide;
     if ([authority isKnown])
     {
         trustedHost = authority.environment;
     }
-    
+
     __auto_type endpoint = [MSIDAADNetworkConfiguration.defaultConfiguration.endpointProvider aadAuthorityDiscoveryEndpointWithHost:trustedHost];
-    
+
     __auto_type *request = [[MSIDAADAuthorityMetadataRequest alloc] initWithEndpoint:endpoint authority:authority.url context: context];
     [request sendWithBlock:^(MSIDAADAuthorityMetadataResponse *response, NSError *error)
      {
@@ -140,14 +140,14 @@ static dispatch_queue_t s_aadValidationQueue;
              {
                  [self.aadCache addInvalidRecord:authority oauthError:error context:context];
              }
-             
+
              __auto_type endpoint = validate ? nil : [MSIDAADNetworkConfiguration.defaultConfiguration.endpointProvider openIdConfigurationEndpointWithUrl:authority.url];
              error = validate ? error : nil;
-             
+
              completionBlock(endpoint, NO, error);
              return;
          }
-         
+
          [self.aadCache processMetadata:response.metadata
                    openIdConfigEndpoint:response.openIdConfigurationEndpoint
                               authority:authority
@@ -174,7 +174,7 @@ static dispatch_queue_t s_aadValidationQueue;
     NSParameterAssert(completionBlock);
 
     __auto_type endpoint = [MSIDAADNetworkConfiguration.defaultConfiguration.endpointProvider openIdConfigurationEndpointWithUrl:authority.url];
-    
+
     completionBlock(endpoint, record.validated, record.error);
 }
 

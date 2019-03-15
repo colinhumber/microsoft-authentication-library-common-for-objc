@@ -47,17 +47,17 @@
     __auto_type delegate = [MSIDURLSessionDelegate new];
     __auto_type session = [NSURLSession new];
     __auto_type challendge = [NSURLAuthenticationChallenge new];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"session:didReceiveChallenge:completionHandler"];
     [delegate URLSession:session didReceiveChallenge:challendge
        completionHandler:^(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential)
     {
         XCTAssertEqual(disposition, NSURLSessionAuthChallengePerformDefaultHandling);
         XCTAssertNil(credential);
-        
+
         [expectation fulfill];
     }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -67,24 +67,24 @@
     __auto_type session = [NSURLSession new];
     __auto_type challendge = [NSURLAuthenticationChallenge new];
     __auto_type credential = [NSURLCredential new];
-    
+
     delegate.sessionDidReceiveAuthenticationChallengeBlock = ^void (NSURLSession *s, NSURLAuthenticationChallenge *ch, ChallengeCompletionHandler completionHandler)
     {
         XCTAssertEqual(session, s);
         XCTAssertEqual(challendge, ch);
         completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
     };
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"session:didReceiveChallenge:completionHandler"];
     [delegate URLSession:session didReceiveChallenge:challendge
        completionHandler:^(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable cr)
      {
          XCTAssertEqual(disposition, NSURLSessionAuthChallengeUseCredential);
          XCTAssertEqual(credential, cr);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -94,16 +94,16 @@
     __auto_type session = [NSURLSession new];
     __auto_type challendge = [NSURLAuthenticationChallenge new];
     __auto_type task = [NSURLSessionTask new];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"session:task:didReceiveChallenge:completionHandler"];
     [delegate URLSession:session task:task didReceiveChallenge:challendge completionHandler:^(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential)
     {
         XCTAssertEqual(disposition, NSURLSessionAuthChallengePerformDefaultHandling);
         XCTAssertNil(credential);
-        
+
         [expectation fulfill];
     }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -114,7 +114,7 @@
     __auto_type challendge = [NSURLAuthenticationChallenge new];
     __auto_type credential = [NSURLCredential new];
     __auto_type task = [NSURLSessionTask new];
-    
+
     delegate.taskDidReceiveAuthenticationChallengeBlock = ^void (NSURLSession *s, NSURLSessionTask *t, NSURLAuthenticationChallenge *ch, ChallengeCompletionHandler completionHandler)
     {
         XCTAssertEqual(session, s);
@@ -122,17 +122,17 @@
         XCTAssertEqual(challendge, ch);
         completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
     };
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"session:didReceiveChallenge:completionHandler"];
     [delegate URLSession:session task:task didReceiveChallenge:challendge
        completionHandler:^(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable cr)
      {
          XCTAssertEqual(disposition, NSURLSessionAuthChallengeUseCredential);
          XCTAssertEqual(credential, cr);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 

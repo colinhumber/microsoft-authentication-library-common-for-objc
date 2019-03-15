@@ -42,18 +42,18 @@
 {
     NSError *jsonError;
     NSDictionary *jsonObject = [[super responseObjectForResponse:httpResponse data:data context:context error:&jsonError] mutableCopy];
-    
+
     if (jsonError)
     {
         if (error) *error = jsonError;
         return nil;
     }
-    
+
     if (![jsonObject msidAssertContainsField:@"IdentityProviderService" context:context error:error])
     {
         return nil;
     }
-    
+
     if (![jsonObject msidAssertType:NSDictionary.class
                         ofField:@"IdentityProviderService"
                         context:context
@@ -62,14 +62,14 @@
     {
         return nil;
     }
-    
+
     __auto_type serviceInfo = (NSDictionary *)jsonObject[@"IdentityProviderService"];
-    
+
     if (![serviceInfo msidAssertContainsField:@"PassiveAuthEndpoint" context:context error:error])
     {
         return nil;
     }
-    
+
     if (![serviceInfo msidAssertType:NSString.class
                              ofField:@"PassiveAuthEndpoint"
                              context:context
@@ -78,9 +78,9 @@
     {
         return nil;
     }
-    
+
     __auto_type endpoint = (NSString *)serviceInfo[@"PassiveAuthEndpoint"];
-    
+
     return [NSURL URLWithString:endpoint];
 }
 

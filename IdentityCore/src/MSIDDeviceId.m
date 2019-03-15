@@ -41,10 +41,10 @@ void CopySerialNumber(CFStringRef *serialNumber)
     if (serialNumber != NULL)
     {
         *serialNumber = NULL;
-        
+
         io_service_t    platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault,
                                                                      IOServiceMatching("IOPlatformExpertDevice"));
-        
+
         if (platformExpert)
         {
             CFTypeRef serialNumberAsCFString =
@@ -55,7 +55,7 @@ void CopySerialNumber(CFStringRef *serialNumber)
             {
                 *serialNumber = serialNumberAsCFString;
             }
-            
+
             IOObjectRelease(platformExpert);
         }
     }
@@ -70,7 +70,7 @@ void CopySerialNumber(CFStringRef *serialNumber)
     size_t structSize;
     cpu_type_t cpuType;
     structSize = sizeof(cpuType);
-    
+
     //Extract the CPU type. E.g. x86. See machine.h for details
     //See sysctl.h for details.
     int result = sysctlbyname("hw.cputype", &cpuType, &structSize, NULL, 0);
@@ -79,7 +79,7 @@ void CopySerialNumber(CFStringRef *serialNumber)
         MSID_LOG_WARN(nil, @"Cannot extract cpu type. Error: %d", result);
         return nil;
     }
-    
+
     return (CPU_ARCH_ABI64 & cpuType) ? @"64" : @"32";
 }
 
@@ -88,7 +88,7 @@ void CopySerialNumber(CFStringRef *serialNumber)
 {
     static NSMutableDictionary *s_adalId = nil;
     static dispatch_once_t deviceIdOnce;
-    
+
     dispatch_once(&deviceIdOnce, ^{
 #if TARGET_OS_IPHONE
         //iOS:
@@ -108,15 +108,15 @@ void CopySerialNumber(CFStringRef *serialNumber)
                                          }];
 #endif
         NSString *CPUVer = [self getCPUInfo];
-        
+
         if (![NSString msidIsStringNilOrBlank:CPUVer])
         {
             [result setObject:CPUVer forKey:MSID_CPU_KEY];
         }
-        
+
         s_adalId = result;
     });
-    
+
     return s_adalId;
 }
 
@@ -134,9 +134,9 @@ void CopySerialNumber(CFStringRef *serialNumber)
 {
     static NSString *s_OSString = @"UnkOS";
     static dispatch_once_t osStringOnce;
-    
+
     dispatch_once(&osStringOnce, ^{
-        
+
 #if TARGET_OS_IPHONE
 #if TARGET_OS_SIMULATOR
         s_OSString = [NSString stringWithFormat:@"iOS Sim %@", [self deviceOSVersion]];
@@ -151,7 +151,7 @@ void CopySerialNumber(CFStringRef *serialNumber)
         s_OSString = [NSString stringWithFormat:@"Mac %@", [self deviceOSVersion]];
 #endif
     });
-    
+
     return s_OSString;
 }
 

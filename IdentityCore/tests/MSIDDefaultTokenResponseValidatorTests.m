@@ -83,13 +83,13 @@
                                                              correlationId:correlationID
                                                              tokenResponse:response];
     NSError *error;
-    
+
     [self.validator validateTokenResult:result
                           configuration:configuration
                               oidcScope:defaultOidcScope
                           correlationID:correlationID
                                   error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertEqual(error.code, MSIDErrorServerDeclinedScopes);
     NSArray *declinedScopes = @[@"fakescope1", @"fakescope2"];
@@ -110,7 +110,7 @@
 
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDAADV2TokenResponse *response = [MSIDTestTokenResponse v2DefaultTokenResponse];
-    
+
     MSIDAccessToken *accessToken = [factory accessTokenFromResponse:response configuration:configuration];
     MSIDAccount *account = [factory accountFromResponse:response configuration:configuration];
     MSIDTokenResult *result = [[MSIDTokenResult alloc] initWithAccessToken:accessToken
@@ -122,13 +122,13 @@
                                                              tokenResponse:response];
 
     NSError *error;
-    
+
     BOOL validated = [self.validator validateTokenResult:result
                                         configuration:configuration
                                             oidcScope:defaultOidcScope
                                         correlationID:correlationID
                                                 error:&error];
-    
+
     XCTAssertTrue(validated);
     XCTAssertNil(error);
 }
@@ -141,10 +141,10 @@
                                                                         redirectUri:@"some_uri"
                                                                            clientId:@"myclient"
                                                                              target:DEFAULT_TEST_SCOPE];
-    
+
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDAADV2TokenResponse *response = [MSIDTestTokenResponse v2DefaultTokenResponse];
-    
+
     MSIDAccessToken *accessToken = [factory accessTokenFromResponse:response configuration:configuration];
     MSIDAccount *account = [factory accountFromResponse:response configuration:configuration];
     MSIDTokenResult *result = [[MSIDTokenResult alloc] initWithAccessToken:accessToken
@@ -154,14 +154,14 @@
                                                                  authority:authority
                                                              correlationId:correlationID
                                                              tokenResponse:response];
-    
+
     NSError *error;
-    
+
     BOOL validated = [self.validator validateAccount:account.accountIdentifier
                                          tokenResult:result
                                        correlationID:correlationID
                                                error:&error];
-    
+
     XCTAssertTrue(validated);
     XCTAssertNil(error);
 }
@@ -174,10 +174,10 @@
                                                                         redirectUri:@"some_uri"
                                                                            clientId:@"myclient"
                                                                              target:DEFAULT_TEST_SCOPE];
-    
+
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDAADV2TokenResponse *response = [MSIDTestTokenResponse v2DefaultTokenResponse];
-    
+
     MSIDAccessToken *accessToken = [factory accessTokenFromResponse:response configuration:configuration];
     MSIDAccount *account = [factory accountFromResponse:response configuration:configuration];
     MSIDTokenResult *result = [[MSIDTokenResult alloc] initWithAccessToken:accessToken
@@ -187,15 +187,15 @@
                                                                  authority:authority
                                                              correlationId:correlationID
                                                              tokenResponse:response];
-    
+
     NSError *error;
-    
+
     BOOL validated = [self.validator validateAccount:[[MSIDAccountIdentifier alloc] initWithDisplayableId:@"somedisplayableid"
                                                                                             homeAccountId:@"someuid.someutid"]
                                          tokenResult:result
                                        correlationID:correlationID
                                                error:&error];
-    
+
     XCTAssertFalse(validated);
     XCTAssertNotNil(error);
     XCTAssertEqual(error.code, MSIDErrorMismatchedAccount);

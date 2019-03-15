@@ -154,7 +154,7 @@
 #if TARGET_OS_IPHONE
     [queryDictionary msidSetNonEmptyString:self.brokerKey forKey:@"broker_key"];
 #endif
-    
+
     [queryDictionary msidSetNonEmptyString:[MSIDVersion sdkVersion] forKey:@"client_version"];
     [queryDictionary msidSetNonEmptyString:extraQueryParameters forKey:@"extra_qp"];
     [queryDictionary msidSetNonEmptyString:claimsString forKey:@"claims"];

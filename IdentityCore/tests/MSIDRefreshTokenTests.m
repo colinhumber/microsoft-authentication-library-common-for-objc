@@ -40,7 +40,7 @@
 {
     MSIDRefreshToken *token = [self createToken];
     MSIDRefreshToken *tokenCopy = [token copy];
-    
+
     XCTAssertEqualObjects(tokenCopy, token);
 }
 
@@ -50,7 +50,7 @@
 {
     MSIDRefreshToken *lhs = [self createToken];
     MSIDRefreshToken *rhs = [self createToken];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -62,7 +62,7 @@
     [lhs setValue:@"token 1" forKey:@"refreshToken"];
     MSIDRefreshToken *rhs = [MSIDRefreshToken new];
     [rhs setValue:@"token 2" forKey:@"refreshToken"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -72,7 +72,7 @@
     [lhs setValue:@"token 1" forKey:@"refreshToken"];
     MSIDRefreshToken *rhs = [MSIDRefreshToken new];
     [rhs setValue:@"token 1" forKey:@"refreshToken"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -83,7 +83,7 @@
     [lhs setValue:@"family 1" forKey:@"familyId"];
     MSIDRefreshToken *rhs = [MSIDRefreshToken new];
     [rhs setValue:@"family 2" forKey:@"familyId"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -93,7 +93,7 @@
     [lhs setValue:@"family 1" forKey:@"familyId"];
     MSIDRefreshToken *rhs = [MSIDRefreshToken new];
     [rhs setValue:@"family 1" forKey:@"familyId"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -109,7 +109,7 @@
 {
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDIDTokenType;
-    
+
     MSIDRefreshToken *token = [[MSIDRefreshToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -122,7 +122,7 @@
     cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
-    
+
     MSIDRefreshToken *token = [[MSIDRefreshToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -144,7 +144,7 @@
     XCTAssertEqualObjects(token.additionalServerInfo, @{@"test": @"test2"});
     XCTAssertEqualObjects(token.accountIdentifier.homeAccountId, @"uid.utid");
     XCTAssertEqualObjects(token.refreshToken, @"refresh token");
-    
+
     MSIDCredentialCacheItem *newCacheItem = [token tokenCacheItem];
     XCTAssertEqualObjects(cacheItem, newCacheItem);
 }

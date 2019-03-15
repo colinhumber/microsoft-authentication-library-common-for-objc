@@ -77,7 +77,7 @@
                                                                      allowSafariViewController:YES
                                                                                        context:nil];
     XCTAssertNotNil(webVC);
-    
+
 }
 
 @end

@@ -53,12 +53,12 @@ static NSInteger kCredentialTypePrefix = 2000;
                          credentialId,
                          keyDelimiter,
                          (target ? target : @"")];
-    
+
     if (![NSString msidIsStringNilOrBlank:appKey])
     {
         service  = [NSString stringWithFormat:@"%@|%@", service, appKey];
     }
-    
+
     return service;
 }
 
@@ -73,7 +73,7 @@ static NSInteger kCredentialTypePrefix = 2000;
     enrollmentId = enrollmentId.msidTrimmedString.lowercaseString;
 
     NSString *credentialType = [MSIDCredentialTypeHelpers credentialTypeAsString:type].lowercaseString;
-    
+
     return [NSString stringWithFormat:@"%@%@%@%@%@%@%@",
             credentialType, keyDelimiter, clientId,
             keyDelimiter,

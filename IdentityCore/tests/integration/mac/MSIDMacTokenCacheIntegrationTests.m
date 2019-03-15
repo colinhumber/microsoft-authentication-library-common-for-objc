@@ -51,12 +51,12 @@
     MSIDLegacyTokenCacheItem *token = [MSIDLegacyTokenCacheItem new];
     MSIDCacheKey *key = [[MSIDCacheKey alloc] initWithAccount:nil service:@"test_service" generic:nil type:nil];
     NSError *error;
-    
+
     BOOL result = [macTokenCache saveToken:token key:key serializer:serializer context:nil error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
-    
+
     MSIDCredentialCacheItem *token2 = [macTokenCache tokenWithKey:key serializer:serializer context:nil error:nil];
     XCTAssertEqualObjects(token, token2);
 }
@@ -66,10 +66,10 @@
     MSIDMacTokenCache *cache1 = [MSIDMacTokenCache new];
     MSIDMacTokenCache *cache2 = [MSIDMacTokenCache new];
     NSError *error =  nil;
-    
+
     id data = [cache1 serialize];
     BOOL result = [cache2 deserialize:data error:&error];
-    
+
     id rawCache1 = [cache1 valueForKey:@"cache"];
     id rawCache2 = [cache2 valueForKey:@"cache"];
     XCTAssertNil(error);
@@ -98,10 +98,10 @@
     [cache1 saveToken:token4 key:key4 serializer:nil context:nil error:nil];
     NSError *error = nil;
     MSIDMacTokenCache *cache2 = [MSIDMacTokenCache new];
-    
+
     id data = [cache1 serialize];
     BOOL result = [cache2 deserialize:data error:&error];
-    
+
     id rawCache1 = [cache1 valueForKey:@"cache"];
     id rawCache2 = [cache2 valueForKey:@"cache"];
     XCTAssertNil(error);
@@ -130,7 +130,7 @@
     [cache saveToken:token4 key:key4 serializer:nil context:nil error:nil];
 
     [cache clear];
-    
+
     NSArray<MSIDCredentialCacheItem *> *items = [cache tokensWithKey:nil serializer:nil context:nil error:nil];
     XCTAssertNotNil(items);
     XCTAssertEqual(items.count, 0);

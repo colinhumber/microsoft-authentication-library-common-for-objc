@@ -45,13 +45,13 @@ static NSString *s_tenantIdPlaceholder = @"{tenantid}";
 {
     NSError *jsonError;
     NSMutableDictionary *jsonObject = [[super responseObjectForResponse:httpResponse data:data context:context error:&jsonError] mutableCopy];
-    
+
     if (!jsonObject)
     {
         if (error) *error = jsonError;
         return nil;
     }
-    
+
     if ([jsonObject msidAssertContainsField:@"error" context:context error:nil]
         && [jsonObject msidAssertType:NSString.class ofField:@"error" context:context errorCode:MSIDErrorServerInvalidResponse error:nil])
     {
@@ -69,14 +69,14 @@ static NSString *s_tenantIdPlaceholder = @"{tenantid}";
         }
         return nil;
     }
-    
+
     __auto_type metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     if (![jsonObject msidAssertContainsField:@"authorization_endpoint" context:context error:error])
     {
         return nil;
     }
-    
+
     if (![jsonObject msidAssertType:NSString.class
                             ofField:@"authorization_endpoint"
                             context:context
@@ -85,16 +85,16 @@ static NSString *s_tenantIdPlaceholder = @"{tenantid}";
     {
         return nil;
     }
-    
+
     __auto_type authorizationEndpoint = (NSString *)jsonObject[@"authorization_endpoint"];
-    
+
     metadata.authorizationEndpoint = [NSURL URLWithString:authorizationEndpoint];
-    
+
     if (![jsonObject msidAssertContainsField:@"token_endpoint" context:context error:error])
     {
         return nil;
     }
-    
+
     if (![jsonObject msidAssertType:NSString.class
                             ofField:@"token_endpoint"
                             context:context
@@ -103,16 +103,16 @@ static NSString *s_tenantIdPlaceholder = @"{tenantid}";
     {
         return nil;
     }
-    
+
     __auto_type tokenEndpoint = (NSString *)jsonObject[@"token_endpoint"];
-    
+
     metadata.tokenEndpoint = [NSURL URLWithString:tokenEndpoint];
-    
+
     if (![jsonObject msidAssertContainsField:@"issuer" context:context error:error])
     {
         return nil;
     }
-    
+
     if (![jsonObject msidAssertType:NSString.class
                             ofField:@"issuer"
                             context:context
@@ -121,18 +121,18 @@ static NSString *s_tenantIdPlaceholder = @"{tenantid}";
     {
         return nil;
     }
-    
+
     NSString *issuerString = (NSString *)jsonObject[@"issuer"];
-    
+
     // If `issuer` contains {tenantid}, it is AAD authority.
     // Lets exctract tenant from `endpoint` and put it instead of {tenantid}.
     if ([issuerString containsString:s_tenantIdPlaceholder] && [self.endpoint msidTenant])
     {
         issuerString = [issuerString stringByReplacingOccurrencesOfString:s_tenantIdPlaceholder withString:[self.endpoint msidTenant]];
     }
-    
+
     metadata.issuer = [NSURL URLWithString:issuerString];
-    
+
     return metadata;
 }
 

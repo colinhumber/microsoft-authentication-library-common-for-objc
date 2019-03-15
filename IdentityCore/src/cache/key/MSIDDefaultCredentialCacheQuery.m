@@ -112,7 +112,7 @@
     {
         return [self serviceWithType:MSIDIDTokenType clientID:self.clientId realm:self.realm enrollmentId:nil target:nil appKey:self.appKey];
     }
-    
+
     return nil;
 }
 
@@ -122,7 +122,7 @@
     {
         return [self serviceWithType:MSIDLegacyIDTokenType clientID:self.clientId realm:self.realm enrollmentId:nil target:nil appKey:self.appKey];
     }
-    
+
     return nil;
 }
 

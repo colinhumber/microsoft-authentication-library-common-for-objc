@@ -31,14 +31,14 @@
 - (NSURL *)oauth2AuthorizeEndpointWithUrl:(NSURL *)baseUrl
 {
     __auto_type apiVersion = [self aadApiVersionWithDelimiter];
-    
+
     return [baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/oauth2/%@authorize", apiVersion]];
 }
 
 - (NSURL *)oauth2TokenEndpointWithUrl:(NSURL *)baseUrl
 {
     __auto_type apiVersion = [self aadApiVersionWithDelimiter];
-    
+
     return [baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/oauth2/%@token", apiVersion]];
 }
 
@@ -54,7 +54,7 @@
         return [NSURL URLWithString:
                 [NSString stringWithFormat:@"https://enterpriseregistration.windows.net/%@/enrollmentserver/contract", domain.lowercaseString]];
     }
-    
+
     return nil;
 }
 
@@ -66,10 +66,10 @@
 - (NSURL *)openIdConfigurationEndpointWithUrl:(NSURL *)baseUrl
 {
     if (!baseUrl) return nil;
-    
+
     __auto_type apiVersion = [self aadApiVersionWithDelimiter];
     __auto_type path = [NSString stringWithFormat:@"%@%@", apiVersion, MSID_OPENID_CONFIGURATION_SUFFIX];
-    
+
     return [baseUrl URLByAppendingPathComponent:path];
 }
 
@@ -85,7 +85,7 @@
 {
     __auto_type apiVersion = MSIDAADNetworkConfiguration.defaultConfiguration.aadApiVersion ?: @"";
     __auto_type delimiter = MSIDAADNetworkConfiguration.defaultConfiguration.aadApiVersion ? @"/" : @"";
-    
+
     return [NSString stringWithFormat:@"%@%@", apiVersion, delimiter];
 }
 

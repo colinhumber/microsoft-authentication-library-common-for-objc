@@ -32,9 +32,9 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
     NSString *authMethod = [challenge.protectionSpace.authenticationMethod lowercaseString];
-    
+
     MSID_LOG_VERBOSE(nil, @"%@ - %@. Host: %@. Previous challenge failure count: %ld", @"session:didReceiveChallenge:completionHandler", authMethod, challenge.protectionSpace.host, (long)challenge.previousFailureCount);
-    
+
     if (self.sessionDidReceiveAuthenticationChallengeBlock)
     {
         self.sessionDidReceiveAuthenticationChallengeBlock(session, challenge, completionHandler);
@@ -53,9 +53,9 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
     NSString *authMethod = [challenge.protectionSpace.authenticationMethod lowercaseString];
-    
+
     MSID_LOG_VERBOSE(nil, @"%@ - %@. Previous challenge failure count: %ld", @"session:task:didReceiveChallenge:completionHandler", authMethod, (long)challenge.previousFailureCount);
-    
+
     if (self.taskDidReceiveAuthenticationChallengeBlock)
     {
         self.taskDidReceiveAuthenticationChallengeBlock(session, task, challenge, completionHandler);
@@ -74,7 +74,7 @@ willPerformHTTPRedirection:(NSHTTPURLResponse *)response
 {
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, nil, @"Redirecting to %@", _PII_NULLIFY(request.URL.absoluteString));
     MSID_LOG_PII(MSIDLogLevelInfo, nil, nil, @"Redirecting to %@", request.URL.absoluteString);
-    
+
     if (self.taskWillPerformHTTPRedirectionBlock)
     {
         self.taskWillPerformHTTPRedirectionBlock(session, task, response, request, completionHandler);

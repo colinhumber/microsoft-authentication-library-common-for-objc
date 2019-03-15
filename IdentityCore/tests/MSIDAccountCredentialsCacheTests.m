@@ -145,7 +145,7 @@
     item.secret = @"at";
     item.enrollmentId = @"enrollmentId";
     [self saveItem:item];
-    
+
     // Now query
     MSIDDefaultCredentialCacheQuery *query = [MSIDDefaultCredentialCacheQuery new];
     query.credentialType = MSIDAccessTokenType;
@@ -155,7 +155,7 @@
     query.realm = @"contoso.com";
     query.target = @"user.read user.write";
     query.enrollmentId = @"enrollmentId";
-    
+
     XCTAssertTrue(query.exactMatch);
     NSError *error = nil;
     NSArray *results = [self.cache getCredentialsWithQuery:query context:nil error:&error];
@@ -178,7 +178,7 @@
     item.secret = @"at";
     item.enrollmentId = @"enrollmentId";
     [self saveItem:item];
-    
+
     // Now query
     MSIDDefaultCredentialCacheQuery *query = [MSIDDefaultCredentialCacheQuery new];
     query.credentialType = MSIDAccessTokenType;
@@ -188,7 +188,7 @@
     query.realm = @"contoso.com";
     query.target = @"user.read user.write";
     query.enrollmentId = @"differentEnrollmentId";
-    
+
     XCTAssertTrue(query.exactMatch);
     NSError *error = nil;
     NSArray *results = [self.cache getCredentialsWithQuery:query context:nil error:&error];
@@ -210,7 +210,7 @@
     item.secret = @"at";
     item.enrollmentId = @"enrollmentId";
     [self saveItem:item];
-    
+
     // Now query
     MSIDDefaultCredentialCacheQuery *query = [MSIDDefaultCredentialCacheQuery new];
     query.credentialType = MSIDAccessTokenType;
@@ -220,7 +220,7 @@
     query.realm = @"contoso.com";
     query.target = @"user.read user.write";
     // Don't assign enrollmentId for querying unenrolled "app".
-    
+
     XCTAssertTrue(query.exactMatch);
     NSError *error = nil;
     NSArray *results = [self.cache getCredentialsWithQuery:query context:nil error:&error];
@@ -241,7 +241,7 @@
     item.clientId = @"client";
     item.secret = @"at";
     [self saveItem:item];
-    
+
     // Now query
     MSIDDefaultCredentialCacheQuery *query = [MSIDDefaultCredentialCacheQuery new];
     query.credentialType = MSIDAccessTokenType;
@@ -251,7 +251,7 @@
     query.realm = @"contoso.com";
     query.target = @"user.read user.write";
     query.enrollmentId = @"someEnrollmentId";
-    
+
     XCTAssertTrue(query.exactMatch);
     NSError *error = nil;
     NSArray *results = [self.cache getCredentialsWithQuery:query context:nil error:&error];
@@ -1295,16 +1295,16 @@
     MSIDCredentialCacheItem *item = [self createTestAccessTokenCacheItem];
     item.enrollmentId = @"enrollmentId";
     [self saveItem:item];
-    
+
     MSIDDefaultCredentialCacheKey *key = [[MSIDDefaultCredentialCacheKey alloc] initWithHomeAccountId:@"uid.utid"
                                                                                           environment:@"login.microsoftonline.com"
                                                                                              clientId:@"client"
                                                                                        credentialType:MSIDAccessTokenType];
-    
+
     key.realm = @"contoso.com";
     key.target = @"user.read user.write";
     key.enrollmentId = @"enrollmentId";
-    
+
     NSError *error = nil;
     MSIDCredentialCacheItem *resultItem = [self.cache getCredential:key context:nil error:&error];
     XCTAssertNil(error);
@@ -2118,7 +2118,7 @@
 {
     MSIDAppMetadataCacheItem *itemWithFamilyId = [self createAppMetadataCacheItem:@"1"];
     [self saveAppMetadata:itemWithFamilyId];
-    
+
     NSError *error = nil;
     MSIDAppMetadataCacheQuery *cacheQuery = [[MSIDAppMetadataCacheQuery alloc] init];
     cacheQuery.clientId = @"client";
@@ -2131,11 +2131,11 @@
     XCTAssertNil(error);
     MSIDAppMetadataCacheItem *itemWithoutFamilyId = [self createAppMetadataCacheItem:nil];
     [self saveAppMetadata:itemWithoutFamilyId];
-    
+
     metadataEntries = [self.cache getAppMetadataEntriesWithQuery:cacheQuery
                                                          context:nil
                                                            error:&error];
-    
+
     XCTAssertEqual([metadataEntries count], 1);
     XCTAssertNil(metadataEntries[0].familyId);
     XCTAssertNil(error);
@@ -2152,7 +2152,7 @@
     [self saveAppMetadata:itemWithoutFamilyId];
     MSIDAppMetadataCacheQuery *cacheQuery = [[MSIDAppMetadataCacheQuery alloc] init];
     cacheQuery.generalType = MSIDAppMetadataType;
-    
+
     NSArray<MSIDAppMetadataCacheItem *> *metadataEntries = [self.cache getAppMetadataEntriesWithQuery:cacheQuery
                                                                                               context:nil
                                                                                                 error:&error];
@@ -2171,7 +2171,7 @@
     [self saveAppMetadata:itemWithoutFamilyId];
     MSIDAppMetadataCacheQuery *cacheQuery = [[MSIDAppMetadataCacheQuery alloc] init];
     cacheQuery.generalType = MSIDAppMetadataType;
-    
+
     NSArray<MSIDAppMetadataCacheItem *> *metadataEntries = [self.cache getAppMetadataEntriesWithQuery:cacheQuery
                                                                                               context:nil
                                                                                                 error:&error];
@@ -2185,13 +2185,13 @@
     cacheItem1.clientId = @"clientId1";
     cacheItem1.environment = @"environment1";
     [self saveAppMetadata:cacheItem1];
-    
+
     MSIDAppMetadataCacheItem *cacheItem2 = [self createAppMetadataCacheItem:nil];
     cacheItem2.clientId = @"clientId1";
     cacheItem2.environment = @"environment2";
     [self saveAppMetadata:cacheItem2];
     NSError *error = nil;
-    
+
     MSIDAppMetadataCacheQuery *cacheQuery = [[MSIDAppMetadataCacheQuery alloc] init];
     cacheQuery.clientId = @"clientId1";
     cacheQuery.environmentAliases = [NSArray arrayWithObjects:@"environment2",nil];
@@ -2208,27 +2208,27 @@
 {
     MSIDAppMetadataCacheItem *item1 = [self createAppMetadataCacheItem:nil];
     [self saveAppMetadata:item1];
-    
+
     MSIDAppMetadataCacheItem *item2 = [self createAppMetadataCacheItem:nil];
     item2.environment = @"environment2";
     [self saveAppMetadata:item2];
-    
+
     MSIDAppMetadataCacheQuery *cacheQuery = [[MSIDAppMetadataCacheQuery alloc] init];
     cacheQuery.clientId = @"client";
     NSError *error = nil;
     NSArray<MSIDAppMetadataCacheItem *> *appMetadataEntries = [self.cache getAppMetadataEntriesWithQuery:cacheQuery
                                                                                                  context:nil
                                                                                                    error:&error];
-    
+
     XCTAssertTrue([appMetadataEntries count] == 2);
     BOOL removeResult = [self.cache removeAppMetadata:item2 context:nil error:&error];
     XCTAssertNil(error);
     XCTAssertTrue(removeResult);
-    
+
     appMetadataEntries = [self.cache getAppMetadataEntriesWithQuery:cacheQuery
                                                                                                  context:nil
                                                                                                    error:&error];
-    
+
     XCTAssertTrue([appMetadataEntries count] == 1);
     XCTAssertNil(error);
     XCTAssertNotNil(appMetadataEntries);

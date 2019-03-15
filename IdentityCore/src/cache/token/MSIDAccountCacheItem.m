@@ -153,7 +153,7 @@
 }
 
 - (NSDictionary *)jsonDictionary
-{    
+{
     MSID_TRACE;
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
@@ -161,12 +161,12 @@
     {
         [dictionary addEntriesFromDictionary:_json];
     }
-    
+
     if (_additionalAccountFields)
     {
         [dictionary addEntriesFromDictionary:_additionalAccountFields];
     }
-    
+
     dictionary[MSID_AUTHORITY_TYPE_CACHE_KEY] = [MSIDAccountTypeHelpers accountTypeAsString:_accountType];
     dictionary[MSID_HOME_ACCOUNT_ID_CACHE_KEY] = _homeAccountId;
     dictionary[MSID_LOCAL_ACCOUNT_ID_CACHE_KEY] = _localAccountId;

@@ -53,7 +53,7 @@
 - (void)testAuthorizationParametersFromConfiguration_withValidParams_shouldContainAADV2Configuration
 {
     __block NSUUID *correlationId = [NSUUID new];
-    
+
     MSIDWebviewConfiguration *config = [[MSIDWebviewConfiguration alloc] initWithAuthorizationEndpoint:[NSURL URLWithString:DEFAULT_TEST_AUTHORIZATION_ENDPOINT]
                                                                                            redirectUri:DEFAULT_TEST_REDIRECT_URI
                                                                                               clientId:DEFAULT_TEST_CLIENT_ID
@@ -61,20 +61,20 @@
                                                                                                 scopes:[NSOrderedSet orderedSetWithObjects:@"scope1", @"scope2", nil]
                                                                                          correlationId:correlationId
                                                                                             enablePkce:YES];
-    
+
     config.extraQueryParameters = @{ @"eqp1" : @"val1", @"eqp2" : @"val2" };
     config.promptBehavior = @"login";
     config.claims = @"claims";
     config.utid = DEFAULT_TEST_UTID;
     config.uid = DEFAULT_TEST_UID;
     config.loginHint = @"fakeuser@contoso.com";
-    
+
     NSString *requestState = @"state";
-    
+
     MSIDAADV2WebviewFactory *factory = [MSIDAADV2WebviewFactory new];
-    
+
     NSDictionary *params = [factory authorizationParametersFromConfiguration:config requestState:requestState];
-    
+
     NSMutableDictionary *expectedQPs = [NSMutableDictionary dictionaryWithDictionary:
                                         @{
                                           @"client_id" : DEFAULT_TEST_CLIENT_ID,
@@ -96,9 +96,9 @@
                                           @"prompt" : @"login",
                                           @"haschrome" : @"1"
                                           }];
-    
+
     [expectedQPs addEntriesFromDictionary:[MSIDDeviceId deviceId]];
-    
+
     XCTAssertTrue([expectedQPs compareAndPrintDiff:params]);
 }
 

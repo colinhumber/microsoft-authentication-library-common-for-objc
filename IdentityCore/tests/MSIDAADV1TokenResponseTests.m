@@ -39,13 +39,13 @@
                                 @"refresh_token": @"rt",
                                 @"resource": @"resource"
                                 };
-    
+
     NSError *error = nil;
     MSIDAADV1TokenResponse *response = [[MSIDAADV1TokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     BOOL result = [response isMultiResource];
     XCTAssertTrue(result);
 }
@@ -58,13 +58,13 @@
                                 @"expires_on": @"xyz",
                                 @"refresh_token": @"rt",
                                 };
-    
+
     NSError *error = nil;
     MSIDAADV1TokenResponse *response = [[MSIDAADV1TokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     BOOL result = [response isMultiResource];
     XCTAssertFalse(result);
 }
@@ -77,13 +77,13 @@
                                 @"expires_on": @"xyz",
                                 @"resource": @"resource",
                                 };
-    
+
     NSError *error = nil;
     MSIDAADV1TokenResponse *response = [[MSIDAADV1TokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     BOOL result = [response isMultiResource];
     XCTAssertFalse(result);
 }
@@ -95,13 +95,13 @@
                                 @"expires_in": @"xyz",
                                 @"expires_on": @"xyz",
                                 };
-    
+
     NSError *error = nil;
     MSIDAADV1TokenResponse *response = [[MSIDAADV1TokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     BOOL result = [response isMultiResource];
     XCTAssertFalse(result);
 }

@@ -36,7 +36,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+
     self.resultInfo.text = self.resultInfoString;
     self.resultLogs.text = self.resultLogsString;
 }

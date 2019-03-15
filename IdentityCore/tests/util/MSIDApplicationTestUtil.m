@@ -55,7 +55,7 @@ BOOL (^s_onOpenUrl)(NSURL *url, NSDictionary<NSString *, id> *options) = nil;
     {
         NSAssert(s_onOpenUrl, @"Some test isn't properly waiting for the flow to complete");
     }
-    
+
     return s_onOpenUrl(url, nil);
 }
 

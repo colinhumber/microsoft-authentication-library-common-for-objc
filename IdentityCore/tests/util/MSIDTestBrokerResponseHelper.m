@@ -93,11 +93,11 @@
                                           encryptionKey:(NSData *)brokerKey
 {
     NSData *payload = [[parameters msidWWWFormURLEncode] dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     size_t bufferSize = [payload length] + kCCBlockSizeAES128;
     void *buffer = malloc(bufferSize);
     size_t numBytesEncrypted = 0;
-    
+
     CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
                                           [brokerKey bytes], kCCKeySizeAES256,
                                           NULL /* initialization vector (optional) */,
@@ -108,7 +108,7 @@
     {
         return nil;
     }
-    
+
     unsigned char hash[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256([payload bytes], (CC_LONG)[payload length], hash);
     NSMutableString *fingerprint = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 3];
@@ -116,14 +116,14 @@
     {
         [fingerprint appendFormat:@"%02x", hash[i]];
     }
-    
+
     NSDictionary *message =
     @{
       @"msg_protocol_ver" : @"3",
       @"response" :  [NSString msidBase64UrlEncodedStringFromData:[NSData dataWithBytesNoCopy:buffer length:numBytesEncrypted]],
       @"hash" : [fingerprint uppercaseString],
       };
-    
+
     return message;
 }
 

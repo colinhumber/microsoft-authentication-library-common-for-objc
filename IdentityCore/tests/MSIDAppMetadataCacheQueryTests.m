@@ -35,7 +35,7 @@
     MSIDAppMetadataCacheQuery *query = [[MSIDAppMetadataCacheQuery alloc] initWithClientId:@"client"
                                                                                environment:@"login.microsoftonline.com"
                                                                                   familyId:@"1" generalType:MSIDAppMetadataType];
-    
+
     XCTAssertEqualObjects(query.clientId, @"client");
     XCTAssertEqualObjects(query.service, @"appmetadata-client");
     XCTAssertEqualObjects(query.type, @3001);

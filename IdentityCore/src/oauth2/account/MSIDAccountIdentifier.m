@@ -83,7 +83,7 @@
     if ([typeString isEqualToString:@"UniqueId"])               return MSIDLegacyIdentifierTypeUniqueNonDisplayableId;
     if ([typeString isEqualToString:@"RequiredDisplayableId"])  return MSIDLegacyIdentifierTypeRequiredDisplayableId;
     if ([typeString isEqualToString:@"OptionalDisplayableId"])  return MSIDLegacyIdentifierTypeOptionalDisplayableId;
-        
+
     return MSIDLegacyIdentifierTypeOptionalDisplayableId; // default for broker.
 }
 

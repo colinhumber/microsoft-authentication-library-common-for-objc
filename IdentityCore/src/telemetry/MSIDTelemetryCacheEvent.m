@@ -38,11 +38,11 @@
     {
         return nil;
     }
-    
+
     [self setProperty:MSID_TELEMETRY_KEY_IS_FRT value:@""];
     [self setProperty:MSID_TELEMETRY_KEY_IS_MRRT value:@""];
     [self setProperty:MSID_TELEMETRY_KEY_IS_RT value:@""];
-    
+
     return self;
 }
 
@@ -53,15 +53,15 @@
         case MSIDAccessTokenType:
             [self setProperty:MSID_TELEMETRY_KEY_TOKEN_TYPE value:MSID_TELEMETRY_VALUE_ACCESS_TOKEN];
             break;
-            
+
         case MSIDRefreshTokenType:
             [self setProperty:MSID_TELEMETRY_KEY_TOKEN_TYPE value:MSID_TELEMETRY_VALUE_REFRESH_TOKEN];
             break;
-            
+
         case MSIDLegacySingleResourceTokenType:
             [self setProperty:MSID_TELEMETRY_KEY_TOKEN_TYPE value:MSID_TELEMETRY_VALUE_ADFS_TOKEN];
             break;
-            
+
         default:
             break;
     }
@@ -113,22 +113,22 @@
     {
         return;
     }
-    
+
     [self setTokenType:token.credentialType];
     [self setSpeInfo:token.additionalServerInfo[MSID_TELEMETRY_KEY_SPE_INFO]];
-    
+
     if (token.credentialType == MSIDLegacySingleResourceTokenType)
     {
         [self setIsRT:MSID_TELEMETRY_VALUE_YES];
         [self setRTStatus:MSID_TELEMETRY_VALUE_TRIED];
     }
-    
+
     if (token.credentialType == MSIDRefreshTokenType)
     {
         MSIDRefreshToken *refreshToken = (MSIDRefreshToken *)token;
-        
+
         BOOL isFRT = [token.clientId isEqualToString:[MSIDCacheKey familyClientId:refreshToken.familyId]];
-        
+
         if (isFRT)
         {
             [self setIsFRT:MSID_TELEMETRY_VALUE_YES];

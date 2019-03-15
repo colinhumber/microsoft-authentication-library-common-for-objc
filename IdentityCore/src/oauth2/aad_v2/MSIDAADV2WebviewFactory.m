@@ -39,8 +39,8 @@
     parameters[MSID_OAUTH2_CLIENT_INFO] = @"1";
     parameters[MSID_OAUTH2_LOGIN_REQ] = configuration.uid;
     parameters[MSID_OAUTH2_DOMAIN_REQ] = configuration.utid;
-    
-    
+
+
     return parameters;
 }
 

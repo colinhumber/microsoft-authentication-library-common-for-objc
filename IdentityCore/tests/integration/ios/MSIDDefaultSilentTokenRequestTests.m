@@ -174,7 +174,7 @@
 {
     MSIDRequestParameters *silentParameters = [self silentRequestParameters];
     MSIDDefaultTokenCacheAccessor *tokenCache = self.tokenCache;
-    
+
     [self saveTokensInCache:tokenCache
               configuration:silentParameters.msidConfiguration
                       scope:nil
@@ -185,23 +185,23 @@
                  clientInfo:nil
                   expiresIn:nil
                extExpiresIn:nil];
-    
+
     silentParameters.accountIdentifier = [[MSIDAccountIdentifier alloc] initWithDisplayableId:DEFAULT_TEST_ID_TOKEN_USERNAME homeAccountId:DEFAULT_TEST_HOME_ACCOUNT_ID];
-    
+
     NSString *authority = @"https://login.microsoftonline.com/1234-5678-90abcdefg";
     MSIDTestURLResponse *discoveryResponse = [MSIDTestURLResponse discoveryResponseForAuthority:authority];
     [MSIDTestURLSession addResponse:discoveryResponse];
-    
+
     MSIDDefaultSilentTokenRequest *silentRequest = [[MSIDDefaultSilentTokenRequest alloc] initWithRequestParameters:silentParameters
                                                                                                        forceRefresh:NO
                                                                                                        oauthFactory:[MSIDAADV2Oauth2Factory new]
                                                                                              tokenResponseValidator:[MSIDDefaultTokenResponseValidator new]
                                                                                                          tokenCache:tokenCache];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"silent request"];
-    
+
     [silentRequest executeRequestWithCompletion:^(MSIDTokenResult * _Nullable result, NSError * _Nullable error) {
-        
+
         XCTAssertNil(error);
         XCTAssertNotNil(result);
         XCTAssertEqualObjects(result.accessToken.accessToken, DEFAULT_TEST_ACCESS_TOKEN);
@@ -214,7 +214,7 @@
         XCTAssertEqualObjects(@"1", result.refreshToken.familyId);
         [expectation fulfill];
     }];
-    
+
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
@@ -1429,7 +1429,7 @@
         NSURL *tenantURL = [NSURL URLWithString:@"https://login.windows.net/1234-5678-90abcdefg"];
         XCTAssertEqualObjects(result.authority.url, tenantURL);
         XCTAssertEqualObjects(result.refreshToken.refreshToken, @"new mrrt");
-        
+
         [expectation fulfill];
     }];
 
@@ -1694,7 +1694,7 @@
     NSError *error = nil;
     BOOL result = [tokenCache saveTokensWithConfiguration:configuration
                                                  response:tokenResponse
-                                                  factory:[MSIDAADV2Oauth2Factory new] 
+                                                  factory:[MSIDAADV2Oauth2Factory new]
                                                   context:nil
                                                     error:&error];
     XCTAssertTrue(result);

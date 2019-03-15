@@ -25,7 +25,7 @@
 
 /**
  Refreshing the access token.
- 
+
  @see https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-protocols-oauth-code#refreshing-the-access-tokens
  */
 @interface MSIDAADRefreshTokenGrantRequest : MSIDRefreshTokenGrantRequest

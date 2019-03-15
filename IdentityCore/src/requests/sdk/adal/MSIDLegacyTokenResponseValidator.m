@@ -37,12 +37,12 @@
     if (!tokenResult.account)
     {
         MSID_LOG_ERROR_CORR(correlationID, @"No account returned from server.");
-        
+
         if (error)
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, @"No account identifier returned from server.", nil, nil, nil, correlationID, nil);
         }
-        
+
         return NO;
     }
 
@@ -56,7 +56,7 @@
 {
     MSID_LOG_NO_PII(MSIDLogLevelVerbose, correlationID, nil, @"Checking returned account");
     MSID_LOG_PII(MSIDLogLevelVerbose, correlationID, nil, @"Checking returned account, Input account id %@, returned account ID %@, local account ID %@", accountIdentifier.displayableId, tokenResult.account.accountIdentifier.displayableId, tokenResult.account.localAccountId);
-    
+
     switch (accountIdentifier.legacyAccountIdentifierType)
     {
         case MSIDLegacyIdentifierTypeRequiredDisplayableId:
@@ -68,7 +68,7 @@
             }
             break;
         }
-            
+
         case MSIDLegacyIdentifierTypeUniqueNonDisplayableId:
         {
             if (!accountIdentifier.localAccountId
@@ -82,17 +82,17 @@
         {
             return YES;
         }
-            
+
         default:
             break;
-        
+
     }
-    
+
     if (error)
     {
         *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorMismatchedAccount, @"Different user was returned by the server then specified in the acquireToken call. If this is a new sign in use and ADUserIdentifier is of OptionalDisplayableId type, pass in the userId returned on the initial authentication flow in all future acquireToken calls.", nil, nil, nil, correlationID, nil);
     }
-    
+
     return NO;
 }
 

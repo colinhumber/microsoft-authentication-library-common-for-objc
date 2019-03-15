@@ -35,17 +35,17 @@
     {
         return NO;
     }
-    
+
     if (environment && ![self.environment isEqualToString:environment])
     {
         return NO;
     }
-    
+
     if ([environmentAliases count] && ![self.environment msidIsEquivalentWithAnyAlias:environmentAliases])
     {
         return NO;
     }
-    
+
     return YES;
 }
 

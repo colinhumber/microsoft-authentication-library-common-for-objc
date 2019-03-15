@@ -29,7 +29,7 @@
 {
     __auto_type authorityUrl = [[NSURL alloc] initWithString:self];
     __auto_type authority = [MSIDAuthorityFactory authorityFromUrl:authorityUrl context:nil error:nil];
-    
+
     return authority;
 }
 

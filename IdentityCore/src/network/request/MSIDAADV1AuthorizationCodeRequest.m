@@ -41,12 +41,12 @@
     if (self)
     {
         NSParameterAssert(resource);
-        
+
         NSMutableDictionary *parameters = [_parameters mutableCopy];
         parameters[MSID_OAUTH2_RESOURCE] = resource;
         _parameters = parameters;
     }
-    
+
     return self;
 }
 

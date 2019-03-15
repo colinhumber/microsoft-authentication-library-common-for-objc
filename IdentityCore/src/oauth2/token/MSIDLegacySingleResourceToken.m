@@ -47,12 +47,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:MSIDLegacySingleResourceToken.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDLegacySingleResourceToken *)object];
 }
 
@@ -70,7 +70,7 @@
     {
         return NO;
     }
-    
+
     BOOL result = [super isEqualToItem:token];
     result &= (!self.refreshToken && !token.refreshToken) || [self.refreshToken isEqualToString:token.refreshToken];
     result &= (!self.familyId && !token.familyId) || [self.familyId isEqualToString:token.familyId];
@@ -82,12 +82,12 @@
 - (instancetype)initWithTokenCacheItem:(MSIDCredentialCacheItem *)tokenCacheItem
 {
     self = [super initWithTokenCacheItem:tokenCacheItem];
-    
+
     if (self)
     {
         _familyId = tokenCacheItem.familyId;
     }
-    
+
     return self;
 }
 

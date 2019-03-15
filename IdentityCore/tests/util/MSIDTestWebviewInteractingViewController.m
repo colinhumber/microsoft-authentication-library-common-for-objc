@@ -40,7 +40,7 @@
     else
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.successAfterInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
+
             completionHandler([NSURL URLWithString:@"https://contoso.microsoft.com?code=SOMECODE&cloud_instance_host_name=SOME_HOST_NAME"], nil);
         });
     }
@@ -48,7 +48,7 @@
 
 - (void)cancel
 {
-    
+
 }
 
 

@@ -48,12 +48,12 @@
 - (void)setUp
 {
     [super setUp];
-    
+
 #if TARGET_OS_IPHONE
     self.dataSource = [MSIDKeychainTokenCache new];
     self.serializer = [MSIDCacheItemJsonSerializer new];
     self.generic = [@"some value" dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     [MSIDKeychainTokenCache reset];
 #else
     self.dataSource = [MSIDMacTokenCache new];
@@ -63,7 +63,7 @@
 - (void)tearDown
 {
     [super tearDown];
-    
+
     self.dataSource = nil;
     self.serializer = nil;
 }
@@ -75,9 +75,9 @@
     MSIDCredentialCacheItem *token = [MSIDCredentialCacheItem new];
     token.secret = @"some token";
     MSIDCacheKey *key = [[MSIDLegacyTokenCacheKey alloc] initWithAccount:@"test_account" service:@"test_service" generic:self.generic type:nil];
-    
+
     BOOL result = [self.dataSource saveToken:token key:key serializer:self.serializer context:nil error:nil];
-    
+
     XCTAssertTrue(result);
 }
 
@@ -87,12 +87,12 @@
     token.secret = @"some token";
     token.credentialType = MSIDAccessTokenType;
     MSIDCacheKey *key = [[MSIDLegacyTokenCacheKey alloc] initWithAccount:@"test_account" service:@"test_service" generic:self.generic type:nil];
-    
+
     BOOL result = [self.dataSource saveToken:token key:key serializer:self.serializer context:nil error:nil];
     XCTAssertTrue(result);
-    
+
     MSIDCredentialCacheItem *token2 = [self.dataSource tokenWithKey:key serializer:self.serializer context:nil error:nil];
-    
+
     XCTAssertEqualObjects(token, token2);
 }
 
@@ -101,9 +101,9 @@
     MSIDCredentialCacheItem *token = [MSIDCredentialCacheItem new];
     MSIDCacheKey *key = [[MSIDCacheKey alloc] initWithAccount:@"test_account" service:nil generic:self.generic type:nil];
     NSError *error;
-    
+
     BOOL result = [self.dataSource saveToken:token key:key serializer:self.serializer context:nil error:&error];
-    
+
     XCTAssertFalse(result);
     XCTAssertNotNil(error);
 }
@@ -115,7 +115,7 @@
     MSIDCredentialCacheItem *token2 = [MSIDCredentialCacheItem new];
     token2.secret = @"some token 2";
     MSIDCacheKey *key = [[MSIDCacheKey alloc] initWithAccount:@"test_account" service:@"test_service" generic:self.generic type:nil];
-    
+
     BOOL result = [self.dataSource saveToken:token key:key serializer:self.serializer context:nil error:nil];
     XCTAssertTrue(result);
 
@@ -123,7 +123,7 @@
     XCTAssertTrue(result2);
 
     MSIDCredentialCacheItem *tokenResult = [self.dataSource tokenWithKey:key serializer:self.serializer context:nil error:nil];
-    
+
     XCTAssertEqualObjects(tokenResult, token2);
 }
 
@@ -144,17 +144,17 @@
     token3.secret = @"secret3";
     MSIDCacheKey *key3 = [[MSIDCacheKey alloc] initWithAccount:@"test_account2" service:@"item3" generic:self.generic type:nil];
     [self.dataSource saveToken:token3 key:key3 serializer:self.serializer context:nil error:nil];
-    
+
     MSIDCacheKey *queryKey = [[MSIDCacheKey alloc] initWithAccount:@"test_account" service:nil generic:self.generic type:nil];
     NSError *error;
-    
+
     NSArray<MSIDCredentialCacheItem *> *items = [self.dataSource tokensWithKey:queryKey serializer:self.serializer context:nil error:&error];
-    
+
     XCTAssertEqual(items.count, 2);
-    
+
     XCTAssertTrue([items containsObject:token1]);
     XCTAssertTrue([items containsObject:token2]);
-    
+
     XCTAssertNil(error);
 }
 
@@ -164,14 +164,14 @@
     token.secret = @"some token";
     MSIDCacheKey *key = [[MSIDCacheKey alloc] initWithAccount:@"test_account" service:@"test_service" generic:self.generic type:nil];
     [self.dataSource saveToken:token key:key serializer:self.serializer context:nil error:nil];
-    
+
     NSArray<MSIDCredentialCacheItem *> *items = [self.dataSource tokensWithKey:[MSIDCacheKey new] serializer:self.serializer context:nil error:nil];
     XCTAssertEqual(items.count, 1);
-    
+
     NSError *error;
-    
+
     [self.dataSource removeItemsWithTokenKey:key context:nil error:&error];
-    
+
     items = [self.dataSource tokensWithKey:[MSIDCacheKey new] serializer:self.serializer context:nil error:nil];
     XCTAssertEqual(items.count, 0);
     XCTAssertNil(error);
@@ -183,14 +183,14 @@
     token.secret = @"some token";
     MSIDCacheKey *key = [[MSIDCacheKey alloc] initWithAccount:@"test_account" service:@"test_service" generic:self.generic type:nil];
     [self.dataSource saveToken:token key:key serializer:self.serializer context:nil error:nil];
-    
+
     NSArray<MSIDCredentialCacheItem *> *items = [self.dataSource tokensWithKey:[MSIDCacheKey new] serializer:self.serializer context:nil error:nil];
     XCTAssertEqual(items.count, 1);
-    
+
     NSError *error;
-    
+
     [self.dataSource removeItemsWithTokenKey:key context:nil error:&error];
-    
+
     items = [self.dataSource tokensWithKey:[MSIDCacheKey new] serializer:self.serializer context:nil error:nil];
     XCTAssertEqual(items.count, 0);
     XCTAssertNil(error);
@@ -218,16 +218,16 @@
     token4.secret = @"secret4";
     MSIDCacheKey *key4 = [[MSIDCacheKey alloc] initWithAccount:@"test_account2" service:@"item4" generic:self.generic type:nil];
     [self.dataSource saveToken:token4 key:key4 serializer:self.serializer context:nil error:nil];
-    
+
     NSArray<MSIDCredentialCacheItem *> *items = [self.dataSource tokensWithKey:nil serializer:self.serializer context:nil error:nil];
-    
+
     XCTAssertEqual(items.count, 4);
-    
+
     NSError *error;
-    
+
     BOOL result = [self.dataSource removeItemsWithTokenKey:nil context:nil error:&error];
     items = [self.dataSource tokensWithKey:nil serializer:self.serializer context:nil error:nil];
-    
+
     XCTAssertFalse(result);
     XCTAssertEqual(items.count, 4);
     XCTAssertNotNil(error);

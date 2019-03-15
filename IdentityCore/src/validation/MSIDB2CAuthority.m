@@ -38,7 +38,7 @@
         _url = [self.class normalizedAuthorityUrl:url context:context error:error];
         if (!_url) return nil;
     }
-    
+
     return self;
 }
 
@@ -63,9 +63,9 @@
 + (BOOL)isAuthorityFormatValid:(NSURL *)url
                        context:(id<MSIDRequestContext>)context
                          error:(NSError **)error
-{    
+{
     if (![super isAuthorityFormatValid:url context:context error:error]) return NO;
-    
+
     BOOL isB2c = NO;
     if (url.pathComponents.count >= 2)
     {
@@ -80,17 +80,17 @@
         }
         return NO;
     }
-    
+
     if (url.pathComponents.count < 4)
     {
         if (error)
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, @"B2C authority should have at least 3 segments in the path (i.e. https://<host>/tfp/<tenant>/<policy>/...)", nil, nil, nil, context.correlationId, nil);
         }
-        
+
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -126,9 +126,9 @@
     {
         return nil;
     }
-    
+
     NSString *normalizedAuthorityUrl = [NSString stringWithFormat:@"https://%@/%@/%@/%@", [url msidHostWithPortIfNecessary], url.pathComponents[1], url.pathComponents[2], url.pathComponents[3]];
-    
+
     return [NSURL URLWithString:normalizedAuthorityUrl];
 }
 

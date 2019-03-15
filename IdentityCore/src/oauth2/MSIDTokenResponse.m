@@ -54,7 +54,7 @@ MSID_JSON_RW(MSID_OAUTH2_ID_TOKEN, idToken, setIdToken)
             self.refreshToken = token.refreshToken;
         }
     }
-    
+
     return self;
 }
 
@@ -64,7 +64,7 @@ MSID_JSON_RW(MSID_OAUTH2_ID_TOKEN, idToken, setIdToken)
     {
         return nil;
     }
-    
+
     [self initIdToken:error];
     return self;
 }
@@ -81,12 +81,12 @@ MSID_JSON_RW(MSID_OAUTH2_ID_TOKEN, idToken, setIdToken)
 {
     id expiresInObj = _json[MSID_OAUTH2_EXPIRES_IN];
     NSInteger expiresIn = [MSIDHelpers msidIntegerValue:expiresInObj];
-    
+
     if (!expiresIn && expiresInObj)
     {
         MSID_LOG_WARN(nil, @"Unparsable time - The response value for the access token expiration cannot be parsed: %@", expiresInObj);
     }
-    
+
     return expiresIn;
 }
 
@@ -99,12 +99,12 @@ MSID_JSON_RW(MSID_OAUTH2_ID_TOKEN, idToken, setIdToken)
 - (NSDate *)expiryDate
 {
     NSInteger expiresIn = self.expiresIn;
-    
+
     if (!expiresIn)
     {
         return nil;
     }
-    
+
     return [NSDate dateWithTimeIntervalSinceNow:expiresIn];
 }
 
@@ -139,7 +139,7 @@ MSID_JSON_RW(MSID_OAUTH2_ID_TOKEN, idToken, setIdToken)
                              MSID_OAUTH2_STATE,
                              MSID_OAUTH2_ID_TOKEN,
                              MSID_OAUTH2_EXPIRES_IN];
-    
+
     return [_json dictionaryByRemovingFields:knownFields];
 }
 

@@ -28,7 +28,7 @@
 const unichar fragmentSeparator = '#';
 const unichar queryStringSeparator = '?';
 
-@implementation NSURL (MSIDExtensions)      
+@implementation NSURL (MSIDExtensions)
 
 // Decodes configuration contained in a URL fragment
 - (NSDictionary *)msidFragmentParameters
@@ -50,7 +50,7 @@ const unichar queryStringSeparator = '?';
     {
         return NO;
     }
-    
+
     // Check path
     if (self.path || aURL.path)
     {
@@ -59,7 +59,7 @@ const unichar queryStringSeparator = '?';
             return NO;
         }
     }
-    
+
     return YES;
 }
 
@@ -101,7 +101,7 @@ const unichar queryStringSeparator = '?';
 - (NSString *)msidHostWithPortIfNecessary
 {
     NSNumber *port = self.port;
-    
+
     // This assumes we're using https, which is mandatory for all AAD communications.
     if (port == nil || port.intValue == 443)
     {
@@ -113,43 +113,43 @@ const unichar queryStringSeparator = '?';
 - (NSString *)msidTenant
 {
     NSArray *pathComponents = [self pathComponents];
-    
+
     if ([pathComponents count] <= 1)
     {
         return nil;
     }
-    
+
     if ([pathComponents[1] caseInsensitiveCompare:@"tfp"] == NSOrderedSame)
     {
         if ([pathComponents count] < 3)
         {
             return nil;
         }
-        
+
         /* TODO: verify if policy should be also part of the cache key
         Currently, for B2C, there'll be different refresh tokens and access tokens per policy
         This should be controled by different clientInfo returned for different B2C policies
         For AAD it will be:
-         
+
          {
          "uid" :"oid_in_directory"
          "utid" :"tenant id"
          }
-         
+
          For B2C it should be:
-         
+
          {
          "uid" :"oid_in_directory+policy"
          "utid" :"tenant id"
          }
-         
+
          So, there should be already policy identifier as part of the cache key through client info and adding additional policy identifier would mean special client side handling for B2C. Instead, this should be handled by the server side.
-         
+
          */
-        
+
         return pathComponents[2];
     }
-    
+
     return pathComponents[1];
 }
 
@@ -159,17 +159,17 @@ const unichar queryStringSeparator = '?';
     {
         return self;
     }
-    
+
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
-    
+
     // Invalid URL
     if ([NSString msidIsStringNilOrBlank:urlComponents.host])
     {
         return self;
     }
-    
+
     urlComponents.host = cloudInstanceHostName;
-    
+
     return urlComponents.URL;
 }
 
@@ -184,7 +184,7 @@ const unichar queryStringSeparator = '?';
     {
         return [self msidURLWithEnvironment:environment];
     }
-    
+
     NSString *authorityString = [NSString stringWithFormat:@"https://%@/%@", environment, tenant];
     return [NSURL URLWithString:authorityString];
 }
@@ -198,29 +198,29 @@ const unichar queryStringSeparator = '?';
 - (NSURL *)msidURLForPreferredHost:(NSString *)preferredHost context:(id<MSIDRequestContext>)context error:(NSError **)error
 {
     NSURL *url = [self copy];
-    
+
     if (!preferredHost)
     {
         return url;
     }
-    
+
     if ([url.msidHostWithPortIfNecessary isEqualToString:preferredHost])
     {
         return url;
     }
-    
+
     // Otherwise switch the host for the preferred one.
     NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    
+
     @try
     {
         NSArray *hostComponents = [preferredHost componentsSeparatedByString:@":"];
-        
+
         // I hope there's never a case where there's percent encoded characters in the host, but using
         // this setter prevents NSURLComponents from trying to do any further mangling on the string,
         // probably a good thing.
         components.percentEncodedHost = hostComponents[0];
-        
+
         if (hostComponents.count > 1)
         {
             NSScanner *scanner = [NSScanner scannerWithString:hostComponents[1]];
@@ -242,14 +242,14 @@ const unichar queryStringSeparator = '?';
     @catch (NSException *ex)
     {
         NSError *msidError = MSIDCreateError(MSIDErrorDomain, MSIDErrorServerInvalidResponse, @"Failed to replace a host in url.", nil, nil, nil, context.correlationId, nil);
-        
+
         if (error) *error = msidError;
-        
+
         MSID_LOG_ERROR(context, @"Failed to replace a host in url.");
-        
+
         return nil;
     }
-    
+
     return components.URL;
 }
 
@@ -301,21 +301,21 @@ const unichar queryStringSeparator = '?';
 - (NSURL *)msidPIINullifiedURL
 {
     NSURLComponents *components = [[NSURLComponents alloc] initWithURL:self resolvingAgainstBaseURL:NO];
-    
+
     NSMutableArray *piiQueryItems = [NSMutableArray new];
-    
+
     for (NSURLQueryItem *queryItem in components.queryItems)
     {
         NSString *piiValue = [NSString msidIsStringNilOrBlank:queryItem.value] ? @"(null)" : @"(not-null)";
         NSURLQueryItem *piiQueryItem = [[NSURLQueryItem alloc] initWithName:queryItem.name value:piiValue];
         [piiQueryItems addObject:piiQueryItem];
     }
-    
+
     if ([piiQueryItems count])
     {
         components.queryItems = piiQueryItems;
     }
-    
+
     return components.URL;
 }
 

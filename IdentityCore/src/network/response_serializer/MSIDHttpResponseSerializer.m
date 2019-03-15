@@ -42,7 +42,7 @@
     {
         result = data;
     }
-    
+
     return result;
 }
 

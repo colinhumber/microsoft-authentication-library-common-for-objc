@@ -35,7 +35,7 @@
 - (void)setUp
 {
     [super setUp];
-    
+
     self.preprocessor = [MSIDAADJsonResponsePreprocessor new];
 }
 
@@ -53,9 +53,9 @@
     __auto_type headers = @{MSID_OAUTH2_CORRELATION_ID_REQUEST_VALUE : @"correlation_id_value",
                             MSID_OAUTH2_CLIENT_TELEMETRY : clientTelemetry};
     __auto_type response = [[NSHTTPURLResponse alloc] initWithURL:baseUrl statusCode:0 HTTPVersion:nil headerFields:headers];
-    
+
     id serializedResponse = [self.preprocessor responseObjectForResponse:response data:data context:nil error:nil];
-    
+
     XCTAssertEqualObjects(serializedResponse[@"spe_info"], @"I");
     XCTAssertEqualObjects(serializedResponse[@"correlation_id"], @"correlation_id_value");
     XCTAssertEqualObjects(serializedResponse[@"p"], @"v");
@@ -67,10 +67,10 @@
     __auto_type data = [NSJSONSerialization dataWithJSONObject:jsonData options:0 error:nil];
     __auto_type baseUrl = [[NSURL alloc] initWithString:@"https://fake.url"];
     __auto_type response = [[NSHTTPURLResponse alloc] initWithURL:baseUrl statusCode:0 HTTPVersion:nil headerFields:nil];
-    
+
     NSError *error;
     id serializedResponse = [self.preprocessor responseObjectForResponse:response data:data context:nil error:&error];
-    
+
     XCTAssertNil(serializedResponse);
     XCTAssertNotNil(error);
     XCTAssertEqual(error.domain, MSIDErrorDomain);

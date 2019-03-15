@@ -36,26 +36,26 @@
 {
     static NSDictionary *s_defaultHeaders = nil;
     static dispatch_once_t once;
-    
+
     dispatch_once(&once, ^{
         NSMutableDictionary* headers = [[MSIDDeviceId deviceId] mutableCopy];
-        
+
         headers[@"Accept"] = @"application/json";
         headers[@"client-request-id"] = [MSIDTestRequireValueSentinel sentinel];
         headers[@"return-client-request-id"] = @"true";
         headers[@"x-app-name"] = @"UnitTestHost";
         headers[@"x-app-ver"] = @"1.0";
-        
+
 #if TARGET_OS_IPHONE
         headers[@"x-ms-PkeyAuth"] = @"1.0";
 #endif
-        
+
         // TODO: This really shouldn't be a default header...
         headers[@"Content-Type"] = @"application/x-www-form-urlencoded";
-        
+
         s_defaultHeaders = [headers copy];
     });
-    
+
     return s_defaultHeaders;
 }
 
@@ -70,7 +70,7 @@
     response->_response = urlResponse;
     response->_responseData = data;
     [response setRequestHeaders:nil];
-    
+
     return response;
 }
 
@@ -79,12 +79,12 @@
                    reponseData:(NSData *)data
 {
     MSIDTestURLResponse * response = [MSIDTestURLResponse new];
-    
+
     [response setRequestURL:request];
     response->_response = urlResponse;
     response->_responseData = data;
     [response setRequestHeaders:nil];
-    
+
     return response;
 }
 
@@ -92,11 +92,11 @@
                        reponse:(NSURLResponse *)urlResponse
 {
     MSIDTestURLResponse * response = [MSIDTestURLResponse new];
-    
+
     [response setRequestURL:request];
     response->_response = urlResponse;
     [response setRequestHeaders:nil];
-    
+
     return response;
 }
 
@@ -104,11 +104,11 @@
               respondWithError:(NSError *)error
 {
     MSIDTestURLResponse * response = [MSIDTestURLResponse new];
-    
+
     [response setRequestURL:request];
     [response setRequestHeaders:[MSIDDeviceId deviceId]];
     response->_error = error;
-    
+
     return response;
 }
 
@@ -133,7 +133,7 @@
     [response setResponseURL:responseUrlString code:responseCode headerFields:headerFields];
     [response setRequestHeaders:[MSIDDeviceId deviceId]];
     [response setJSONResponse:data];
-    
+
     return response;
 }
 
@@ -149,7 +149,7 @@
     [response setResponseURL:responseUrlString code:responseCode headerFields:headerFields];
     response->_requestJSONBody = requestJSONBody;
     [response setJSONResponse:data];
-    
+
     return response;
 }
 
@@ -167,7 +167,7 @@
     [response setRequestHeaders:requestHeaders];
     [response setUrlFormEncodedBody:requestParams];
     [response setJSONResponse:data];
-    
+
     return response;
 }
 
@@ -179,7 +179,7 @@
                                                                statusCode:code
                                                               HTTPVersion:@"1.1"
                                                              headerFields:headerFields];
-    
+
     _response = response;
 }
 
@@ -195,11 +195,11 @@
         _responseData = nil;
         return;
     }
-    
+
     NSError *error = nil;
     NSData *responseData = [NSJSONSerialization dataWithJSONObject:jsonResponse options:0 error:&error];
     _responseData = responseData;
-    
+
     NSAssert(_responseData, @"Invalid JSON object set for test response! %@", error);
 }
 
@@ -210,7 +210,7 @@
 
 - (void)setRequestURL:(NSURL *)requestURL
 {
-    
+
     _requestURL = requestURL;
     NSString *query = [requestURL query];
     _QPs = [NSString msidIsStringNilOrBlank:query] ? nil : [NSDictionary msidDictionaryFromWWWFormURLEncodedString:query];
@@ -226,7 +226,7 @@
     {
         _requestHeaders = [NSMutableDictionary new];
     }
-    
+
     // These values come from ADClientMetrics and are dependent on a previous request, which breaks
     // the isolation of the tests. For now the easiest path is to ignore them entirely.
     if (!_requestHeaders[@"x-client-last-endpoint"])
@@ -250,13 +250,13 @@
     {
         return;
     }
-    
+
     _requestParamsBody = formParameters;
     if (!_requestHeaders)
     {
         _requestHeaders = [NSMutableDictionary new];
     }
-    
+
     _requestHeaders[@"Content-Type"] = @"application/x-www-form-urlencoded";
 }
 
@@ -291,19 +291,19 @@
         BOOL match = [obj isEqual:_requestJSONBody];
         return match;
     }
-    
+
     if (_requestParamsBody)
     {
         NSString * string = [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding];
         NSDictionary *obj = [NSDictionary msidDictionaryFromWWWFormURLEncodedString:string];
         return [_requestParamsBody compareAndPrintDiff:obj dictionaryDescription:@"URL Encoded Body Parameters"];
     }
-    
+
     if (_requestBody)
     {
         return [_requestBody isEqualToData:body];
     }
-    
+
     return YES;
 }
 
@@ -319,7 +319,7 @@
         [@{} compareAndPrintDiff:headers dictionaryDescription:@"Request Headers"];
         return NO;
     }
-    
+
     return [_requestHeaders compareAndPrintDiff:headers dictionaryDescription:@"Request Headers"];
 }
 

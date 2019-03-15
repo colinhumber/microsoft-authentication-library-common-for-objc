@@ -36,14 +36,14 @@
     {
         return nil;
     }
-    
+
     static const void *key = "MSIDTest        util_qp_dict";
     NSDictionary *myQPs = objc_getAssociatedObject(self, key);
     if (myQPs)
     {
         return myQPs;
     }
-    
+
     myQPs = [self msidQueryParameters];
     objc_setAssociatedObject(self, key, myQPs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return myQPs;
@@ -56,18 +56,18 @@
     {
         return NO;
     }
-    
+
     if ([[url msidHostWithPortIfNecessary] caseInsensitiveCompare:[self msidHostWithPortIfNecessary]] != NSOrderedSame)
     {
         return NO;
     }
-    
+
     // Then the relative portions
     if ([url.relativePath caseInsensitiveCompare:self.relativePath] != NSOrderedSame)
     {
         return NO;
     }
-    
+
     // And lastly, the tricky part. Query Params can come in any order so we need to process them
     // a bit instead of just a string compare
     NSDictionary *myQPs = [self cachedQueryParameterDictionary];
@@ -80,7 +80,7 @@
     {
         return NO;
     }
-    
+
     return YES;
 }
 

@@ -302,7 +302,7 @@
     }];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Acquire token"];
-    
+
     MSIDTestURLResponse *discoveryResponse = [MSIDTestURLResponse discoveryResponseForAuthority:@"https://login.microsoftonline.com/common"];
     [MSIDTestURLSession addResponse:discoveryResponse];
 

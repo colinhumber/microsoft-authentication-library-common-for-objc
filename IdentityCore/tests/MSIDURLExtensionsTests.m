@@ -51,13 +51,13 @@
     XCTAssertNil(((NSURL*)[NSURL URLWithString:@"https://stuff.com?foo=bar#bar=foo#foo=bar"]).msidFragmentParameters);
     XCTAssertNil(((NSURL*)[NSURL URLWithString:@"https://stuff.com?foo=bar#bar=foo#foo=bar#"]).msidFragmentParameters);
     XCTAssertNil(((NSURL*)[NSURL URLWithString:@"https://stuff.com?foo=bar#        "]).msidFragmentParameters);
-    
+
     //Valid fragment, but missing/invalid configuration:
     NSDictionary* empty = [NSDictionary new];
     XCTAssertEqualObjects(@{@"bar":@""}, ((NSURL*)[NSURL URLWithString:@"https://stuff.com#bar"]).msidFragmentParameters);
     XCTAssertEqualObjects(@{@"bar":@""}, ((NSURL*)[NSURL URLWithString:@"https://stuff.com?foo=bar#bar"]).msidFragmentParameters);
     XCTAssertEqualObjects(empty, ((NSURL*)[NSURL URLWithString:@"https://stuff.com?foo=bar#bar=foo=bar"]).msidFragmentParameters);
-    
+
     //At least some of the configuration are valid:
     NSDictionary* simple = @{@"foo1":@"bar1", @"foo2":@"bar2"};
     XCTAssertEqualObjects(simple, ((NSURL*)[NSURL URLWithString:@"https://stuff.com?foo=bar#foo1=bar1&foo2=bar2"]).msidFragmentParameters);
@@ -282,21 +282,21 @@
     NSURL *authorityWithCloudName = [authority msidAuthorityWithCloudInstanceHostname:@"login.microsoftonline.de"];
     XCTAssertEqualObjects(authorityWithCloudName.absoluteString, @"https://login.microsoftonline.de/b960c013-d381-403c-8d4d-939edac0d9ea");
 }
-                        
+
 - (void)testMsidAuthorityWithCloudInstanceHostname_whenLoginWindowsNet_shouldSwap
 {
     NSURL *authority = [NSURL URLWithString:@"https://login.windows.net/common"];
     NSURL *authorityWithCloudName = [authority msidAuthorityWithCloudInstanceHostname:@"login.microsoftonline.de"];
     XCTAssertEqualObjects(authorityWithCloudName.absoluteString, @"https://login.microsoftonline.de/common");
 }
-                        
+
 - (void)testMsidAuthorityWithCloudInstanceHostname_whenLoginSts_shouldSwap
 {
     NSURL *authority = [NSURL URLWithString:@"https://sts.microsoft.com/common"];
     NSURL *authorityWithCloudName = [authority msidAuthorityWithCloudInstanceHostname:@"login.microsoftonline.de"];
     XCTAssertEqualObjects(authorityWithCloudName.absoluteString, @"https://login.microsoftonline.de/common");
 }
-                        
+
 - (void)testMsidAuthorityWithCloudInstanceHostname_whenNoHost_shouldReturnSame
 {
     NSURL *authority = [NSURL URLWithString:@"https://"];

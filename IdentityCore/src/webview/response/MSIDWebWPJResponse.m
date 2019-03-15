@@ -46,24 +46,24 @@
         }
         return nil;
     }
-    
+
     self = [super initWithURL:url context:context error:error];
     if (self)
     {
         _appInstallLink = self.parameters[@"app_link"];
         _upn = self.parameters[@"username"];
-        
+
         NSError *localError;
         _clientInfo = [[MSIDClientInfo alloc] initWithRawClientInfo:self.parameters[@"client_info"]
                                                               error:&localError];
-        
+
         if (localError)
         {
             MSID_LOG_NO_PII(MSIDLogLevelError, nil, context, @"Failed to parse client_info, code %ld, domain %@", (long)localError.code, localError.domain);
             MSID_LOG_PII(MSIDLogLevelError, nil, context, @"Failed to parse client_info, error: %@", localError);
         }
     }
-    
+
     return self;
 }
 
@@ -71,31 +71,31 @@
 {
     NSString *scheme = url.scheme;
     NSString *host = url.host;
-    
+
     // For embedded webview, this link will start with msauth scheme and will contain wpj host
     // e.g. msauth://wpj?param=param
     if ([scheme isEqualToString:@"msauth"] && [host isEqualToString:@"wpj"])
     {
         return YES;
     }
-    
+
     NSArray *pathComponents = url.pathComponents;
-    
+
     if ([pathComponents count] < 2)
     {
         return NO;
     }
-    
+
     // For system webview, this link will start with the redirect uri and will have msauth and wpj as path parameters
     // e.g. myscheme://auth/msauth/wpj?param=param
     NSUInteger pathComponentCount = pathComponents.count;
-    
+
     if ([pathComponents[pathComponentCount - 1] isEqualToString:@"wpj"]
         && [pathComponents[pathComponentCount - 2] isEqualToString:@"msauth"])
     {
         return YES;
     }
-    
+
     return NO;
 }
 

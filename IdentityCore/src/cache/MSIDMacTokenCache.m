@@ -54,7 +54,7 @@ return NO; \
     {
         return nil;
     }
-    
+
     NSString *queueName = [NSString stringWithFormat:@"com.microsoft.msidmactokencache-%@", [NSUUID UUID].UUIDString];
     _synchronizationQueue = dispatch_queue_create([queueName cStringUsingEncoding:NSASCIIStringEncoding], DISPATCH_QUEUE_CONCURRENT);
     [self initializeCacheIfNecessary];
@@ -66,11 +66,11 @@ return NO; \
 {
     static dispatch_once_t once;
     static MSIDMacTokenCache *cache = nil;
-    
+
     dispatch_once(&once, ^{
         cache = [MSIDMacTokenCache new];
     });
-    
+
     return cache;
 }
 
@@ -82,7 +82,7 @@ return NO; \
     }
 
     __block NSData *result = nil;
-    
+
     dispatch_sync(self.synchronizationQueue, ^{
         NSDictionary *cacheCopy = [self.cache mutableCopy];
 
@@ -109,7 +109,7 @@ return NO; \
             MSID_LOG_ERROR(nil, @"Failed to serialize the cache!");
         }
     });
-    
+
     return result;
 }
 
@@ -117,7 +117,7 @@ return NO; \
               error:(NSError **)error
 {
     NSDictionary *cache = nil;
-    
+
     @try
     {
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
@@ -134,23 +134,23 @@ return NO; \
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorCacheBadFormat, @"Failed to unarchive data blob from -deserialize!", nil, nil, nil, nil, nil);
         }
     }
-    
+
     if (!cache)
     {
         return NO;
     }
-    
+
     if (![self validateCache:cache error:error])
     {
         return NO;
     }
-    
+
     __block BOOL result = NO;
     dispatch_barrier_sync(self.synchronizationQueue, ^{
         self.cache = [cache objectForKey:@"tokenCache"];
         result = YES;
     });
-    
+
     return result;
 }
 
@@ -188,7 +188,7 @@ return NO; \
     BOOL result = NO;
     result = [self setItemImpl:item key:key serializer:serializer context:context error:error];
     [self.delegate didWriteCache:self];
-    
+
     return result;
 }
 
@@ -199,17 +199,17 @@ return NO; \
 {
     MSID_LOG_INFO(context, @"itemWithKey:serializer:context:error:");
     NSArray<MSIDCredentialCacheItem *> *items = [self tokensWithKey:key serializer:serializer context:context error:error];
-    
+
     if (items.count > 1)
     {
         if (error)
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorCacheMultipleUsers, @"The token cache store for this resource contains more than one user.", nil, nil, nil, context.correlationId, nil);
         }
-        
+
         return nil;
     }
-    
+
     return items.firstObject;
 }
 
@@ -222,7 +222,7 @@ return NO; \
     NSArray *result = nil;
     result = [self itemsWithKeyImpl:key serializer:serializer context:nil error:error];
     [self.delegate didAccessCache:self];
-    
+
     return result;
 }
 
@@ -309,7 +309,7 @@ return NO; \
         result = [self removeItemsWithKeyImpl:key context:context error:error];
     });
     [self.delegate didWriteCache:self];
-    
+
     return result;
 }
 
@@ -358,7 +358,7 @@ return NO; \
     {
         return;
     }
-    
+
     // Add items matching the key for this user
     if (key.service)
     {
@@ -379,13 +379,13 @@ return NO; \
     RETURN_ERROR_IF_CONDITION_FALSE([dict isKindOfClass:[NSDictionary class]], MSIDErrorCacheBadFormat, @"Root level object of cache is not a NSDictionary.");
     RETURN_ERROR_IF_CONDITION_FALSE(dict[@"version"], MSIDErrorCacheBadFormat, @"Missing version number from cache.");
     RETURN_ERROR_IF_CONDITION_FALSE([dict[@"version"] floatValue] <= CURRENT_WRAPPER_CACHE_VERSION, MSIDErrorCacheBadFormat, @"Cache is a future unsupported version.");
-    
+
     NSDictionary *cache = dict[@"tokenCache"];
     RETURN_ERROR_IF_CONDITION_FALSE(cache, MSIDErrorCacheBadFormat, @"Missing token cache from data.");
     RETURN_ERROR_IF_CONDITION_FALSE([cache isKindOfClass:[NSMutableDictionary class]], MSIDErrorCacheBadFormat, @"Cache is not a mutable dictionary.");
-    
+
     NSDictionary *tokens = cache[@"tokens"];
-    
+
     if (tokens)
     {
         RETURN_ERROR_IF_CONDITION_FALSE([tokens isKindOfClass:[NSMutableDictionary class]], MSIDErrorCacheBadFormat, @"Tokens must be a mutable dictionary.");
@@ -395,7 +395,7 @@ return NO; \
             RETURN_ERROR_IF_CONDITION_FALSE([userId isKindOfClass:[NSString class]], MSIDErrorCacheBadFormat, @"User ID key is not of the expected class type.");
             id userDict = [tokens objectForKey:userId];
             RETURN_ERROR_IF_CONDITION_FALSE([userDict isKindOfClass:[NSMutableDictionary class]], MSIDErrorCacheBadFormat, @"User ID should have mutable dictionaries in the cache.");
-            
+
             for (id key in userDict)
             {
                 // On the first level we're expecting NSDictionaries keyed off of ADTokenCacheStoreKey
@@ -405,7 +405,7 @@ return NO; \
             }
         }
     }
-    
+
     return YES;
 }
 
@@ -419,16 +419,16 @@ return NO; \
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidDeveloperParameter, @"Key is nil.", nil, nil, nil, context.correlationId, nil);
         }
-        
+
         return NO;
     }
-    
+
     NSString *userId = key.account;
     if (!userId)
     {
         userId = @"";
     }
-    
+
     NSMutableDictionary *userTokens = [self.cache[@"tokens"] objectForKey:userId];
     if (!userTokens)
     {
@@ -440,20 +440,20 @@ return NO; \
         [self.cache[@"tokens"] removeObjectForKey:userId];
         return YES;
     }
-    
+
     if (![userTokens objectForKey:[self legacyKeyWithoutAccount:key]])
     {
         return YES;
     }
-    
+
     [userTokens removeObjectForKey:[self legacyKeyWithoutAccount:key]];
-    
+
     // Check to see if we need to remove the overall dict
     if (!userTokens.count)
     {
         [self.cache[@"tokens"] removeObjectForKey:userId];
     }
-    
+
     return YES;
 }
 
@@ -464,17 +464,17 @@ return NO; \
               error:(NSError **)error
 {
     assert(key);
-    
+
     MSID_LOG_INFO(context, @"Set item, key info (account: %@ service: %@)", _PII_NULLIFY(key.account), _PII_NULLIFY(key.service));
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"Set item, key info (account: %@ service: %@)", key.account, key.service);
     MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"Item info %@", item);
-    
+
     if (!key)
     {
         return NO;
     }
-    
+
     if (!item)
     {
         if (error)
@@ -482,21 +482,21 @@ return NO; \
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidDeveloperParameter, @"Item is nil.", nil, nil, nil, context.correlationId, nil);
         }
         MSID_LOG_ERROR(context, @"Set nil item.");
-        
+
         return NO;
     }
-    
+
     // Copy the item to make sure it doesn't change under us.
     item = [item copy];
-    
+
     NSString *account = key.account;
-    
+
     if (!account)
     {
         // If we don't have one (ADFS case) then use an empty string
         account = @"";
     }
-    
+
     if (!key.service)
     {
         if (error)
@@ -506,7 +506,7 @@ return NO; \
         MSID_LOG_ERROR(context, @"Set keychain item with invalid key.");
         return NO;
     }
-    
+
     dispatch_barrier_sync(self.synchronizationQueue, ^{
 
         [self initializeCacheIfNecessary];
@@ -518,10 +518,10 @@ return NO; \
             userDict = [NSMutableDictionary new];
             self.cache[@"tokens"][account] = userDict;
         }
-        
+
         userDict[[self legacyKeyWithoutAccount:key]] = item;
     });
-    
+
     return YES;
 }
 
@@ -537,19 +537,19 @@ return NO; \
     {
         return nil;
     }
-    
+
     __block NSDictionary *tokens;
     dispatch_sync(self.synchronizationQueue, ^{
         tokens = [[self.cache objectForKey:@"tokens"] copy];
     });
-    
+
     if (!tokens)
     {
         return nil;
     }
-    
+
     NSMutableArray *items = [NSMutableArray new];
-    
+
     if (key.account)
     {
         // If we have a specified userId then we only look for that one
@@ -563,7 +563,7 @@ return NO; \
             [self addToItems:items forUserId:userId tokens:tokens key:key];
         }
     }
-    
+
     return items;
 }
 
@@ -575,7 +575,7 @@ return NO; \
                                                                                service:key.service
                                                                                generic:key.generic
                                                                                   type:key.type];
-    
+
     return newKey;
 }
 

@@ -58,7 +58,7 @@
 {
     NSError *error = nil;
     MSIDURLFormObject *obj = [[MSIDURLFormObject alloc] initWithEncodedString:nil error:&error];
-    
+
     XCTAssertNil(obj);
     XCTAssertNotNil(error);
 }
@@ -67,10 +67,10 @@
 {
     NSString *input = @"testkey2=value2&testkey1=value1";
     NSDictionary *outputDictionary = @{@"testkey1":@"value1", @"testkey2":@"value2"};
-    
+
     NSError *error = nil;
     MSIDURLFormObject *obj = [[MSIDURLFormObject alloc] initWithEncodedString:input error:&error];
-    
+
     XCTAssertNotNil(obj);
     XCTAssertNil(error);
     XCTAssertEqualObjects(obj.form, outputDictionary);
@@ -79,10 +79,10 @@
 - (void)testInitWithEncodedString_whenInvalidInputString_shouldReturnObjectEmptyForm
 {
     NSString *input = @"testkey2=value2 testkey1=value1";
-    
+
     NSError *error = nil;
     MSIDURLFormObject *obj = [[MSIDURLFormObject alloc] initWithEncodedString:input error:&error];
-    
+
     XCTAssertNotNil(obj);
     XCTAssertNil(error);
     XCTAssertEqualObjects(obj.form, @{});
@@ -92,7 +92,7 @@
 {
     NSError *error = nil;
     MSIDURLFormObject *obj = [[MSIDURLFormObject alloc] initWithDictionary:nil error:&error];
-    
+
     XCTAssertNil(obj);
     XCTAssertNotNil(error);
 }
@@ -100,10 +100,10 @@
 - (void)testInitWithDictionary_whenNonNilDictionary_shouldReturnObjectNilError
 {
     NSDictionary *dictionary = @{@"testkey1":@"value1", @"testkey2":@"value2"};
-    
+
     NSError *error = nil;
     MSIDURLFormObject *obj = [[MSIDURLFormObject alloc] initWithDictionary:dictionary error:&error];
-    
+
     XCTAssertNotNil(obj);
     XCTAssertNil(error);
     XCTAssertEqualObjects(obj.form, dictionary);
@@ -113,10 +113,10 @@
 {
     NSDictionary *inputDictionary = @{@"test key1":@"value1 value 2", @"testkey2":@"value2"};
     NSString *encodedString = @"testkey2=value2&test+key1=value1+value+2";
-    
+
     NSError *error = nil;
     MSIDURLFormObject *obj = [[MSIDURLFormObject alloc] initWithDictionary:inputDictionary error:&error];
-    
+
     XCTAssertNotNil(obj);
     XCTAssertNil(error);
     XCTAssertEqualObjects([obj encode], encodedString);

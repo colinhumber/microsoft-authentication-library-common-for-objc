@@ -39,13 +39,13 @@
                                 @"token_type": @"Bearer",
                                 @"expires_on": @"3600000",
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     NSInteger expiresOn = [response expiresOn];
     XCTAssertEqual(expiresOn, 3600000);
 }
@@ -56,13 +56,13 @@
                                 @"token_type": @"Bearer",
                                 @"expires_on": @3600000,
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     NSInteger expiresOn = [response expiresOn];
     XCTAssertEqual(expiresOn, 3600000);
 }
@@ -73,13 +73,13 @@
                                 @"token_type": @"Bearer",
                                 @"expires_on": @3600,
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     NSDate *expiryDate = [response expiryDate];
     XCTAssertNotNil(expiryDate);
 }
@@ -91,13 +91,13 @@
                                 @"expires_in": @"xyz",
                                 @"expires_on": @"xyz",
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     NSDate *expiryDate = [response expiryDate];
     XCTAssertNil(expiryDate);
 }
@@ -108,13 +108,13 @@
                                 @"token_type": @"Bearer",
                                 @"ext_expires_in": @"3600",
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     NSInteger extExpiresIn = [response extendedExpiresIn];
     XCTAssertEqual(extExpiresIn, 3600);
 }
@@ -125,13 +125,13 @@
                                 @"token_type": @"Bearer",
                                 @"ext_expires_in": @3600,
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     NSInteger extExpiresIn = [response extendedExpiresIn];
     XCTAssertEqual(extExpiresIn, 3600);
 }
@@ -142,13 +142,13 @@
                                 @"token_type": @"Bearer",
                                 @"ext_expires_in": @3600,
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     NSDate *expiryDate = [response extendedExpiresOnDate];
     XCTAssertNotNil(expiryDate);
 }
@@ -160,13 +160,13 @@
                                 @"expires_in": @"xyz",
                                 @"expires_on": @"xyz",
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     NSDate *expiryDate = [response extendedExpiresOnDate];
     XCTAssertNil(expiryDate);
 }
@@ -199,12 +199,12 @@
                                 @"token_type": @"Bearer",
                                 @"expires_in": @"3600",
                                 @"refresh_token": @"rt"};
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput
                                                                              refreshToken:nil
                                                                                     error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
     XCTAssertNil(response.clientInfo);
@@ -213,25 +213,25 @@
 - (void)testInitWithJson_andRefreshToken_shouldNotTakeFieldsFromRefreshTokenAndUpdate
 {
     NSString *clientInfoString = [@{ @"uid" : DEFAULT_TEST_UID, @"utid" : DEFAULT_TEST_UTID} msidBase64UrlJson];
-    
+
     NSDictionary *jsonInput = @{@"access_token": @"at",
                                 @"token_type": @"Bearer",
                                 @"expires_in": @"3600",
                                 @"refresh_token": @"rt",
                                 @"client_info": clientInfoString
                                 };
-    
+
     MSIDRefreshToken *refreshToken = [MSIDRefreshToken new];
     refreshToken.refreshToken = @"rt2";
-    
+
     NSError *error = nil;
     MSIDAADTokenResponse *response = [[MSIDAADTokenResponse alloc] initWithJSONDictionary:jsonInput
                                                                              refreshToken:refreshToken
                                                                                     error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     XCTAssertEqualObjects(response.clientInfo.rawClientInfo, clientInfoString);
     XCTAssertEqualObjects(response.refreshToken, @"rt");
 }

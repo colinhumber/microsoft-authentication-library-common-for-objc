@@ -39,7 +39,7 @@ static NSTimeInterval const s_defaultRetryInterval = 0.5;
 - (instancetype)init
 {
     self = [super init];
-    
+
     if (self)
     {
         _sessionManager = MSIDURLSessionManager.defaultManager;
@@ -51,34 +51,34 @@ static NSTimeInterval const s_defaultRetryInterval = 0.5;
         _retryCounter = s_defaultRetryCounter;
         _retryInterval = s_defaultRetryInterval;
     }
-    
+
     return self;
 }
 
 - (void)sendWithBlock:(MSIDHttpRequestDidCompleteBlock)completionBlock
 {
     NSParameterAssert(self.urlRequest);
-    
+
     self.urlRequest = [self.requestSerializer serializeWithRequest:self.urlRequest parameters:self.parameters];
-    
+
     [self.telemetry sendRequestEventWithId:self.context.telemetryRequestId];
-    
+
     MSID_LOG_VERBOSE(self.context, @"Sending network request: %@, headers: %@", _PII_NULLIFY(self.urlRequest), _PII_NULLIFY(self.urlRequest.allHTTPHeaderFields));
-    
+
     [[self.sessionManager.session dataTaskWithRequest:self.urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
       {
           MSID_LOG_VERBOSE(self.context, @"Received network response: %@, error %@", _PII_NULLIFY(response), _PII_NULLIFY(error));
-          
+
           if (response) NSAssert([response isKindOfClass:NSHTTPURLResponse.class], NULL);
-          
+
           __auto_type httpResponse = (NSHTTPURLResponse *)response;
-          
+
           [self.telemetry responseReceivedEventWithContext:self.context
                                                 urlRequest:self.urlRequest
                                               httpResponse:httpResponse
                                                       data:data
                                                      error:error];
-          
+
           if (error)
           {
               if (completionBlock) { completionBlock(nil, error); }
@@ -86,9 +86,9 @@ static NSTimeInterval const s_defaultRetryInterval = 0.5;
           else if (httpResponse.statusCode == 200)
           {
               id responseObject = [self.responseSerializer responseObjectForResponse:httpResponse data:data context:self.context error:&error];
-              
+
               MSID_LOG_VERBOSE(self.context, @"Parsed response: %@, error %@, error domain: %@, error code: %ld", _PII_NULLIFY(responseObject), _PII_NULLIFY(error), error.domain, (long)error.code);
-              
+
               if (completionBlock) { completionBlock(responseObject, error); }
           }
           else
@@ -96,7 +96,7 @@ static NSTimeInterval const s_defaultRetryInterval = 0.5;
               if (self.errorHandler)
               {
                   id<MSIDResponseSerialization> responseSerializer = self.errorResponseSerializer ? self.errorResponseSerializer : self.responseSerializer;
-                  
+
                   [self.errorHandler handleError:error
                                     httpResponse:httpResponse
                                             data:data

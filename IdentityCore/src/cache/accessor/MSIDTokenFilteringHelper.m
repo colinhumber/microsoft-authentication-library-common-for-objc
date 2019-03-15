@@ -36,25 +36,25 @@
                           filterBy:(MSIDTokenCacheItemFiltering)tokenFiltering
 {
     NSMutableArray *matchedItems = [NSMutableArray new];
-    
+
     for (MSIDCredentialCacheItem *cacheItem in allCacheItems)
     {
         if (tokenFiltering && tokenFiltering(cacheItem))
         {
             MSIDBaseToken *token = [cacheItem tokenWithType:tokenType];
-            
+
             if (token)
             {
                 [matchedItems addObject:token];
             }
-            
+
             if (returnFirst)
             {
                 break;
             }
         }
     }
-    
+
     return matchedItems;
 }
 

@@ -224,7 +224,7 @@
 
     MSID_LOG_NO_PII(MSIDLogLevelVerbose, nil, context, @"(Default cache) Saving token %@ with environment %@, realm %@, clientID %@", [MSIDCredentialTypeHelpers credentialTypeAsString:credential.credentialType], credential.environment, credential.realm, credential.clientId);
     MSID_LOG_PII(MSIDLogLevelVerbose, nil, context, @"(Default cache) Saving token %@ for userID %@ with environment %@, realm %@, clientID %@,", credential, credential.homeAccountId, credential.environment, credential.environment, credential.clientId);
-    
+
     MSIDDefaultCredentialCacheKey *key = [[MSIDDefaultCredentialCacheKey alloc] initWithHomeAccountId:credential.homeAccountId
                                                                                           environment:credential.environment
                                                                                              clientId:credential.clientId
@@ -426,10 +426,10 @@
                   error:(NSError * _Nullable * _Nullable)error
 {
     assert(metadata);
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelVerbose, nil, context, @"Saving app's metadata with clientId %@", metadata.clientId);
     MSID_LOG_PII(MSIDLogLevelVerbose, nil, context, @"Saving app's metadata %@", metadata);
-    
+
     MSIDAppMetadataCacheKey *key = [[MSIDAppMetadataCacheKey alloc] initWithClientId:metadata.clientId
                                                                          environment:metadata.environment
                                                                             familyId:metadata.familyId
@@ -447,14 +447,14 @@
                     error:(NSError * _Nullable * _Nullable)error
 {
     assert(appMetadata);
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelVerbose, nil, context, @"(Default cache) Removing app metadata with clientId %@, environment %@", appMetadata.clientId, appMetadata.environment);
-    
+
     MSIDAppMetadataCacheKey *key = [[MSIDAppMetadataCacheKey alloc] initWithClientId:appMetadata.clientId
                                                                          environment:appMetadata.environment
                                                                             familyId:appMetadata.familyId
                                                                          generalType:MSIDAppMetadataType];
-    
+
     return [_dataSource removeItemsWithMetadataKey:key context:context error:error];
 }
 
@@ -463,17 +463,17 @@
                                                                            error:(NSError * _Nullable * _Nullable)error
 {
     assert(cacheQuery);
-    
+
     MSID_LOG_PII(MSIDLogLevelVerbose, nil, context, @"(Default cache) Get app metadata entries with clientId %@, environment %@", cacheQuery.clientId, cacheQuery.environment);
-    
+
     NSArray<MSIDAppMetadataCacheItem *> *cacheItems = [_dataSource appMetadataEntriesWithKey:cacheQuery serializer:_serializer context:context error:error];
-    
+
     if (!cacheQuery.exactMatch)
     {
         NSMutableArray<MSIDAppMetadataCacheItem *> *filteredResults = [NSMutableArray array];
-        
+
         BOOL shouldMatchMetadata = cacheQuery.clientId || cacheQuery.environment || [cacheQuery.environmentAliases count];
-        
+
         if (shouldMatchMetadata)
         {
             for (MSIDAppMetadataCacheItem *cacheItem in cacheItems)
@@ -485,14 +485,14 @@
                 {
                     continue;
                 }
-                
+
                 [filteredResults addObject:cacheItem];
             }
-            
+
             return filteredResults;
         }
     }
-    
+
     return cacheItems;
 }
 

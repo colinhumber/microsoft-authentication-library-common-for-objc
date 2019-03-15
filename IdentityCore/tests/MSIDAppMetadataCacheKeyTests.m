@@ -35,7 +35,7 @@
     MSIDAppMetadataCacheKey *appMetadataKey = [[MSIDAppMetadataCacheKey alloc] initWithClientId:@"client"
                                                                                     environment:@"login.microsoftonline.com"
                                                                                        familyId:@"1" generalType:MSIDAppMetadataType];
-    
+
     XCTAssertEqualObjects(appMetadataKey.account, @"login.microsoftonline.com");
     XCTAssertEqualObjects(appMetadataKey.service, @"appmetadata-client");
     XCTAssertEqualObjects(appMetadataKey.type, @3001);
@@ -49,7 +49,7 @@
                                                                                     environment:@"login.microsoftonline.com"
                                                                                        familyId:nil
                                                                                     generalType:MSIDAppMetadataType];
-    
+
     XCTAssertEqualObjects(appMetadataKey.account, @"login.microsoftonline.com");
     XCTAssertEqualObjects(appMetadataKey.service, @"appmetadata-client");
     XCTAssertEqualObjects(appMetadataKey.type, @3001);

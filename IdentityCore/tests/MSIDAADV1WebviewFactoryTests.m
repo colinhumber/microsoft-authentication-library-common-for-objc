@@ -53,7 +53,7 @@
 - (void)testAuthorizationParametersFromConfiguration_withValidParams_shouldContainAADV1Configuration
 {
     __block NSUUID *correlationId = [NSUUID new];
-    
+
     MSIDWebviewConfiguration *config = [[MSIDWebviewConfiguration alloc] initWithAuthorizationEndpoint:[NSURL URLWithString:DEFAULT_TEST_AUTHORIZATION_ENDPOINT]
                                                                                            redirectUri:DEFAULT_TEST_REDIRECT_URI
                                                                                               clientId:DEFAULT_TEST_CLIENT_ID
@@ -61,18 +61,18 @@
                                                                                                 scopes:nil
                                                                                          correlationId:correlationId
                                                                                             enablePkce:NO];
-    
+
     config.extraQueryParameters = @{ @"eqp1" : @"val1", @"eqp2" : @"val2" };
     config.promptBehavior = @"login";
     config.claims = @"claims";
     config.loginHint = @"fakeuser@contoso.com";
-    
+
     NSString *requestState = @"state";
-    
+
     MSIDAADV1WebviewFactory *factory = [MSIDAADV1WebviewFactory new];
-    
+
     NSDictionary *params = [factory authorizationParametersFromConfiguration:config requestState:requestState];
-    
+
     NSMutableDictionary *expectedQPs = [NSMutableDictionary dictionaryWithDictionary:
                                         @{
                                           @"client_id" : DEFAULT_TEST_CLIENT_ID,
@@ -89,16 +89,16 @@
                                           @"prompt" : @"login",
                                           @"haschrome" : @"1"
                                           }];
-    
+
     [expectedQPs addEntriesFromDictionary:[MSIDDeviceId deviceId]];
-    
+
     XCTAssertTrue([expectedQPs compareAndPrintDiff:params]);
 }
 
 - (void)testAuthorizationParametersFromConfiguration_withValidParamsWithScopes_shouldContainAADV1ConfigurationWithScopes
 {
     __block NSUUID *correlationId = [NSUUID new];
-    
+
     MSIDWebviewConfiguration *config = [[MSIDWebviewConfiguration alloc] initWithAuthorizationEndpoint:[NSURL URLWithString:DEFAULT_TEST_AUTHORIZATION_ENDPOINT]
                                                                                            redirectUri:DEFAULT_TEST_REDIRECT_URI
                                                                                               clientId:DEFAULT_TEST_CLIENT_ID
@@ -106,18 +106,18 @@
                                                                                                 scopes:[NSOrderedSet orderedSetWithObjects:@"scope1", nil]
                                                                                          correlationId:correlationId
                                                                                             enablePkce:NO];
-    
+
     config.extraQueryParameters = @{ @"eqp1" : @"val1", @"eqp2" : @"val2" };
     config.promptBehavior = @"login";
     config.claims = @"claims";
     config.loginHint = @"fakeuser@contoso.com";
-    
+
     NSString *requestState = @"state";
-    
+
     MSIDAADV1WebviewFactory *factory = [MSIDAADV1WebviewFactory new];
-    
+
     NSDictionary *params = [factory authorizationParametersFromConfiguration:config requestState:requestState];
-    
+
     NSMutableDictionary *expectedQPs = [NSMutableDictionary dictionaryWithDictionary:
                                         @{
                                           @"client_id" : DEFAULT_TEST_CLIENT_ID,
@@ -135,9 +135,9 @@
                                           @"haschrome" : @"1",
                                           @"scope" : @"scope1"
                                           }];
-    
+
     [expectedQPs addEntriesFromDictionary:[MSIDDeviceId deviceId]];
-    
+
     XCTAssertTrue([expectedQPs compareAndPrintDiff:params]);
 }
 

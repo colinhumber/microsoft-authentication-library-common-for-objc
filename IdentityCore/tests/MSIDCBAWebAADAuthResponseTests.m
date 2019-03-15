@@ -67,7 +67,7 @@
     NSURL *url = [NSURL URLWithString:@"msauth://code/redirect?code=somecode"];
     NSError *error;
     MSIDCBAWebAADAuthResponse *response = [[MSIDCBAWebAADAuthResponse alloc] initWithURL:url context:nil error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertEqualObjects(response.authorizationCode, @"somecode");
     XCTAssertEqualObjects(response.redirectUri, @"msauth://code/redirect");

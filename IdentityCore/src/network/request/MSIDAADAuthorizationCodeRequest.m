@@ -40,9 +40,9 @@
         NSParameterAssert(endpoint);
         NSParameterAssert(clientId);
         NSParameterAssert(redirectUri);
-        
+
         self.context =  context;
-        
+
         NSMutableDictionary *parameters = [NSMutableDictionary new];
         parameters[MSID_OAUTH2_CLIENT_ID] = clientId;
         parameters[MSID_OAUTH2_REDIRECT_URI] = redirectUri;
@@ -51,16 +51,16 @@
         parameters[MSID_OAUTH2_PROMPT] = MSID_OAUTH2_PROMPT_NONE;
         parameters[MSID_OAUTH2_SCOPE] = scope;
         _parameters = parameters;
-        
+
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest new];;
         urlRequest.URL = endpoint;
         urlRequest.HTTPMethod = @"GET";
         _urlRequest = urlRequest;
-        
+
         __auto_type requestConfigurator = [MSIDAADRequestConfigurator new];
         [requestConfigurator configure:self];
     }
-    
+
     return self;
 }
 

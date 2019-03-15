@@ -36,14 +36,14 @@ typedef NS_ENUM(NSInteger, MSIDLogLevel)
 
 /*!
  The LogCallback block for the logger
- 
+
  @param  level           The level of the log message
  @param  message         The message being logged
  @param  containsPII     If the message might contain Personally Identifiable Information (PII)
  this will be true. Log messages possibly containing PII will not be
  sent to the callback unless PIllLoggingEnabled is set to YES on the
  logger.
- 
+
  */
 typedef void (^MSIDLogCallback)(MSIDLogLevel level, NSString *message, BOOL containsPII);
 
@@ -66,7 +66,7 @@ typedef void (^MSIDLogCallback)(MSIDLogLevel level, NSString *message, BOOL cont
 
 /*!
  Sets the callback block to send MSID log messages to.
- 
+
  NOTE: Once this is set this can not be unset, and it should be set early in
  the program's execution.
  */

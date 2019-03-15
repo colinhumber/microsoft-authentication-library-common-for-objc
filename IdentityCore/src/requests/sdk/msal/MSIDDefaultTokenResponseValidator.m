@@ -42,7 +42,7 @@
      If server returns less scopes than developer requested,
      we'd like to throw an error and specify which scopes were granted and which ones not
      */
-    
+
     NSOrderedSet *grantedScopes = tokenResult.accessToken.scopes;
     NSOrderedSet *normalizedGrantedScopes = grantedScopes.normalizedScopeSet;
 
@@ -51,15 +51,15 @@
         if (error)
         {
             NSMutableDictionary *additionalUserInfo = [NSMutableDictionary new];
-            
+
             MSID_LOG_ERROR_CORR(correlationID, @"Server returned less scopes than requested, granted scopes: %@", grantedScopes);
             // Remove oidc scopes.
             NSOrderedSet *oidcScopes = oidcScope.msidScopeSet;
             NSOrderedSet *filteredGrantedScopes = [grantedScopes msidMinusOrderedSet:oidcScopes normalize:YES];
-            
+
             MSID_LOG_INFO_CORR(correlationID, @"Removing reserved scopes from granted scopes: %@", oidcScopes);
             MSID_LOG_INFO_CORR(correlationID, @"Final granted scopes: %@", grantedScopes);
-            
+
             additionalUserInfo[MSIDGrantedScopesKey] = [filteredGrantedScopes array];
 
             NSOrderedSet *declinedScopeSet = [configuration.scopes msidMinusOrderedSet:filteredGrantedScopes normalize:YES];
@@ -89,10 +89,10 @@
             NSDictionary *userInfo = @{MSIDInvalidTokenResultKey : tokenResult};
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorMismatchedAccount, @"Different account was returned from the server", nil, nil, nil, correlationID, userInfo);
         }
-        
+
         return NO;
     }
-    
+
     return YES;
 }
 

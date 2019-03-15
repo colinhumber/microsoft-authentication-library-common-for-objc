@@ -55,7 +55,7 @@
 - (void)testAuthorizationParametersFromConfiguration_withValidParams_shouldContainAADConfiguration
 {
     MSIDAADWebviewFactory *factory = [MSIDAADWebviewFactory new];
-    
+
     __block NSUUID *correlationId = [NSUUID new];
     MSIDWebviewConfiguration *config = [[MSIDWebviewConfiguration alloc] initWithAuthorizationEndpoint:[NSURL URLWithString:DEFAULT_TEST_AUTHORIZATION_ENDPOINT]
                                                                                            redirectUri:DEFAULT_TEST_REDIRECT_URI
@@ -64,14 +64,14 @@
                                                                                                 scopes:[NSOrderedSet orderedSetWithObjects:@"scope1", nil]
                                                                                          correlationId:correlationId
                                                                                             enablePkce:NO];
-    
+
     config.extraQueryParameters = @{ @"eqp1" : @"val1", @"eqp2" : @"val2" };
     config.loginHint = @"fakeuser@contoso.com";
     config.claims = @"claims";
     config.promptBehavior = @"login";
-    
+
     NSString *requestState = @"state";
-    
+
     NSDictionary *params = [factory authorizationParametersFromConfiguration:config requestState:requestState];
 
     NSMutableDictionary *expectedQPs = [NSMutableDictionary dictionaryWithDictionary:
@@ -89,10 +89,10 @@
                                           @"prompt" : @"login",
                                           @"haschrome" : @"1",
                                           @"scope" : @"scope1"
-                                          
+
                                           }];
     [expectedQPs addEntriesFromDictionary:[MSIDDeviceId deviceId]];
-    
+
     XCTAssertTrue([expectedQPs compareAndPrintDiff:params]);
 }
 
@@ -134,14 +134,14 @@
 - (void)testResponseWithURL_whenURLSchemeMsauthAndHostWPJ_shouldReturnWPJResponse
 {
     MSIDAADWebviewFactory *factory = [MSIDAADWebviewFactory new];
-    
+
     NSError *error = nil;
     __auto_type response = [factory responseWithURL:[NSURL URLWithString:@"msauth://wpj?app_link=link"]
                                        requestState:nil
                         ignoreInvalidState:NO
                                             context:nil
                                               error:&error];
-    
+
     XCTAssertTrue([response isKindOfClass:MSIDWebWPJResponse.class]);
     XCTAssertNil(error);
 }
@@ -149,15 +149,15 @@
 - (void)testResponseWithURL_whenBrokerInstallResponseInSystemBrowser_shouldReturnWPJResponse
 {
     MSIDAADWebviewFactory *factory = [MSIDAADWebviewFactory new];
-    
+
     NSError *error = nil;
-    
+
     NSURL *url = [NSURL URLWithString:@"msauth.com.microsoft.myapp://auth/msauth/wpj?app_link=app.link&username=XXX@upn.com"];
     __auto_type response = [factory responseWithURL:url requestState:nil ignoreInvalidState:YES context:nil error:&error];
-    
+
     XCTAssertTrue([response isKindOfClass:MSIDWebWPJResponse.class]);
     XCTAssertNil(error);
-    
+
     MSIDWebWPJResponse *wpjResponse = (MSIDWebWPJResponse *)response;
     XCTAssertEqualObjects(wpjResponse.appInstallLink, @"app.link");
     XCTAssertEqualObjects(wpjResponse.upn, @"XXX@upn.com");
@@ -166,15 +166,15 @@
 - (void)testResponseWithURL_whenBrokerInstallResponseInSystemBrowser_andLocalhostRedirectUri_shouldReturnWPJResponse
 {
     MSIDAADWebviewFactory *factory = [MSIDAADWebviewFactory new];
-    
+
     NSError *error = nil;
-    
+
     NSURL *url = [NSURL URLWithString:@"https://localhost/msauth/wpj?app_link=app.link&username=XXX@upn.com"];
     __auto_type response = [factory responseWithURL:url requestState:nil ignoreInvalidState:YES context:nil error:&error];
-    
+
     XCTAssertTrue([response isKindOfClass:MSIDWebWPJResponse.class]);
     XCTAssertNil(error);
-    
+
     MSIDWebWPJResponse *wpjResponse = (MSIDWebWPJResponse *)response;
     XCTAssertEqualObjects(wpjResponse.appInstallLink, @"app.link");
     XCTAssertEqualObjects(wpjResponse.upn, @"XXX@upn.com");
@@ -183,15 +183,15 @@
 - (void)testResponseWithURL_whenBrokerInstallResponseInSystemBrowser_andRedirectUriEndingInSlash_shouldReturnWPJResponse
 {
     MSIDAADWebviewFactory *factory = [MSIDAADWebviewFactory new];
-    
+
     NSError *error = nil;
-    
+
     NSURL *url = [NSURL URLWithString:@"https://localhost//msauth/wpj?app_link=app.link&username=XXX@upn.com"];
     __auto_type response = [factory responseWithURL:url requestState:nil ignoreInvalidState:YES context:nil error:&error];
-    
+
     XCTAssertTrue([response isKindOfClass:MSIDWebWPJResponse.class]);
     XCTAssertNil(error);
-    
+
     MSIDWebWPJResponse *wpjResponse = (MSIDWebWPJResponse *)response;
     XCTAssertEqualObjects(wpjResponse.appInstallLink, @"app.link");
     XCTAssertEqualObjects(wpjResponse.upn, @"XXX@upn.com");
@@ -200,14 +200,14 @@
 - (void)testResponseWithURL_whenURLSchemeNotMsauth_shouldReturnAADAuthResponse
 {
     MSIDAADWebviewFactory *factory = [MSIDAADWebviewFactory new];
-    
+
     NSError *error = nil;
     __auto_type response = [factory responseWithURL:[NSURL URLWithString:@"redirecturi://somepayload?code=authcode&cloud_instance_host_name=somename"]
                                        requestState:nil
                         ignoreInvalidState:NO
                                             context:nil
                                               error:&error];
-    
+
     XCTAssertTrue([response isKindOfClass:MSIDWebAADAuthResponse.class]);
     XCTAssertNil(error);
 }
@@ -216,14 +216,14 @@
 - (void)testResponseWithURL_whenURLSchemeBrowser_shouldReturnBrowserResponse
 {
     MSIDAADWebviewFactory *factory = [MSIDAADWebviewFactory new];
-    
+
     NSError *error = nil;
     __auto_type response = [factory responseWithURL:[NSURL URLWithString:@"browser://somehost"]
                                        requestState:nil
                         ignoreInvalidState:NO
                                             context:nil
                                               error:&error];
-    
+
     XCTAssertTrue([response isKindOfClass:MSIDWebOpenBrowserResponse.class]);
     XCTAssertNil(error);
 }

@@ -38,7 +38,7 @@ typedef unsigned char byte;
 - (NSString *)msidBase64UrlEncode
 {
     NSData *decodedData = [self dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     return [decodedData msidBase64UrlEncodedString];
 }
 
@@ -46,13 +46,13 @@ typedef unsigned char byte;
 - (NSString *)msidBase64UrlDecode
 {
     NSData *data = [NSData msidDataFromBase64UrlEncodedString:self];
-    
+
     if (!data) return nil;
     if (data.length == 0) return @"";
-    
+
     char lastByte;
     [data getBytes:&lastByte range:NSMakeRange([data length] - 1, 1)];
-    
+
     // Data here can be null terminated or not
     // - stringWithUTF8String expects a null-terminated c array of bytes in UTF8 encoding
     //   https://developer.apple.com/documentation/foundation/nsstring/1497379-stringwithutf8string
@@ -77,13 +77,13 @@ typedef unsigned char byte;
     {
         return YES;
     }
-    
+
     static NSCharacterSet *nonWhiteCharSet;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         nonWhiteCharSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
     });
-    
+
     return [string rangeOfCharacterFromSet:nonWhiteCharSet].location == NSNotFound;
 }
 
@@ -111,14 +111,14 @@ typedef unsigned char byte;
 - (NSString *)msidURLEncode
 {
     static NSCharacterSet *set = nil;
-    
+
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSMutableCharacterSet *allowedSet = [[NSCharacterSet alphanumericCharacterSet] mutableCopy];
         [allowedSet addCharactersInString:@"-._~"];
         set = allowedSet;
     });
-    
+
     return [self stringByAddingPercentEncodingWithAllowedCharacters:set];
 }
 
@@ -131,7 +131,7 @@ typedef unsigned char byte;
 - (NSString *)msidTokenHash
 {
     NSString *returnStr = [[[self msidData] msidSHA256] msidHexString];
-    
+
     // 7 characters is sufficient to differentiate tokens in the log, otherwise the hashes start making log lines hard to read
     return [returnStr substringToIndex:7];
 }
@@ -142,15 +142,15 @@ typedef unsigned char byte;
     {
         return nil;
     }
-    
+
     NSMutableData *data = [NSMutableData dataWithLength:size];
     int result = SecRandomCopyBytes(kSecRandomDefault, data.length, data.mutableBytes);
-    
+
     if (result != 0)
     {
         return nil;
     }
-    
+
     return [NSString msidBase64UrlEncodedStringFromData:data];
 }
 
@@ -158,16 +158,16 @@ typedef unsigned char byte;
 + (NSString *)msidHexStringFromData:(NSData *)data
 {
     const unsigned char *charBytes = (const unsigned char *)data.bytes;
-    
+
     if (!charBytes) return nil;
     NSUInteger dataLength = data.length;
     NSMutableString *result = [NSMutableString stringWithCapacity:dataLength*2];
-    
+
     for (NSUInteger i = 0; i < dataLength; i++)
     {
         [result appendFormat:@"%02x", charBytes[i]];
     }
-    
+
     return result;
 }
 
@@ -204,17 +204,17 @@ typedef unsigned char byte;
                                   formEncode:(BOOL)formEncode
 {
     __block NSMutableString *encodedString = nil;
-    
+
     [dict enumerateKeysAndObjectsUsingBlock: ^(id key, id value, BOOL __unused *stop)
      {
          if ([NSString msidIsStringNilOrBlank:key])
          {
              return;
          }
-         
+
          NSString *trimmedKey = [key msidTrimmedString];
          NSString *encodedKey = formEncode? [trimmedKey msidWWWFormURLEncode] : [trimmedKey msidURLEncode];
-         
+
          if (!encodedString)
          {
              encodedString = [NSMutableString new];
@@ -223,23 +223,23 @@ typedef unsigned char byte;
          {
              [encodedString appendString:@"&"];
          }
-         
+
          [encodedString appendString:encodedKey];
-         
+
          NSString *v = [value description];
          if ([value isKindOfClass:NSUUID.class])
          {
              v = ((NSUUID *)value).UUIDString;
          }
-         
+
          NSString *trimmedValue = [v msidTrimmedString];
          NSString *encodedValue = formEncode? [trimmedValue msidWWWFormURLEncode] : [trimmedValue msidURLEncode];
-         
+
          if (![NSString msidIsStringNilOrBlank:encodedValue])
          {
              [encodedString appendFormat:@"=%@", encodedValue];
          }
-         
+
      }];
     return encodedString;
 }
@@ -269,7 +269,7 @@ typedef unsigned char byte;
     {
         return @"";
     }
-    
+
     return [[set array] componentsJoinedByString:@" "];
 }
 
@@ -289,7 +289,7 @@ typedef unsigned char byte;
 {
     __auto_type jsonSerializer = [MSIDJsonSerializer new];
     __auto_type jsonDictionary = (NSDictionary *)[jsonSerializer fromJsonString:self ofType:NSDictionary.self context:nil error:nil];
-    
+
     return jsonDictionary;
 }
 
@@ -302,7 +302,7 @@ typedef unsigned char byte;
 {
     NSString *secretHash = [self dataUsingEncoding:NSUTF8StringEncoding].msidSHA256.msidHexString;
     if (secretHash.length > 8) secretHash = [secretHash substringToIndex:8];
-    
+
     return secretHash;
 }
 

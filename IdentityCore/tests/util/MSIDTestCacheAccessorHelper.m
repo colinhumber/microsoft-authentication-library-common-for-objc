@@ -64,12 +64,12 @@
 + (NSArray *)getAllTokens:(id<MSIDCacheAccessor>)cacheAccessor type:(MSIDCredentialType)type class:(Class)typeClass
 {
     NSError *error = nil;
-    
+
     NSArray *allTokens = [cacheAccessor allTokensWithContext:nil error:&error];
     if (error) return nil;
-    
+
     NSMutableArray *results = [NSMutableArray array];
-    
+
     for (MSIDBaseToken *token in allTokens)
     {
         if ([token supportsCredentialType:type]
@@ -78,7 +78,7 @@
             [results addObject:token];
         }
     }
-    
+
     return results;
 }
 

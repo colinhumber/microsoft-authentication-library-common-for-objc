@@ -42,13 +42,13 @@
     static MSIDTestLogger *logger;
     dispatch_once(&onceToken, ^{
         logger = [MSIDTestLogger new];
-        
+
         [[MSIDLogger sharedLogger] setCallback:^(MSIDLogLevel level, NSString *message, BOOL containsPII) {
             [logger logLevel:level isPii:containsPII message:message];
             logger.callbackInvoked = YES;
         }];
     });
-    
+
     return logger;
 }
 

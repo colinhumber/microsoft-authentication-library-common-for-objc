@@ -36,19 +36,19 @@
     if (self)
     {
         NSParameterAssert(refreshToken);
-        
+
         NSMutableDictionary *parameters = [_parameters mutableCopy];
         parameters[MSID_OAUTH2_GRANT_TYPE] = MSID_OAUTH2_REFRESH_TOKEN;
         parameters[MSID_OAUTH2_REFRESH_TOKEN] = refreshToken;
-        
+
         if (extraParameters)
         {
             [parameters addEntriesFromDictionary:extraParameters];
         }
-        
+
         _parameters = parameters;
     }
-    
+
     return self;
 }
 

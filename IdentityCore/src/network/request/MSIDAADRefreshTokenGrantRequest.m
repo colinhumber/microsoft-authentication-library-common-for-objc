@@ -40,15 +40,15 @@
     {
         __auto_type requestConfigurator = [MSIDAADRequestConfigurator new];
         [requestConfigurator configure:self];
-        
+
         NSMutableDictionary *parameters = [_parameters mutableCopy];
         parameters[MSID_OAUTH2_CLIENT_INFO] = @YES;
         parameters[MSID_OAUTH2_CLAIMS] = claims;
         parameters[MSID_ENROLLMENT_ID] = enrollmentId;
-        
+
         _parameters = parameters;
     }
-    
+
     return self;
 }
 

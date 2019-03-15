@@ -105,7 +105,7 @@
                                              error:(NSError **)error
 {
     MSID_LOG_INFO_CORR(correlationID, @"Validating broker response.");
-    
+
     if (!brokerResponse)
     {
         MSIDFillAndLogError(error, MSIDErrorInternal, @"Broker response is nil", correlationID);
@@ -220,8 +220,8 @@
         MSID_LOG_NO_PII(MSIDLogLevelError, nil, parameters, @"Failed to save tokens in cache. Error %ld, %@", (long)savingError.code, savingError.domain);
         MSID_LOG_ERROR_PII(parameters, @"Failed to save tokens in cache. Error %@", savingError);
     }
-    
-    
+
+
 
     BOOL resultValid = [self validateTokenResult:tokenResult
                                    configuration:parameters.msidConfiguration

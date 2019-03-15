@@ -52,12 +52,12 @@ MSID_JSON_ACCESSOR(@"adi", additionalUserId)
                                  error:(NSError **)error
 {
     self = [super initWithJSONDictionary:json refreshToken:token error:error];
-    
+
     if (self)
     {
         [self initDerivedProperties];
     }
-    
+
     return self;
 }
 
@@ -67,7 +67,7 @@ MSID_JSON_ACCESSOR(@"adi", additionalUserId)
     {
         return nil;
     }
-    
+
     [self initDerivedProperties];
     return self;
 }
@@ -84,7 +84,7 @@ MSID_JSON_ACCESSOR(@"adi", additionalUserId)
         NSInteger extExpiresOn = [MSIDHelpers msidIntegerValue:_json[@"ext_expires_on"]];
         _extendedExpiresOnDate = [NSDate dateWithTimeIntervalSince1970:extExpiresOn];
     }
-    
+
     if (self.rawClientInfo && !_clientInfo)
     {
         _clientInfo = [[MSIDClientInfo alloc] initWithRawClientInfo:self.rawClientInfo error:nil];
@@ -95,12 +95,12 @@ MSID_JSON_ACCESSOR(@"adi", additionalUserId)
 {
     id expiresOnObj = _json[MSID_OAUTH2_EXPIRES_ON];
     NSInteger expiresOn = [MSIDHelpers msidIntegerValue:expiresOnObj];
-    
+
     if (!expiresOn && expiresOnObj)
     {
         MSID_LOG_WARN(nil, @"Unparsable time - The response value for the access token expiration (expiresOn) cannot be parsed: %@", expiresOnObj);
     }
-    
+
     return expiresOn;
 }
 
@@ -114,12 +114,12 @@ MSID_JSON_ACCESSOR(@"adi", additionalUserId)
 {
     id extExpiresInObj = _json[MSID_OAUTH2_EXT_EXPIRES_IN];
     NSInteger extExpiresIn = [MSIDHelpers msidIntegerValue:extExpiresInObj];
-    
+
     if (!extExpiresIn && extExpiresInObj)
     {
         MSID_LOG_WARN(nil, @"Unparsable time - The response value for the access token expiration (extended expires IN) cannot be parsed: %@", extExpiresInObj);
     }
-    
+
     return extExpiresIn;
 }
 
@@ -132,26 +132,26 @@ MSID_JSON_ACCESSOR(@"adi", additionalUserId)
 - (NSDate *)expiryDate
 {
     NSDate *date = [super expiryDate];
-    
+
     if (date)
     {
         return date;
     }
-    
+
     NSInteger expiresOn = self.expiresOn;
-    
+
     if (!expiresOn)
     {
         return nil;
     }
-    
+
     return [NSDate dateWithTimeIntervalSince1970:expiresOn];
 }
 
 - (NSDictionary *)additionalServerInfo
 {
     NSDictionary *additionalInfo = [super additionalServerInfo];
-    
+
     NSArray *knownFields = @[MSID_OAUTH2_CORRELATION_ID_RESPONSE,
                              MSID_OAUTH2_RESOURCE,
                              MSID_OAUTH2_CLIENT_INFO,
@@ -160,7 +160,7 @@ MSID_JSON_ACCESSOR(@"adi", additionalUserId)
                              MSID_OAUTH2_EXPIRES_ON,
                              MSID_OAUTH2_EXT_EXPIRES_IN, @"url",
                              MSID_OAUTH2_SUB_ERROR];
-    
+
     return [additionalInfo dictionaryByRemovingFields:knownFields];
 }
 

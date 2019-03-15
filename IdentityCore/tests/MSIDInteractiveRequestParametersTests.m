@@ -35,9 +35,9 @@
 {
     MSIDAuthority *authority = [MSIDAuthorityFactory authorityFromUrl:[NSURL URLWithString:@"https://login.microsoftonline.com/common"] context:nil error:nil];
     NSUUID *correlationID = [NSUUID UUID];
-    
+
     NSError *error = nil;
-    
+
     MSIDInteractiveRequestParameters *parameters = [[MSIDInteractiveRequestParameters alloc] initWithAuthority:authority
                                                                                                    redirectUri:@"redirect"
                                                                                                       clientId:@"clientid"
@@ -49,7 +49,7 @@
                                                                                        supportedBrokerProtocol:@"2"
                                                                                                    requestType:MSIDInteractiveRequestBrokeredType
                                                                                                          error:&error];
-    
+
     XCTAssertNotNil(parameters);
     XCTAssertEqualObjects(parameters.authority, authority);
     XCTAssertEqualObjects(parameters.redirectUri, @"redirect");
@@ -61,7 +61,7 @@
     XCTAssertEqualObjects(parameters.telemetryApiId, @"100");
     XCTAssertEqualObjects(parameters.supportedBrokerProtocolScheme, @"2");
     XCTAssertEqual(parameters.requestType, MSIDInteractiveRequestBrokeredType);
-    
+
     XCTAssertNil(error);
 }
 
@@ -79,10 +79,10 @@
                                                                                        supportedBrokerProtocol:@"2"
                                                                                                    requestType:MSIDInteractiveRequestBrokeredType
                                                                                                          error:nil];
-    
+
     NSOrderedSet *allScopes = [parameters allAuthorizeRequestScopes];
     XCTAssertEqualObjects([@"scope scope2" msidScopeSet], allScopes);
-    
+
 }
 
 - (void)testAllAuthorizeRequestScopes_whenBothResourceAndOIDCScopesProvided_shouldReturnAllScopesCombined
@@ -99,7 +99,7 @@
                                                                                        supportedBrokerProtocol:@"2"
                                                                                                    requestType:MSIDInteractiveRequestBrokeredType
                                                                                                          error:nil];
-    
+
     NSOrderedSet *allScopes = [parameters allAuthorizeRequestScopes];
     XCTAssertEqualObjects([@"scope scope2 openid openid2" msidScopeSet], allScopes);
 }
@@ -118,7 +118,7 @@
                                                                                        supportedBrokerProtocol:@"2"
                                                                                                    requestType:MSIDInteractiveRequestBrokeredType
                                                                                                          error:nil];
-    
+
     NSOrderedSet *allScopes = [parameters allAuthorizeRequestScopes];
     XCTAssertEqualObjects([@"scope scope2 openid openid2 extra1 extra5" msidScopeSet], allScopes);
 }
@@ -126,7 +126,7 @@
 - (void)testAllAuthorizeRequestParameters_whenNoExtraParameters_shouldReturnNilResult
 {
     MSIDInteractiveRequestParameters *parameters = [MSIDInteractiveRequestParameters new];
-    
+
     NSDictionary *eqp = [parameters allAuthorizeRequestExtraParameters];
     XCTAssertNil(eqp);
 }
@@ -137,7 +137,7 @@
     parameters.appRequestMetadata = nil;
     NSDictionary *authorizeEndpointParameters = @{@"eqp1": @"val1", @"eqp2": @"val2"};
     parameters.extraAuthorizeURLQueryParameters = authorizeEndpointParameters;
-    
+
     NSDictionary *eqp = [parameters allAuthorizeRequestExtraParameters];
     XCTAssertNotNil(eqp);
     XCTAssertEqualObjects(eqp, authorizeEndpointParameters);
@@ -149,7 +149,7 @@
     parameters.appRequestMetadata = nil;
     NSDictionary *additionalParams = @{@"eqp1": @"val1", @"eqp2": @"val2"};
     parameters.extraURLQueryParameters = additionalParams;
-    
+
     NSDictionary *eqp = [parameters allAuthorizeRequestExtraParameters];
     XCTAssertNotNil(eqp);
     XCTAssertEqualObjects(eqp, additionalParams);
@@ -162,7 +162,7 @@
     NSDictionary *authorizeEndpointParameters = @{@"eqp1": @"val1", @"eqp2": @"val2"};
     parameters.extraAuthorizeURLQueryParameters = authorizeEndpointParameters;
     parameters.extraURLQueryParameters = @{@"add1": @"val1", @"add2": @"val2"};
-    
+
     NSDictionary *eqp = [parameters allAuthorizeRequestExtraParameters];
     XCTAssertNotNil(eqp);
     NSDictionary *expectedParams = @{@"eqp1": @"val1", @"eqp2": @"val2", @"add1": @"val1", @"add2": @"val2"};
@@ -177,7 +177,7 @@
     NSMutableDictionary *combinedParameters = [NSMutableDictionary new];
     [combinedParameters addEntriesFromDictionary:parameters.appRequestMetadata];
     [combinedParameters addEntriesFromDictionary:authorizeEndpointParameters];
-    
+
     NSDictionary *eqp = [parameters allAuthorizeRequestExtraParameters];
     XCTAssertNotNil(eqp);
     XCTAssertEqualObjects(eqp, combinedParameters);
@@ -191,7 +191,7 @@
     NSMutableDictionary *combinedParameters = [NSMutableDictionary new];
     [combinedParameters addEntriesFromDictionary:parameters.appRequestMetadata];
     [combinedParameters addEntriesFromDictionary:tokenParameters];
-    
+
     NSDictionary *eqp = [parameters allAuthorizeRequestExtraParameters];
     XCTAssertNotNil(eqp);
     XCTAssertEqualObjects(eqp, combinedParameters);
@@ -208,7 +208,7 @@
     [combinedParameters addEntriesFromDictionary:parameters.appRequestMetadata];
     [combinedParameters addEntriesFromDictionary:authorizeEndpointParameters];
     [combinedParameters addEntriesFromDictionary:tokenParameters];
-    
+
     NSDictionary *eqp = [parameters allAuthorizeRequestExtraParameters];
     XCTAssertNotNil(eqp);
     XCTAssertEqualObjects(eqp, combinedParameters);

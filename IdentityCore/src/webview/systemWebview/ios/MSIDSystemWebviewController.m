@@ -38,7 +38,7 @@
 {
     id<MSIDRequestContext> _context;
     NSObject<MSIDWebviewInteracting> *_session;
-    
+
     BOOL _allowSafariViewController;
     BOOL _useAuthenticationSession;
 }
@@ -55,15 +55,15 @@
         MSID_LOG_WARN(context, @"Attemped to start with nil URL");
         return nil;
     }
-    
+
     if (!callbackURLScheme)
     {
         MSID_LOG_WARN(context, @"Attemped to start with invalid redirect uri");
         return nil;
     }
-    
+
     self = [super init];
-    
+
     if (self)
     {
         _startURL = startURL;
@@ -83,9 +83,9 @@
         MSID_LOG_WARN(_context, @"CompletionHandler cannot be nil for interactive session.");
         return;
     }
-    
+
     NSError *error = nil;
-    
+
     if (_useAuthenticationSession)
     {
         if (@available(iOS 11.0, *))
@@ -99,14 +99,14 @@
              error = MSIDCreateError(MSIDErrorDomain, MSIDErrorUnsupportedFunctionality, @"SFAuthenticationSession/ASWebAuthenticationSession is not available for iOS 10 and older.", nil, nil, nil, _context.correlationId, nil);
         }
     }
-    
+
     if (!_session && _allowSafariViewController)
     {
         _session = [[MSIDSafariViewController alloc] initWithURL:_startURL
                                                 parentController:_parentController
                                                          context:_context];
     }
-    
+
     if (!_session)
     {
         if (!error)
@@ -117,7 +117,7 @@
         completionHandler(nil, error);
         return;
     }
-    
+
     [MSIDNotifications notifyWebAuthDidStartLoad:_startURL];
     [_session startWithCompletionHandler:completionHandler];
 }
@@ -134,7 +134,7 @@
     {
         return [((MSIDSafariViewController *)_session) handleURLResponse:url];
     }
-    
+
     return NO;
 }
 

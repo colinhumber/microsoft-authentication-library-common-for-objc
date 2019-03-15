@@ -24,10 +24,10 @@
 #import <Foundation/Foundation.h>
 
 /*!
- 
+
  Compatibility protocol to use different tokens
  or credentials that can be used as refresh tokens/refresh credentials interchangeably
- 
+
  !*/
 
 @protocol MSIDRefreshableToken <NSObject>

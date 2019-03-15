@@ -153,9 +153,9 @@
                                                             configuration:configuration
                                                                   context:context
                                                                     error:error];
-    
+
     if (refreshToken) return refreshToken;
-    
+
     for (id<MSIDCacheAccessor> accessor in _otherAccessors)
     {
         refreshToken = [accessor getRefreshTokenWithAccount:accountIdentifier
@@ -163,14 +163,14 @@
                                               configuration:configuration
                                                     context:context
                                                       error:error];
-        
+
         if (refreshToken)
         {
             MSID_LOG_NO_PII(MSIDLogLevelVerbose, nil, context,@"(Legacy accessor) Found refresh token in a different accessor %@", [accessor class]);
             return refreshToken;
         }
     }
-    
+
     return nil;
 }
 
@@ -182,16 +182,16 @@
 {
     MSIDConfiguration *config = [configuration copy];
     config.clientId = MSID_LEGACY_CACHE_NIL_KEY;
-    
+
     MSIDPrimaryRefreshToken *prt = (MSIDPrimaryRefreshToken *)[self getRefreshableTokenWithAccount:accountIdentifier
                                                                                           familyId:familyId
                                                                                     credentialType:MSIDPrimaryRefreshTokenType
                                                                                      configuration:config
                                                                                            context:context
                                                                                              error:error];
-    
+
     if (prt) return prt;
-    
+
     for (id<MSIDCacheAccessor> accessor in _otherAccessors)
     {
         prt = [accessor getPrimaryRefreshTokenWithAccount:accountIdentifier
@@ -199,14 +199,14 @@
                                             configuration:configuration
                                                   context:context
                                                     error:error];
-        
+
         if (prt)
         {
             MSID_LOG_NO_PII(MSIDLogLevelVerbose, nil, context,@"(Legacy accessor) Found primary refresh token in a different accessor %@", [accessor class]);
             return prt;
         }
     }
-    
+
     return nil;
 }
 
@@ -219,7 +219,7 @@
 {
     MSID_LOG_NO_PII(MSIDLogLevelVerbose, nil, context, @"(Legacy accessor) Get token %@ with authority %@, clientId %@, familyID %@", [MSIDCredentialTypeHelpers credentialTypeAsString:credentialType], configuration.authority, configuration.clientId, familyId);
     MSID_LOG_PII(MSIDLogLevelVerbose, nil, context, @"(Legacy accessor) Get token %@ with authority %@, clientId %@, familyID %@, account %@", [MSIDCredentialTypeHelpers credentialTypeAsString:credentialType], configuration.authority, configuration.clientId, familyId, accountIdentifier.homeAccountId);
-    
+
     if (credentialType!=MSIDRefreshTokenType && credentialType!=MSIDPrimaryRefreshTokenType) return nil;
 
     MSIDRefreshToken *refreshToken = [self getLegacyRefreshableTokenForAccountImpl:accountIdentifier
@@ -269,18 +269,18 @@
         {
             return YES;
         }
-        
+
         if (accountIdentifier.homeAccountId && ![tokenCacheItem.homeAccountId isEqualToString:accountIdentifier.homeAccountId])
         {
             return NO;
         }
-        
+
         if (!clientId && !familyId)
         {
             // Nothing else to match by as neither clientId or familyId have been provided
             return YES;
         }
-        
+
         if (clientId && [tokenCacheItem.clientId isEqualToString:clientId])
         {
             return YES;
@@ -298,12 +298,12 @@
                                                                    tokenType:MSIDRefreshTokenType
                                                                  returnFirst:NO
                                                                     filterBy:filterBlock];
-    
+
     NSArray *primaryRefreshTokens = [MSIDTokenFilteringHelper filterTokenCacheItems:items
                                                                           tokenType:MSIDPrimaryRefreshTokenType
                                                                         returnFirst:NO
                                                                            filterBy:filterBlock];
-    
+
     NSMutableArray *allRefreshTokens = [refreshTokens mutableCopy];
     [allRefreshTokens addObjectsFromArray:primaryRefreshTokens];
 
@@ -328,7 +328,7 @@
         NSURL *rtAuthority = [refreshToken.authority.url msidURLForPreferredHost:authority.environment context:context error:error];
         account.authority = [MSIDAuthorityFactory authorityFromUrl:rtAuthority rawTenant:refreshToken.realm context:context error:nil];
         account.accountType = MSIDAccountTypeMSSTS;
-        
+
         NSError *localError;
         MSIDIdTokenClaims *idTokenClaims = [[MSIDIdTokenClaims alloc] initWithRawIdToken:refreshToken.idToken error:&localError];
         if (!localError)
@@ -336,7 +336,7 @@
             account.name = idTokenClaims.name;
             account.localAccountId = idTokenClaims.uniqueId;
         }
-        
+
         [resultAccounts addObject:account];
     }
 
@@ -540,8 +540,8 @@
                                                             context:(id<MSIDRequestContext>)context
                                                               error:(NSError **)error
 {
-    
-    
+
+
     NSString *clientId = familyId ? [MSIDCacheKey familyClientId:familyId] : configuration.clientId;
     NSArray<NSURL *> *aliases = [configuration.authority legacyRefreshTokenLookupAliases] ?: @[];
 
@@ -571,7 +571,7 @@
         MSIDFillAndLogError(error, MSIDErrorInternal, @"Tried to save access token, but no access token returned", context.correlationId);
         return NO;
     }
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"(Legacy accessor) Saving access token in legacy accessor");
     MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"(Legacy accessor) Saving access token in legacy accessor %@", accessToken);
 
@@ -595,7 +595,7 @@
         MSID_LOG_INFO(context, @"No refresh token returned in the token response, not updating cache");
         return YES;
     }
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"(Legacy accessor) Saving multi resource refresh token in legacy accessor");
     MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"(Legacy accessor) Saving multi resource refresh token in legacy accessor %@", refreshToken);
 
@@ -638,7 +638,7 @@
         MSIDFillAndLogError(error, MSIDErrorInternal, @"Tried to save single resource token, but no access token returned", context.correlationId);
         return NO;
     }
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"(Legacy accessor) Saving single resource tokens in legacy accessor");
     MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"(Legacy accessor) Saving single resource tokens in legacy accessor %@", legacyToken);
 
@@ -696,9 +696,9 @@
 
     MSIDLegacyTokenCacheQuery *query = [MSIDLegacyTokenCacheQuery new];
     __auto_type items = [_dataSource tokensWithKey:query serializer:_serializer context:context error:error];
-    
+
     NSMutableArray<MSIDBaseToken *> *tokens = [NSMutableArray new];
-    
+
     for (MSIDLegacyTokenCacheItem *item in items)
     {
         MSIDBaseToken *token = [item tokenWithType:item.credentialType];
@@ -776,15 +776,15 @@
                                                                                  clientId:clientId
                                                                                  resource:resource
                                                                              legacyUserId:legacyUserId];
-        
+
         if (!key)
         {
             return nil;
         }
-        
+
         NSError *cacheError = nil;
         MSIDLegacyTokenCacheItem *cacheItem = (MSIDLegacyTokenCacheItem *) [_dataSource tokenWithKey:key serializer:_serializer context:context error:&cacheError];
-        
+
         if (cacheError)
         {
             [MSIDTelemetry stopCacheEvent:event withItem:nil success:NO context:context];

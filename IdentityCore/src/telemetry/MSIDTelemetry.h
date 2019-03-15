@@ -25,9 +25,9 @@
 
 /*!
     @class ADTelemetry
- 
+
     The central class for ADAL telemetry.
- 
+
     Usage: Get a singleton instance of ADTelemetry; register a dispatcher for receiving telemetry events.
  */
 @interface MSIDTelemetry : NSObject

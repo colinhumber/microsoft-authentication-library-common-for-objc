@@ -39,7 +39,7 @@
 {
     MSIDBaseToken *token = [self createToken];
     MSIDBaseToken *tokenCopy = [token copy];
-    
+
     XCTAssertEqualObjects(tokenCopy, token);
 }
 
@@ -49,7 +49,7 @@
 {
     MSIDBaseToken *lhs = [self createToken];
     MSIDBaseToken *rhs = [self createToken];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -59,7 +59,7 @@
     [lhs setValue:@{@"key1" : @"value1"} forKey:@"additionalServerInfo"];
     MSIDBaseToken *rhs = [MSIDBaseToken new];
     [rhs setValue:@{@"key2" : @"value2"} forKey:@"additionalServerInfo"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -69,7 +69,7 @@
     [lhs setValue:@{@"key" : @"value"} forKey:@"additionalServerInfo"];
     MSIDBaseToken *rhs = [MSIDBaseToken new];
     [rhs setValue:@{@"key" : @"value"} forKey:@"additionalServerInfo"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -79,7 +79,7 @@
     [lhs setValue:[NSURL URLWithString:@"https://contoso.com"] forKey:@"authority"];
     MSIDBaseToken *rhs = [MSIDBaseToken new];
     [rhs setValue:[NSURL URLWithString:@"https://contoso2.com"] forKey:@"authority"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -89,7 +89,7 @@
     [lhs setValue:[NSURL URLWithString:@"https://contoso.com"] forKey:@"authority"];
     MSIDBaseToken *rhs = [MSIDBaseToken new];
     [rhs setValue:[NSURL URLWithString:@"https://contoso.com"] forKey:@"authority"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -119,7 +119,7 @@
     [lhs setValue:@"value 1" forKey:@"clientId"];
     MSIDBaseToken *rhs = [MSIDBaseToken new];
     [rhs setValue:@"value 2" forKey:@"clientId"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -129,7 +129,7 @@
     [lhs setValue:@"value 1" forKey:@"clientId"];
     MSIDBaseToken *rhs = [MSIDBaseToken new];
     [rhs setValue:@"value 1" forKey:@"clientId"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -149,7 +149,7 @@
     lhs.accountIdentifier = [[MSIDAccountIdentifier alloc] initWithDisplayableId:@"legacy_id" homeAccountId:@"value 1"];
     MSIDBaseToken *rhs = [MSIDBaseToken new];
     rhs.accountIdentifier = [[MSIDAccountIdentifier alloc] initWithDisplayableId:@"legacy_id" homeAccountId:@"value 1"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -185,7 +185,7 @@
 {
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDIDTokenType;
-    
+
     MSIDBaseToken *token = [[MSIDBaseToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -195,7 +195,7 @@
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDCredentialTypeOther;
     cacheItem.clientId = @"test";
-    
+
     MSIDBaseToken *token = [[MSIDBaseToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -205,7 +205,7 @@
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDCredentialTypeOther;
     cacheItem.environment = @"login.microsoftonline.com";
-    
+
     MSIDBaseToken *token = [[MSIDBaseToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -219,7 +219,7 @@
     cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
-    
+
     MSIDBaseToken *token = [[MSIDBaseToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNotNil(token);
     XCTAssertEqualObjects(token.authority, [@"https://login.microsoftonline.com/contoso.com" authority]);

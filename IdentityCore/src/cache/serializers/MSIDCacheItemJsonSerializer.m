@@ -58,13 +58,13 @@
 {
     NSError *error = nil;
     MSIDCredentialCacheItem *item = (MSIDCredentialCacheItem *)[self.jsonSerializer fromJsonData:data ofType:MSIDCredentialCacheItem.class context:nil error:&error];
-    
+
     if (!item)
     {
         MSID_LOG_WARN(nil, @"Failed to deserialize credential %@", error);
         return nil;
     }
-    
+
     return item;
 }
 
@@ -79,13 +79,13 @@
 {
     NSError *error = nil;
     MSIDAccountCacheItem *item = (MSIDAccountCacheItem *)[self.jsonSerializer fromJsonData:data ofType:MSIDAccountCacheItem.class context:nil error:&error];
-    
+
     if (!item)
     {
         MSID_LOG_WARN(nil, @"Failed to deserialize credential %@", error);
         return nil;
     }
-    
+
     return item;
 }
 
@@ -100,13 +100,13 @@
 {
     NSError *error = nil;
     MSIDAppMetadataCacheItem *item = (MSIDAppMetadataCacheItem *)[self.jsonSerializer fromJsonData:data ofType:MSIDAppMetadataCacheItem.class context:nil error:&error];
-    
+
     if (!item)
     {
         MSID_LOG_WARN(nil, @"Failed to deserialize app metadata %@", error);
         return nil;
     }
-    
+
     return item;
 }
 

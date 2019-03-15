@@ -53,12 +53,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:self.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDBaseToken *)object];
 }
 
@@ -80,7 +80,7 @@
     {
         return NO;
     }
-    
+
     BOOL result = YES;
     result &= (!self.authority && !item.authority) || [self.authority isEqual:item.authority];
     result &= (!self.storageAuthority && !item.storageAuthority) || [self.storageAuthority isEqual:item.storageAuthority];
@@ -88,7 +88,7 @@
     result &= (!self.accountIdentifier && !item.accountIdentifier) || [self.accountIdentifier isEqual:item.accountIdentifier];
     result &= (!self.additionalServerInfo && !item.additionalServerInfo) || [self.additionalServerInfo isEqualToDictionary:item.additionalServerInfo];
     result &= (self.credentialType == item.credentialType);
-    
+
     return result;
 }
 
@@ -109,14 +109,14 @@
 - (instancetype)initWithTokenCacheItem:(MSIDCredentialCacheItem *)tokenCacheItem
 {
     self = [super init];
-    
+
     if (self)
     {
         if (!tokenCacheItem)
         {
             return nil;
         }
-        
+
         if (![self supportsCredentialType:tokenCacheItem.credentialType])
         {
             MSID_LOG_ERROR(nil, @"Trying to initialize with a wrong token type");
@@ -128,21 +128,21 @@
 
         __auto_type authorityUrl = [NSURL msidURLWithEnvironment:environment tenant:tenant];
         _authority = [MSIDAuthorityFactory authorityFromUrl:authorityUrl rawTenant:tenant context:nil error:nil];
-        
+
         if (!_authority)
         {
             MSID_LOG_ERROR(nil, @"Trying to initialize token when missing authority field");
             return nil;
         }
-        
+
         _clientId = tokenCacheItem.clientId;
-        
+
         if (!_clientId)
         {
             MSID_LOG_ERROR(nil, @"Trying to initialize token when missing clientId field");
             return nil;
         }
-        
+
         _additionalServerInfo = tokenCacheItem.additionalInfo;
 
         if (tokenCacheItem.homeAccountId)
@@ -150,7 +150,7 @@
             _accountIdentifier = [[MSIDAccountIdentifier alloc] initWithDisplayableId:nil homeAccountId:tokenCacheItem.homeAccountId];
         }
     }
-    
+
     return self;
 }
 

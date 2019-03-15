@@ -76,7 +76,7 @@
     {
         return nil;
     }
-    
+
     NSMutableDictionary *authorizeParams = [[NSMutableDictionary alloc] initWithDictionary:self.extraAuthorizeURLQueryParameters];
     [authorizeParams addEntriesFromDictionary:self.extraURLQueryParameters];
     [authorizeParams addEntriesFromDictionary:self.appRequestMetadata];

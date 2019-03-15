@@ -57,7 +57,7 @@
                                        ]
                                };
     [self.inMemoryStorage setObject:dictionary forKey:@"intune_app_protection_enrollment_id_V1"];
-    
+
     __auto_type dataSource = [[MSIDIntuneInMemoryCacheDataSource alloc] initWithCache:self.inMemoryStorage];
     self.cache = [[MSIDIntuneEnrollmentIdsCache alloc] initWithDataSource:dataSource];
 }
@@ -71,10 +71,10 @@
 - (void)testEnrollmentIdForUserId_whenUserIdIsNil_shouldReturnNil
 {
     NSString *userId;
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserId:userId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -82,10 +82,10 @@
 - (void)testEnrollmentIdForUserId_whenUserIdIsNotInCache_shouldReturnNil
 {
     NSString *userId = @"qwe@contoso.com";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserId:userId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -94,10 +94,10 @@
 {
     NSString *userId = @"mike@contoso.com";
     [self corruptCache];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserId:userId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNotNil(error);
 }
@@ -105,10 +105,10 @@
 - (void)testEnrollmentIdForUserId_whenUserIdInCache_shouldReturnId
 {
     NSString *userId = @"mike@contoso.com";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserId:userId context:nil error:&error];
-    
+
     XCTAssertEqualObjects(@"adf79e3f-mike-454d-9f0f-2299e76dbfd5", enrollmentId);
     XCTAssertNil(error);
 }
@@ -119,10 +119,10 @@
 {
     NSString *objectId;
     NSString *tenantId = @"fda5d5d9-17c3-4c29-9cf9-a27c3d3f03e1";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserObjectId:objectId tenantId:tenantId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -131,10 +131,10 @@
 {
     NSString *objectId = @"d3444455-mike-4271-b6ea-e499cc0cab46";
     NSString *tenantId;
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserObjectId:objectId tenantId:tenantId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -143,10 +143,10 @@
 {
     NSString *objectId = @"d3444455-mike-4271-b6ea-e499cc0cab46";
     NSString *tenantId = @"fda5d5d9-17c3-4c29-9cf9-a27c3d3f03e1";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserObjectId:objectId tenantId:tenantId context:nil error:&error];
-    
+
     XCTAssertEqualObjects(@"adf79e3f-mike-454d-9f0f-2299e76dbfd5", enrollmentId);
     XCTAssertNil(error);
 }
@@ -155,10 +155,10 @@
 {
     NSString *objectId = @"d3444455-mike-4271-b6ea-e499cc0cab46";
     NSString *tenantId = @"qwe";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserObjectId:objectId tenantId:tenantId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -167,10 +167,10 @@
 {
     NSString *objectId = @"qwe";
     NSString *tenantId = @"fda5d5d9-17c3-4c29-9cf9-a27c3d3f03e1";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserObjectId:objectId tenantId:tenantId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -180,10 +180,10 @@
     NSString *objectId = @"d3444455-mike-4271-b6ea-e499cc0cab46";
     NSString *tenantId = @"fda5d5d9-17c3-4c29-9cf9-a27c3d3f03e1";
     [self corruptCache];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserObjectId:objectId tenantId:tenantId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNotNil(error);
 }
@@ -193,10 +193,10 @@
 - (void)testEnrollmentIdForHomeAccountId_whenHomeAccountIdIsNil_shouldReturnNil
 {
     NSString *homeAccountId;
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForHomeAccountId:homeAccountId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -205,10 +205,10 @@
 {
     NSString *homeAccountId;
     [self corruptCache];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForHomeAccountId:homeAccountId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNotNil(error);
 }
@@ -216,10 +216,10 @@
 - (void)testEnrollmentIdForHomeAccountId_whenHomeAccountIdIsNotInCache_shouldReturnNil
 {
     NSString *homeAccountId = @"qwe";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForHomeAccountId:homeAccountId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -227,10 +227,10 @@
 - (void)testEnrollmentIdForHomeAccountId_whenHomeAccountIdInCache_shouldReturnId
 {
     NSString *homeAccountId = @"60406d5d-mike-41e1-aa70-e97501076a22";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForHomeAccountId:homeAccountId context:nil error:&error];
-    
+
     XCTAssertEqualObjects(@"adf79e3f-mike-454d-9f0f-2299e76dbfd5", enrollmentId);
     XCTAssertNil(error);
 }
@@ -241,10 +241,10 @@
 {
     NSString *homeAccountId;
     NSString *userId = @"mike@contoso.com";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForHomeAccountId:homeAccountId legacyUserId:userId context:nil error:&error];
-    
+
     XCTAssertEqualObjects(@"adf79e3f-mike-454d-9f0f-2299e76dbfd5", enrollmentId);
     XCTAssertNil(error);
 }
@@ -253,10 +253,10 @@
 {
     NSString *homeAccountId;
     NSString *userId = @"qwe@contoso.com";
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForHomeAccountId:homeAccountId legacyUserId:userId context:nil error:&error];
-    
+
     XCTAssertEqualObjects(@"64d0557f-dave-4193-b630-8491ffd3b180", enrollmentId);
     XCTAssertNil(error);
 }
@@ -266,10 +266,10 @@
     NSString *homeAccountId;
     NSString *userId;
     [self corruptCache];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForHomeAccountId:homeAccountId legacyUserId:userId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNotNil(error);
 }
@@ -279,10 +279,10 @@
 - (void)testEnrollmentIdIfAvailable_whenCacheIsEmpty_shouldReturnNil
 {
     [self.inMemoryStorage removeAllObjects];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdIfAvailableWithContext:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNil(error);
 }
@@ -290,10 +290,10 @@
 - (void)testEnrollmentIdIfAvailable_whenCacheIsInvalid_shouldReturnNilAndError
 {
     [self corruptCache];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdIfAvailableWithContext:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNotNil(error);
 }
@@ -302,7 +302,7 @@
 {
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdIfAvailableWithContext:nil error:&error];
-    
+
     XCTAssertEqualObjects(@"64d0557f-dave-4193-b630-8491ffd3b180", enrollmentId);
     XCTAssertNil(error);
 }
@@ -313,10 +313,10 @@
 {
     NSString *userId;
     [self.inMemoryStorage setObject:@"not a json dictionary" forKey:@"intune_app_protection_enrollment_id_V1"];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserId:userId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNotNil(error);
 }
@@ -326,10 +326,10 @@
     NSString *userId;
     __auto_type dictionary = @{@"enrollment_ids": @"some string"};
     [self.inMemoryStorage setObject:dictionary forKey:@"intune_app_protection_enrollment_id_V1"];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserId:userId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNotNil(error);
 }
@@ -344,10 +344,10 @@
                                        ]
                                };
     [self.inMemoryStorage setObject:dictionary forKey:@"intune_app_protection_enrollment_id_V1"];
-    
+
     NSError *error;
     __auto_type enrollmentId = [self.cache enrollmentIdForUserId:userId context:nil error:&error];
-    
+
     XCTAssertNil(enrollmentId);
     XCTAssertNotNil(error);
 }
@@ -359,9 +359,9 @@
     [self.inMemoryStorage setObject:@{@"key2": @"value2"} forKey:@"intune_app_protection_enrollment_id_V1"];
     __auto_type jsonDicionary = @{@"key": @"value"};
     [self.inMemoryStorage setObject:jsonDicionary forKey:@"custom_key"];
-    
+
     [self.cache clear];
-    
+
     XCTAssertEqual(self.inMemoryStorage.count, 1);
     XCTAssertEqualObjects(jsonDicionary, [self.inMemoryStorage objectForKey:@"custom_key"]);
 }

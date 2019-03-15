@@ -56,23 +56,23 @@ static NSTimeInterval const s_defaultTimeoutInterval = 300;
 {
     NSParameterAssert(request.urlRequest);
     NSParameterAssert(request.urlRequest.URL);
-    
+
     __auto_type serializer = [MSIDHttpResponseSerializer new];
     serializer.preprocessor = [MSIDAADJsonResponsePreprocessor new];
     request.responseSerializer = serializer;
     request.errorHandler = [MSIDAADRequestErrorHandler new];
-    
+
     __auto_type requestUrl = request.urlRequest.URL;
-    
+
     __auto_type authority = [MSIDAuthorityFactory authorityFromUrl:request.urlRequest.URL context:request.context error:nil];
     // If url is authority, then we are trying to get network url of it. Otherwise we use provided url.
     __auto_type authorityUrl = [authority networkUrlWithContext:request.context];
-    
+
     if (authorityUrl)
     {
         requestUrl = [requestUrl msidURLForPreferredHost:[authorityUrl msidHostWithPortIfNecessary] context:nil error:nil];
     }
-    
+
     NSMutableURLRequest *mutableUrlRequest = [request.urlRequest mutableCopy];
     mutableUrlRequest.URL = requestUrl;
     mutableUrlRequest.timeoutInterval = self.timeoutInterval;
@@ -81,7 +81,7 @@ static NSTimeInterval const s_defaultTimeoutInterval = 300;
     [mutableUrlRequest setValue:kMSIDPKeyAuthHeaderVersion forHTTPHeaderField:kMSIDPKeyAuthHeader];
 #endif
     [mutableUrlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    
+
     NSMutableDictionary *headers = [mutableUrlRequest.allHTTPHeaderFields mutableCopy];
     [headers addEntriesFromDictionary:[MSIDDeviceId deviceId]];
 
@@ -89,13 +89,13 @@ static NSTimeInterval const s_defaultTimeoutInterval = 300;
     {
         [headers addEntriesFromDictionary:request.context.appRequestMetadata];
     }
-    
+
     if (request.context.correlationId)
     {
         headers[MSID_OAUTH2_CORRELATION_ID_REQUEST] = @"true";
         headers[MSID_OAUTH2_CORRELATION_ID_REQUEST_VALUE] = [request.context.correlationId UUIDString];
     }
-    
+
     mutableUrlRequest.allHTTPHeaderFields = headers;
     request.urlRequest = mutableUrlRequest;
 }

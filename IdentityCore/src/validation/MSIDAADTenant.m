@@ -38,7 +38,7 @@ NSString *const MSIDAADTenantTypeConsumersRawValue = @"consumers";
     if (self)
     {
         rawTenant = rawTenant.lowercaseString.msidTrimmedString;
-        
+
         if (!rawTenant)
         {
             if (error)
@@ -64,7 +64,7 @@ NSString *const MSIDAADTenantTypeConsumersRawValue = @"consumers";
         {
             _type = MSIDAADTenantTypeIdentifier;
         }
-        
+
         _rawTenant = rawTenant;
     }
     return self;
@@ -77,7 +77,7 @@ NSString *const MSIDAADTenantTypeConsumersRawValue = @"consumers";
     MSIDAADTenant *tenant = [[self.class allocWithZone:zone] init];
     tenant->_rawTenant = [_rawTenant copyWithZone:zone];
     tenant->_type = _type;
-    
+
     return tenant;
 }
 

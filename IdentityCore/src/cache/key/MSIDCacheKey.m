@@ -35,12 +35,12 @@
     {
         return nil;
     }
-    
+
     _account = account;
     _service = service;
     _type = type;
     _generic = generic;
-    
+
     return self;
 }
 
@@ -50,7 +50,7 @@
     {
         familyId = @"1";
     }
-    
+
     return [NSString stringWithFormat:@"foci-%@", familyId];
 }
 

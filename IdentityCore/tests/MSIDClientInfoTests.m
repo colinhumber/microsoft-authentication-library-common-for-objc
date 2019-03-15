@@ -38,10 +38,10 @@
 - (void)testInitWithRawClientInfo_whenUidAndUtid_shouldParse
 {
     NSString *base64String = [@{ @"uid" : @"1", @"utid" : @"1234-5678-90abcdefg"} msidBase64UrlJson];
-    
+
     NSError *error = nil;
     MSIDClientInfo *clientInfo = [[MSIDClientInfo alloc] initWithRawClientInfo:base64String error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertNotNil(clientInfo);
     XCTAssertEqualObjects(clientInfo.uid, @"1");
@@ -51,10 +51,10 @@
 - (void)testInitWithRawClientInfo_whenBadJson_shouldReturnNilWithError
 {
     NSString *base64String = @"badclientinfo";
-    
+
     NSError *error = nil;
     MSIDClientInfo *clientInfo = [[MSIDClientInfo alloc] initWithRawClientInfo:base64String error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(clientInfo);
 }
@@ -62,10 +62,10 @@
 - (void)testAccountIdentifier_whenHomeAccountId_shouldReturnUserIndentifier
 {
     NSString *base64String = [@{ @"uid" : @"1", @"utid" : @"1234-5678-90abcdefg"} msidBase64UrlJson];
-    
+
     NSError *error = nil;
     MSIDClientInfo *clientInfo = [[MSIDClientInfo alloc] initWithRawClientInfo:base64String error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertNotNil(clientInfo);
     XCTAssertEqualObjects(clientInfo.accountIdentifier, @"1.1234-5678-90abcdefg");
@@ -76,11 +76,11 @@
 - (void)testCopy_whenAllPropertiesAreSet_shouldReturnEqualCopy
 {
     NSString *base64String = [@{ @"uid" : @"1", @"utid" : @"1234-5678-90abcdefg"} msidBase64UrlJson];
-    
+
     NSError *error = nil;
     MSIDClientInfo *clientInfo = [[MSIDClientInfo alloc] initWithRawClientInfo:base64String error:&error];
     MSIDClientInfo *clientInfoCopy = [clientInfo copy];
-    
+
     XCTAssertEqualObjects(clientInfo, clientInfoCopy);
 }
 

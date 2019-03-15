@@ -31,8 +31,8 @@
 
 + (MSIDConfiguration *)defaultParams
 {
-    
-    
+
+
     return [[MSIDConfiguration alloc] initWithAuthority:[DEFAULT_TEST_AUTHORITY authority]
                                             redirectUri:nil
                                                clientId:DEFAULT_TEST_CLIENT_ID
@@ -44,7 +44,7 @@
                                       redirectUri:(NSString *)redirectUri
                                            target:(NSString *)target
 {
-    
+
     return [[MSIDConfiguration alloc] initWithAuthority:[authorityUrlString authority]
                                             redirectUri:redirectUri
                                                clientId:clientId

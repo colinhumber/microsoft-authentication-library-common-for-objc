@@ -70,7 +70,7 @@
 - (void)setUp
 {
     [super setUp];
-    
+
     self.requestTelemetry = [MSIDHttpRequestTelemetry new];
 }
 
@@ -88,9 +88,9 @@
 {
     __auto_type telemetry = [[MSIDTestTelemetry alloc] initInternal];
     self.requestTelemetry.telemetry = telemetry;
-    
+
     [self.requestTelemetry sendRequestEventWithId:@"some id"];
-    
+
     XCTAssertEqual(telemetry.startEventCounter, 1);
     XCTAssertEqualObjects(telemetry.passedEventName, @"http_event");
     XCTAssertEqualObjects(telemetry.passedRequestId, @"some id");
@@ -110,13 +110,13 @@
     context.telemetryRequestId = @"some id";
     context.correlationId = [[NSUUID alloc] initWithUUIDString:@"E621E1F8-C36C-495A-93FC-0C247A3E6E5F"];
     self.requestTelemetry.telemetry = telemetry;
-    
+
     [self.requestTelemetry responseReceivedEventWithContext:context
                                                  urlRequest:urlRequest
                                                httpResponse:response
                                                        data:data
                                                       error:error];
-    
+
     XCTAssertEqual(telemetry.stopEventCounter, 1);
     __auto_type eventProperties = [telemetry.passedEvent getProperties];
     XCTAssertEqualObjects(eventProperties[@"correlation_id"], @"E621E1F8-C36C-495A-93FC-0C247A3E6E5F");

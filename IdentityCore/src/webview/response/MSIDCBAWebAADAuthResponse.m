@@ -52,16 +52,16 @@
         }
         return nil;
     }
-    
+
     self = [super initWithURL:url context:context error:error];
     if (self)
     {
         NSURLComponents *resultUrlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
         resultUrlComponents.query = nil;
-        
+
         _redirectUri = resultUrlComponents.URL.absoluteString;
     }
-    
+
     return self;
 }
 

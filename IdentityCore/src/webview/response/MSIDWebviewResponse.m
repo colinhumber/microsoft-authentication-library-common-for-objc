@@ -44,31 +44,31 @@
         }
         return nil;
     }
-    
+
     self = [super init];
     if (self)
     {
         _url = url;
-        
+
         // Check for auth response
         _parameters = [self.class msidWebResponseParametersFromURL:url];
     }
-    
+
     return self;
 }
 
 + (NSDictionary *)msidWebResponseParametersFromURL:(NSURL *)url
 {
     NSMutableDictionary *responseParameters = [NSMutableDictionary new];
-    
+
     /*
      Note that here we only really need to look for query parameters, since this SDK operates based on authorization code grant.
      By default, resulting authorization code will be returned in the query parameters for authorization code grant unless request specifies a different response_mode parameter, which it doesn't in this case.
-     
+
      However, the code to check for fragments has been in ADALs since 2014 and this class will be also used by ADALs. There're two possible reasons why this code was necessary:
      1. Clients sent response_mode=fragment in the extra query parameters and it worked because of ADALs handling.
      2. Some older ADFS version didn't correctly implement the default response mode.
-     
+
      Therefore, the code to read fragment contents will be kept for backward compatibility reasons until determined 100% unnecessary by any clients.
      */
     [responseParameters addEntriesFromDictionary:[url msidFragmentParameters]];

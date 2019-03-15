@@ -121,7 +121,7 @@ static NSMutableString *s_resultLogs = nil;
     {
         return;
     }
-    
+
     @synchronized (self)
     {
         [self.resultLogs appendString:logLine];

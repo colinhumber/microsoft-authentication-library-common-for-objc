@@ -41,10 +41,10 @@
       completionHandler:(ChallengeCompletionHandler)completionHandler
 {
     NSString *host = challenge.protectionSpace.host;
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"Attempting to handle client TLS challenge");
     MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"Attempting to handle client TLS challenge. host: %@", host);
-    
+
     // See if this is a challenge for the WPJ cert.
     if ([MSIDWPJChallengeHandler handleChallenge:challenge
                                          webview:webview
@@ -53,7 +53,7 @@
     {
         return YES;
     }
-    
+
     // If it is not WPJ challenge, it has to be CBA.
     return [MSIDCertAuthHandler handleChallenge:challenge
                                         webview:webview

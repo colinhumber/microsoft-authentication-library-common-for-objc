@@ -43,9 +43,9 @@ MSID_JSON_RW(@"client_info", rawClientInfo, setRawClientInfo)
     {
         return nil;
     }
-    
+
     self.rawClientInfo = rawClientInfo;
-    
+
     return self;
 }
 
@@ -60,7 +60,7 @@ MSID_JSON_RW(@"client_info", rawClientInfo, setRawClientInfo)
 {
     MSIDClientInfo *clientInfo = [[MSIDClientInfo allocWithZone:zone] init];
     clientInfo->_json = _json;
-    
+
     return clientInfo;
 }
 

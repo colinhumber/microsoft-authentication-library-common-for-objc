@@ -45,7 +45,7 @@
 - (void)testInit_countShouldBe0
 {
     __auto_type cache = [MSIDCache new];
-    
+
     XCTAssertEqual([cache count], 0);
 }
 
@@ -53,19 +53,19 @@
 {
     __auto_type cache = [MSIDCache new];
     id key = nil;
-    
+
     id result = [cache objectForKey:key];
-    
+
     XCTAssertNil(result);
 }
 
 - (void)testSetObject_whenSetSuccessfully_shouldReturnSameOnObjectForKey
 {
     __auto_type cache = [MSIDCache new];
-    
+
     [cache setObject:@"v1" forKey:@"k1"];
     id object = [cache objectForKey:@"k1"];
-    
+
     XCTAssertEqual([cache count], 1);
     XCTAssertEqualObjects(object, @"v1");
 }
@@ -73,25 +73,25 @@
 - (void)testSetObject_whenObjectNil_shouldRemoteItFromCache
 {
     __auto_type cache = [MSIDCache new];
-    
+
     [cache setObject:@"v1" forKey:@"k1"];
     [cache setObject:nil forKey:@"k1"];
-    
+
     XCTAssertEqual([cache count], 0);
 }
 
 - (void)testRemoveObjectForKey_whenObjectInCache_shouldRemoveObject
 {
     __auto_type cache = [MSIDCache new];
-    
+
     [cache setObject:@"v1" forKey:@"k1"];
     [cache setObject:@"v2" forKey:@"k2"];
-    
+
     [cache removeObjectForKey:@"k1"];
-    
+
     id object1 = [cache objectForKey:@"k1"];
     id object2 = [cache objectForKey:@"k2"];
-    
+
     XCTAssertEqual([cache count], 1);
     XCTAssertNil(object1);
     XCTAssertEqualObjects(object2, @"v2");
@@ -100,15 +100,15 @@
 - (void)testRemoveAllObjects_whenCacheContainsObjects_shouldRemoveAll
 {
     __auto_type cache = [MSIDCache new];
-    
+
     [cache setObject:@"v1" forKey:@"k1"];
     [cache setObject:@"v2" forKey:@"k2"];
-    
+
     [cache removeAllObjects];
-    
+
     id object1 = [cache objectForKey:@"k1"];
     id object2 = [cache objectForKey:@"k2"];
-    
+
     XCTAssertEqual([cache count], 0);
     XCTAssertNil(object1);
     XCTAssertNil(object2);

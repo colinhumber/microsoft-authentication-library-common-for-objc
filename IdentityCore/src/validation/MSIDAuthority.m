@@ -65,11 +65,11 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
     {
         BOOL isValid = [self.class isAuthorityFormatValid:url context:context error:error];
         if (!isValid) return nil;
-        
+
         _url = url;
         _environment = url.msidHostWithPortIfNecessary;
     }
-    
+
     return self;
 }
 
@@ -79,15 +79,15 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
            completionBlock:(MSIDAuthorityInfoBlock)completionBlock
 {
     NSParameterAssert(completionBlock);
-    
+
     id <MSIDAuthorityResolving> resolver = [self resolver];
     NSParameterAssert(resolver);
 
     [[MSIDTelemetry sharedInstance] startEvent:context.telemetryRequestId eventName:MSID_TELEMETRY_EVENT_AUTHORITY_VALIDATION];
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"Resolving authority: %@, upn: %@", [self isKnown] ? self.url : _PII_NULLIFY(self.url), _PII_NULLIFY(upn));
     MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"Resolving authority: %@, upn: %@", self.url, upn);
-    
+
     [resolver resolveAuthority:self
              userPrincipalName:upn
                       validate:validate
@@ -100,9 +100,9 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
          [validationEvent setAuthorityValidationStatus:validated ? MSID_TELEMETRY_VALUE_YES : MSID_TELEMETRY_VALUE_NO];
          [validationEvent setAuthority:self];
          [[MSIDTelemetry sharedInstance] stopEvent:context.telemetryRequestId event:validationEvent];
-         
+
          MSID_LOG_INFO(context, @"Resolved authority, validated: %@, error: %ld", validated ? @"YES" : @"NO", (long)error.code);
-         
+
          if (completionBlock) completionBlock(openIdConfigurationEndpoint, validated, error);
      }];
 }
@@ -164,7 +164,7 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
 - (nonnull NSString *)telemetryAuthorityType
 {
     NSAssert(NO, @"Abstract method.");
-    
+
     return @"";
 }
 
@@ -172,24 +172,24 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
                       completionBlock:(nonnull MSIDOpenIdConfigurationInfoBlock)completionBlock
 {
     NSParameterAssert(completionBlock);
-    
+
     if (self.openIdConfigurationEndpoint == nil)
     {
         __auto_type error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"openIdConfigurationEndpoint is nil.", nil, nil, nil, context.correlationId, nil);
         completionBlock(nil, error);
         return;
     }
-    
+
     __auto_type cacheKey = self.openIdConfigurationEndpoint.absoluteString.lowercaseString;
     __auto_type metadata = [s_openIdConfigurationCache objectForKey:cacheKey];
-    
+
     if (metadata)
     {
         self.metadata = metadata;
         completionBlock(metadata, nil);
         return;
     }
-    
+
     __auto_type request = [[MSIDOpenIdConfigurationInfoRequest alloc] initWithEndpoint:self.openIdConfigurationEndpoint context:context];
     [request sendWithBlock:^(MSIDOpenIdProviderMetadata *metadata, NSError *error)
      {
@@ -197,9 +197,9 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
          {
              [s_openIdConfigurationCache setObject:metadata forKey:cacheKey];
          }
-         
+
          if (!error) self.metadata = metadata;
-         
+
          completionBlock(metadata, error);
      }];
 }
@@ -216,7 +216,7 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
         }
         return NO;
     }
-    
+
     if (![url.scheme isEqualToString:@"https"])
     {
         if (error)
@@ -225,7 +225,7 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
         }
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -237,12 +237,12 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:MSIDAuthority.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDAuthority *)object];
 }
 
@@ -261,7 +261,7 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
     {
         return NO;
     }
-    
+
     BOOL result = YES;
     result &= (!self.url && !authority.url) || [self.url isEqual:authority.url];
     result &= (!self.openIdConfigurationEndpoint && !authority.openIdConfigurationEndpoint) || [self.openIdConfigurationEndpoint isEqual:authority.openIdConfigurationEndpoint];
@@ -282,7 +282,7 @@ static MSIDCache <NSString *, MSIDOpenIdProviderMetadata *> *s_openIdConfigurati
     authority->_openIdConfigurationEndpoint = [_openIdConfigurationEndpoint copyWithZone:zone];
     authority->_metadata = _metadata;
     authority->_url = [_url copyWithZone:zone];
-    
+
     return authority;
 }
 

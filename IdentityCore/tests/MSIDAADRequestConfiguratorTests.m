@@ -40,7 +40,7 @@
 - (void)setUp
 {
     [super setUp];
-    
+
     self.requestConfigurator = [MSIDAADRequestConfigurator new];
 }
 
@@ -63,9 +63,9 @@
     httpRequest.context = context;
     httpRequest.urlRequest = [[NSURLRequest alloc] initWithURL:baseUrl];
     self.requestConfigurator.timeoutInterval = 60;
-    
+
     [self.requestConfigurator configure:httpRequest];
-    
+
     XCTAssertTrue([httpRequest.responseSerializer isKindOfClass:MSIDHttpResponseSerializer.class]);
     if ([httpRequest.responseSerializer isKindOfClass:MSIDHttpResponseSerializer.class])
     {

@@ -73,7 +73,7 @@
 - (void)setUp
 {
     [super setUp];
-    
+
     self.macTokenCacheMocDelegate = [MSIDMacTokenCacheMocDelegate new];
 }
 
@@ -97,9 +97,9 @@
                               @"version": @1};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNil(error);
     XCTAssertTrue(result);
@@ -119,9 +119,9 @@
                               @"version": @1};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Key is not of the expected class type.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -142,9 +142,9 @@
                               @"version": @1};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Token is not of the expected class type.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -165,9 +165,9 @@
                               @"version": @1};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"User ID key is not of the expected class type.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -189,9 +189,9 @@
                               @"version": @1};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"User ID should have mutable dictionaries in the cache.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -212,9 +212,9 @@
                               @"version": @1};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Tokens must be a mutable dictionary.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -235,9 +235,9 @@
                               @"version": @1};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Cache is not a mutable dictionary.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -250,9 +250,9 @@
     NSDictionary *wrapper = @{ @"version": @1};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Missing token cache from data.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -264,9 +264,9 @@
     MSIDMacTokenCache *cache = [MSIDMacTokenCache new];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:@"some"];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Root level object of cache is not a NSDictionary.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -288,9 +288,9 @@
                               };
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Missing version number from cache.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -312,9 +312,9 @@
                               @"version": @99};
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wrapper];
     NSError *error;
-    
+
     BOOL result = [cache deserialize:data error:&error];
-    
+
     XCTAssertNotNil(data);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Cache is a future unsupported version.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -327,9 +327,9 @@
 {
     MSIDMacTokenCache *cache = [MSIDMacTokenCache new];
     cache.delegate = self.macTokenCacheMocDelegate;
-    
+
     [cache tokenWithKey:nil serializer:nil context:nil error:nil];
-    
+
     XCTAssertEqual(self.macTokenCacheMocDelegate.willAccessCount, 1);
     XCTAssertEqual(self.macTokenCacheMocDelegate.didAccessCount, 1);
 }
@@ -338,9 +338,9 @@
 {
     MSIDMacTokenCache *cache = [MSIDMacTokenCache new];
     cache.delegate = self.macTokenCacheMocDelegate;
-    
+
     [cache saveToken:nil key:[MSIDCacheKey new] serializer:nil context:nil error:nil];
-    
+
     XCTAssertEqual(self.macTokenCacheMocDelegate.willWriteCount, 1);
     XCTAssertEqual(self.macTokenCacheMocDelegate.didWriteCount, 1);
 }
@@ -349,9 +349,9 @@
 {
     MSIDMacTokenCache *cache = [MSIDMacTokenCache new];
     cache.delegate = self.macTokenCacheMocDelegate;
-    
+
     [cache removeItemsWithTokenKey:nil context:nil error:nil];
-    
+
     XCTAssertEqual(self.macTokenCacheMocDelegate.willWriteCount, 1);
     XCTAssertEqual(self.macTokenCacheMocDelegate.didWriteCount, 1);
 }

@@ -19,38 +19,38 @@
 {
     NSError *jsonError;
     NSMutableDictionary *jsonObject = [[super responseObjectForResponse:httpResponse data:data context:context error:&jsonError] mutableCopy];
-    
+
     if (jsonError)
     {
         if (error) *error = jsonError;
         return nil;
     }
-    
+
     if (jsonObject && ![jsonObject isKindOfClass:[NSDictionary class]])
     {
         if (error)
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorServerInvalidResponse, @"Response is not of the expected type: NSDictionary.", nil, nil, nil, context.correlationId, nil);
         }
-        
+
         MSID_LOG_ERROR(context, @"Response is not of the expected type: NSDictionary.");
-        
+
         return nil;
     }
-    
+
     jsonObject[MSID_OAUTH2_CORRELATION_ID_RESPONSE] = httpResponse.allHeaderFields[MSID_OAUTH2_CORRELATION_ID_REQUEST_VALUE];
-    
+
     NSString *clientTelemetry = httpResponse.allHeaderFields[MSID_OAUTH2_CLIENT_TELEMETRY];
     if (![NSString msidIsStringNilOrBlank:clientTelemetry])
     {
         NSString *speInfo = [clientTelemetry msidParsedClientTelemetry][MSID_TELEMETRY_KEY_SPE_INFO];
-        
+
         if (![NSString msidIsStringNilOrBlank:speInfo])
         {
             jsonObject[MSID_TELEMETRY_KEY_SPE_INFO] = speInfo;
         }
     }
-    
+
     return jsonObject;
 }
 

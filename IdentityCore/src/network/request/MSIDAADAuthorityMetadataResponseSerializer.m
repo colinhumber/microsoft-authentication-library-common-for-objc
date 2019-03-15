@@ -44,13 +44,13 @@
 {
     NSError *jsonError;
     NSDictionary *jsonObject = [super responseObjectForResponse:httpResponse data:data context:context error:&jsonError];
-    
+
     if (!jsonObject)
     {
         if (error) *error = jsonError;
         return nil;
     }
-    
+
     if ([jsonObject msidAssertContainsField:@"error" context:context error:nil]
         && [jsonObject msidAssertType:NSString.class ofField:@"error" context:context errorCode:MSIDErrorServerInvalidResponse error:nil])
     {
@@ -68,15 +68,15 @@
         }
         return nil;
     }
-    
+
     __auto_type reponse = [MSIDAADAuthorityMetadataResponse new];
     reponse.metadata = jsonObject[@"metadata"];
-    
+
     if (![jsonObject msidAssertContainsField:@"tenant_discovery_endpoint" context:context error:error])
     {
         return nil;
     }
-    
+
     if (![jsonObject msidAssertType:NSString.class
                             ofField:@"tenant_discovery_endpoint"
                             context:context
@@ -85,11 +85,11 @@
     {
         return nil;
     }
-    
+
     __auto_type endpoint = (NSString *)jsonObject[@"tenant_discovery_endpoint"];
-    
+
     reponse.openIdConfigurationEndpoint = [NSURL URLWithString:endpoint];
-    
+
     return reponse;
 }
 

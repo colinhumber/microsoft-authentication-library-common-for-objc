@@ -45,12 +45,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:MSIDIdToken.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDIdToken *)object];
 }
 
@@ -67,7 +67,7 @@
     {
         return NO;
     }
-    
+
     BOOL result = [super isEqualToItem:token];
     result &= (!self.rawIdToken && !token.rawIdToken) || [self.rawIdToken isEqualToString:token.rawIdToken];
     return result;
@@ -78,18 +78,18 @@
 - (instancetype)initWithTokenCacheItem:(MSIDCredentialCacheItem *)tokenCacheItem
 {
     self = [super initWithTokenCacheItem:tokenCacheItem];
-    
+
     if (self)
     {
         _rawIdToken = tokenCacheItem.secret;
-        
+
         if (!_rawIdToken)
         {
             MSID_LOG_ERROR(nil, @"Trying to initialize ID token when missing ID token field");
             return nil;
         }
     }
-    
+
     return self;
 }
 

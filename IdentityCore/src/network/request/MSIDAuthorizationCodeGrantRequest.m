@@ -40,22 +40,22 @@
     {
         NSParameterAssert(redirectUri);
         NSParameterAssert(code);
-        
+
         NSMutableDictionary *parameters = [_parameters mutableCopy];
         parameters[MSID_OAUTH2_REDIRECT_URI] = redirectUri;
         parameters[MSID_OAUTH2_GRANT_TYPE] = MSID_OAUTH2_AUTHORIZATION_CODE;
         parameters[MSID_OAUTH2_CODE] = code;
         parameters[MSID_OAUTH2_CODE_VERIFIER] = codeVerifier;
         parameters[MSID_OAUTH2_CLAIMS] = claims;
-        
+
         if (extraParameters)
         {
             [parameters addEntriesFromDictionary:extraParameters];
         }
-        
+
         _parameters = parameters;
     }
-    
+
     return self;
 }
 

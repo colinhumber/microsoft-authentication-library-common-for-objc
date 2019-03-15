@@ -186,9 +186,9 @@
     {
         return NO;
     }
-    
+
     __auto_type authority = [MSIDAuthorityFactory authorityFromUrl:account.authority.url rawTenant:response.idTokenObj.realm context:nil error:nil];
-    
+
     account.authority = authority;
     return YES;
 }
@@ -201,7 +201,7 @@
     {
         return NO;
     }
-    
+
     __auto_type authority = [MSIDAuthorityFactory authorityFromUrl:token.authority.url rawTenant:response.idTokenObj.realm context:nil error:nil];
 
     token.authority = authority;

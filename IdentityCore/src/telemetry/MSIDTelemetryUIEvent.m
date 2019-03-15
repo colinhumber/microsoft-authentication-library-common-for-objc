@@ -35,10 +35,10 @@
     {
         return nil;
     }
-    
+
     [self setProperty:MSID_TELEMETRY_KEY_USER_CANCEL value:@""];
     [self setProperty:MSID_TELEMETRY_KEY_NTLM_HANDLED value:@""];
-    
+
     return self;
 }
 

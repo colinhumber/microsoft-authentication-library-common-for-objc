@@ -31,22 +31,22 @@
     {
         case MSIDAccessTokenType:
             return MSID_ACCESS_TOKEN_CACHE_TYPE;
-            
+
         case MSIDRefreshTokenType:
             return MSID_REFRESH_TOKEN_CACHE_TYPE;
-            
+
         case MSIDLegacySingleResourceTokenType:
             return MSID_LEGACY_TOKEN_CACHE_TYPE;
-            
+
         case MSIDIDTokenType:
             return MSID_ID_TOKEN_CACHE_TYPE;
-            
+
         case MSIDPrimaryRefreshTokenType:
             return MSID_PRT_TOKEN_CACHE_TYPE;
-            
+
         case MSIDLegacyIDTokenType:
             return MSID_LEGACY_ID_TOKEN_CACHE_TYPE;
-            
+
         default:
             return MSID_GENERAL_TOKEN_CACHE_TYPE;
     }
@@ -57,9 +57,9 @@ static NSDictionary *sCredentialTypes = nil;
 + (MSIDCredentialType)credentialTypeFromString:(NSString *)type
 {
     static dispatch_once_t sCredentialTypesOnce;
-    
+
     dispatch_once(&sCredentialTypesOnce, ^{
-        
+
         sCredentialTypes = @{[MSID_ACCESS_TOKEN_CACHE_TYPE lowercaseString]: @(MSIDAccessTokenType),
                              [MSID_REFRESH_TOKEN_CACHE_TYPE lowercaseString]: @(MSIDRefreshTokenType),
                              [MSID_LEGACY_TOKEN_CACHE_TYPE lowercaseString]: @(MSIDLegacySingleResourceTokenType),
@@ -69,7 +69,7 @@ static NSDictionary *sCredentialTypes = nil;
                              [MSID_GENERAL_TOKEN_CACHE_TYPE lowercaseString]: @(MSIDCredentialTypeOther),
                              };
     });
-    
+
     NSNumber *credentialType = sCredentialTypes[type.lowercaseString];
     return credentialType != nil ? [credentialType integerValue] : MSIDCredentialTypeOther;
 }
@@ -79,7 +79,7 @@ static NSDictionary *sCredentialTypes = nil;
 {
     BOOL rtPresent = ![NSString msidIsStringNilOrBlank:refreshToken];
     BOOL atPresent = ![NSString msidIsStringNilOrBlank:accessToken];
-    
+
     if (rtPresent && atPresent)
     {
         return MSIDLegacySingleResourceTokenType;
@@ -92,7 +92,7 @@ static NSDictionary *sCredentialTypes = nil;
     {
         return MSIDAccessTokenType;
     }
-    
+
     return MSIDCredentialTypeOther;
 }
 

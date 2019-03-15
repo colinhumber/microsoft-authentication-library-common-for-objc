@@ -51,7 +51,7 @@
 - (instancetype)init
 {
     self = [super init];
-    
+
     if (self)
     {
         _tokenKeys = [NSMutableDictionary dictionary];
@@ -59,7 +59,7 @@
         _tokenContents = [NSMutableDictionary dictionary];
         _accountContents = [NSMutableDictionary dictionary];
     }
-    
+
     return self;
 }
 
@@ -79,10 +79,10 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return NO;
     }
-    
+
     NSData *serializedItem = [serializer serializeCredentialCacheItem:item];
     return [self saveItemData:serializedItem
                           key:key
@@ -103,10 +103,10 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSData *itemData = [self itemDataWithKey:key
                               keysDictionary:_tokenKeys
                            contentDictionary:_tokenContents
@@ -148,31 +148,31 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return NO;
     }
-    
+
     NSString *uniqueKey = [self uniqueIdFromKey:key];
-    
+
     @synchronized (self) {
-        
+
         NSString *tokenComponentsKey = _tokenKeys[uniqueKey];
         [_tokenKeys removeObjectForKey:uniqueKey];
-        
+
         if (tokenComponentsKey)
         {
             [_tokenContents removeObjectForKey:tokenComponentsKey];
         }
-        
+
         NSString *accountComponentsKey = _accountKeys[uniqueKey];
         [_accountKeys removeObjectForKey:uniqueKey];
-        
+
         if (accountComponentsKey)
         {
             [_accountContents removeObjectForKey:accountComponentsKey];
         }
     }
-    
+
     return YES;
 }
 
@@ -187,28 +187,28 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSMutableArray *resultItems = [NSMutableArray array];
-    
+
     NSArray<NSData *> *items = [self itemsWithKey:key
                                    keysDictionary:_tokenKeys
                                 contentDictionary:_tokenContents
                                           context:context
                                             error:error];
-    
+
     for (NSData *itemData in items)
     {
         MSIDCredentialCacheItem *token = [serializer deserializeCredentialCacheItem:itemData];
-        
+
         if (token)
         {
             [resultItems addObject:token];
         }
     }
-    
+
     return resultItems;
 }
 
@@ -238,10 +238,10 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return NO;
     }
-    
+
     NSData *serializedItem = [serializer serializeAccountCacheItem:item];
     return [self saveItemData:serializedItem
                           key:key
@@ -262,16 +262,16 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSData *itemData = [self itemDataWithKey:key
                               keysDictionary:_accountKeys
                            contentDictionary:_accountContents
                                      context:context
                                        error:error];
-    
+
     MSIDAccountCacheItem *token = [serializer deserializeAccountCacheItem:itemData];
     return token;
 }
@@ -287,28 +287,28 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSMutableArray *resultItems = [NSMutableArray array];
-    
+
     NSArray<NSData *> *items = [self itemsWithKey:key
                                    keysDictionary:_accountKeys
                                 contentDictionary:_accountContents
                                           context:context
                                             error:error];
-    
+
     for (NSData *itemData in items)
     {
         MSIDAccountCacheItem *account = [serializer deserializeAccountCacheItem:itemData];
-        
+
         if (account)
         {
             [resultItems addObject:account];
         }
     }
-    
+
     return resultItems;
 }
 
@@ -335,7 +335,7 @@
     NSString *typeStr = key.type ? key.type.stringValue : @".*";
     NSString *generic = key.generic ? [[NSString alloc] initWithData:key.generic encoding:NSUTF8StringEncoding] : nil;
     NSString *genericStr = generic ? [self absoluteRegexFromString:generic] : @".*";
-    
+
     NSString *regexString = [NSString stringWithFormat:@"%@_%@_%@_%@", accountStr, serviceStr, typeStr, genericStr];
     return regexString;
 }
@@ -363,22 +363,22 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSArray<NSData *> *items = [self itemsWithKey:key
                                    keysDictionary:cacheKeys
                                 contentDictionary:cacheContent
                                           context:context
                                             error:error];
-    
+
     if ([items count] == 1)
     {
         NSData *itemData = items[0];
         return itemData;
     }
-    
+
     return nil;
 }
 
@@ -395,20 +395,20 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return NO;
     }
-    
+
     if (!serializedItem)
     {
         if (error)
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, @"Couldn't serialize the MSIDBaseToken item", nil, nil, nil, nil, nil);
         }
-        
+
         return NO;
     }
-    
+
     /*
      This is trying to simulate keychain behavior for generic password type,
      where account and service are used as unique key, but both type and generic
@@ -416,18 +416,18 @@
      That way there can be only one item with unique combination of account and service,
      but we'll still be able to query by generic and type.
      */
-    
+
     NSString *uniqueIdKey = [self uniqueIdFromKey:key];
     NSString *componentsKey = [self keyComponentsStringFromKey:key];
-    
+
     @synchronized (self) {
         cacheKeys[uniqueIdKey] = componentsKey;
     }
-    
+
     @synchronized (self) {
         cacheContent[componentsKey] = serializedItem;
     }
-    
+
     return YES;
 }
 
@@ -445,12 +445,12 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSData *itemData = nil;
-    
+
     if (key.account
         && key.service
         && key.generic
@@ -468,37 +468,37 @@
         NSString *itemKey = cacheKeys[uniqueId];
         itemData = cacheContent[itemKey];
     }
-    
+
     if (itemData)
     {
         // Direct match, return without additional lookup
         return @[itemData];
     }
-    
+
     // If no direct match found, do a partial query
     NSMutableArray *resultItems = [NSMutableArray array];
-    
+
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:[self regexFromKey:key]
                                                                            options:NSRegularExpressionCaseInsensitive
                                                                              error:nil];
-    
+
     @synchronized (self) {
-        
+
         for (NSString *dictKey in [cacheContent allKeys])
         {
             NSUInteger numberOfMatches = [regex numberOfMatchesInString:dictKey
                                                                 options:0
                                                                   range:NSMakeRange(0, [dictKey length])];
-            
+
             if (numberOfMatches > 0)
             {
                 NSData *object = cacheContent[dictKey];
                 [resultItems addObject:object];
             }
         }
-        
+
     }
-    
+
     return resultItems;
 }
 
@@ -521,10 +521,10 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return NO;
     }
-    
+
     NSData *serializedItem = [serializer serializeAppMetadataCacheItem:item];
     return [self saveItemData:serializedItem
                           key:key
@@ -545,28 +545,28 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidInternalParameter, @"Missing parameter", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSMutableArray *resultItems = [NSMutableArray array];
-    
+
     NSArray<NSData *> *items = [self itemsWithKey:key
                                    keysDictionary:_accountKeys
                                 contentDictionary:_accountContents
                                           context:context
                                             error:error];
-    
+
     for (NSData *itemData in items)
     {
         MSIDAppMetadataCacheItem *appMetadata = [serializer deserializeAppMetadataCacheItem:itemData];
-        
+
         if (appMetadata)
         {
             [resultItems addObject:appMetadata];
         }
     }
-    
+
     return resultItems;
 }
 
@@ -620,17 +620,17 @@
                     serializer:(id<MSIDCredentialItemSerializer>)serializer
 {
     NSMutableArray *results = [NSMutableArray array];
-    
+
     @synchronized (self) {
-        
+
         for (NSData *tokenData in [_tokenContents allValues])
         {
             MSIDCredentialCacheItem *token = [serializer deserializeCredentialCacheItem:tokenData];
-            
+
             if (token)
             {
                 MSIDBaseToken *baseToken = [token tokenWithType:type];
-                
+
                 if (baseToken)
                 {
                     [results addObject:baseToken];
@@ -638,26 +638,26 @@
             }
         }
     }
-    
+
     return results;
 }
 
 - (NSArray *)allAccounts
 {
     NSMutableArray *results = [NSMutableArray array];
-    
+
     MSIDCacheItemJsonSerializer *serializer = [[MSIDCacheItemJsonSerializer alloc] init];
-    
+
     @synchronized (self) {
-        
+
         for (NSData *accountData in [_accountContents allValues])
         {
             MSIDAccountCacheItem *accountCacheItem = [serializer deserializeAccountCacheItem:accountData];
-            
+
             if (accountCacheItem)
             {
                 MSIDAccount *account = [[MSIDAccount alloc] initWithAccountCacheItem:accountCacheItem];
-                
+
                 if (account)
                 {
                     [results addObject:account];
@@ -665,7 +665,7 @@
             }
         }
     }
-    
+
     return results;
 }
 

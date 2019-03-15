@@ -52,22 +52,22 @@
     MSIDTelemetryHttpEvent *event = [[MSIDTelemetryHttpEvent alloc] initWithName:MSID_TELEMETRY_EVENT_HTTP_REQUEST
                                                                        requestId:context.telemetryRequestId
                                                                    correlationId:context.correlationId];
-    
+
     [event setHttpMethod:urlRequest.HTTPMethod];
     [event setHttpPath:[NSString stringWithFormat:@"%@://%@/%@", urlRequest.URL.scheme, urlRequest.URL.host, urlRequest.URL.path]];
-    
+
     [event setHttpRequestIdHeader:httpResponse.allHeaderFields[MSID_OAUTH2_CORRELATION_ID_REQUEST_VALUE]];
     [event setClientTelemetry:httpResponse.allHeaderFields[MSID_OAUTH2_CLIENT_TELEMETRY]];
     [event setHttpResponseCode:[NSString stringWithFormat: @"%ld", (long)httpResponse.statusCode]];
     [event setOAuthErrorCodeFromResponseData:data];
     [event setHttpRequestQueryParams:urlRequest.URL.query];
-    
+
     if (error)
     {
         [event setHttpErrorCode:[NSString stringWithFormat: @"%ld", (long)[error code]]];
         [event setHttpErrorDomain:[error domain]];
     }
-    
+
     [self.telemetry stopEvent:context.telemetryRequestId event:event];
 }
 

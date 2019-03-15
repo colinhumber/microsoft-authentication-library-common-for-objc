@@ -38,12 +38,12 @@
 - (void)testInitBrokerRequest_whenValidRequest_shouldSendScopeAndPromptAndProtocolVer
 {
     MSIDInteractiveRequestParameters *parameters = [self defaultTestParameters];
-    
+
     NSError *error = nil;
     MSIDDefaultBrokerTokenRequest *request = [[MSIDDefaultBrokerTokenRequest alloc] initWithRequestParameters:parameters brokerKey:@"brokerKey" error:&error];
     XCTAssertNotNil(request);
     XCTAssertNil(error);
-    
+
     NSDictionary *expectedRequest = @{@"authority" : @"https://login.microsoftonline.com/contoso.com",
                                       @"client_id" : @"my_client_id",
                                       @"correlation_id" : [parameters.correlationId UUIDString],
@@ -59,13 +59,13 @@
                                       @"prompt" : @"select_account",
                                       @"msg_protocol_ver" : @"3",
                                       };
-    
+
     NSURL *actualURL = request.brokerRequestURL;
-    
+
     NSString *expectedUrlString = [NSString stringWithFormat:@"mybrokerscheme://broker?%@", [expectedRequest msidWWWFormURLEncode]];
     NSURL *expectedURL = [NSURL URLWithString:expectedUrlString];
     XCTAssertTrue([expectedURL matchesURL:actualURL]);
-    
+
     NSDictionary *expectedResumeDictionary = @{@"authority" : @"https://login.microsoftonline.com/contoso.com",
                                                @"client_id" : @"my_client_id",
                                                @"correlation_id" : [parameters.correlationId UUIDString],
@@ -75,7 +75,7 @@
                                                @"scope" : @"myscope1 myscope2",
                                                @"oidc_scope" : @"oidcscope1 oidcscope2"
                                                };
-    
+
     XCTAssertEqualObjects(expectedResumeDictionary, request.resumeDictionary);
 }
 
@@ -83,12 +83,12 @@
 {
     MSIDInteractiveRequestParameters *parameters = [self defaultTestParameters];
     parameters.accountIdentifier = [[MSIDAccountIdentifier alloc] initWithDisplayableId:@"user" homeAccountId:@"myHomeAccountId"];
-    
+
     NSError *error = nil;
     MSIDDefaultBrokerTokenRequest *request = [[MSIDDefaultBrokerTokenRequest alloc] initWithRequestParameters:parameters brokerKey:@"brokerKey" error:&error];
     XCTAssertNotNil(request);
     XCTAssertNil(error);
-    
+
     NSDictionary *expectedRequest = @{@"authority" : @"https://login.microsoftonline.com/contoso.com",
                                       @"client_id" : @"my_client_id",
                                       @"correlation_id" : [parameters.correlationId UUIDString],
@@ -105,13 +105,13 @@
                                       @"home_account_id" : @"myHomeAccountId",
                                       @"username" : @"user",
                                       };
-    
+
     NSURL *actualURL = request.brokerRequestURL;
-    
+
     NSString *expectedUrlString = [NSString stringWithFormat:@"mybrokerscheme://broker?%@", [expectedRequest msidWWWFormURLEncode]];
     NSURL *expectedURL = [NSURL URLWithString:expectedUrlString];
     XCTAssertTrue([expectedURL matchesURL:actualURL]);
-    
+
     NSDictionary *expectedResumeDictionary = @{@"authority" : @"https://login.microsoftonline.com/contoso.com",
                                                @"client_id" : @"my_client_id",
                                                @"correlation_id" : [parameters.correlationId UUIDString],
@@ -121,7 +121,7 @@
                                                @"scope" : @"myscope1 myscope2",
                                                @"oidc_scope" : @"oidcscope1 oidcscope2"
                                                };
-    
+
     XCTAssertEqualObjects(expectedResumeDictionary, request.resumeDictionary);
 }
 
@@ -129,12 +129,12 @@
 {
     MSIDInteractiveRequestParameters *parameters = [self defaultTestParameters];
     parameters.loginHint = @"myuser";
-    
+
     NSError *error = nil;
     MSIDDefaultBrokerTokenRequest *request = [[MSIDDefaultBrokerTokenRequest alloc] initWithRequestParameters:parameters brokerKey:@"brokerKey" error:&error];
     XCTAssertNotNil(request);
     XCTAssertNil(error);
-    
+
     NSDictionary *expectedRequest = @{@"authority" : @"https://login.microsoftonline.com/contoso.com",
                                       @"client_id" : @"my_client_id",
                                       @"correlation_id" : [parameters.correlationId UUIDString],
@@ -149,15 +149,15 @@
                                       @"msg_protocol_ver" : @"3",
                                       //login hint should be set
                                       @"login_hint" : @"myuser",
-                                      
+
                                       };
-    
+
     NSURL *actualURL = request.brokerRequestURL;
-    
+
     NSString *expectedUrlString = [NSString stringWithFormat:@"mybrokerscheme://broker?%@", [expectedRequest msidWWWFormURLEncode]];
     NSURL *expectedURL = [NSURL URLWithString:expectedUrlString];
     XCTAssertTrue([expectedURL matchesURL:actualURL]);
-    
+
     NSDictionary *expectedResumeDictionary = @{@"authority" : @"https://login.microsoftonline.com/contoso.com",
                                                @"client_id" : @"my_client_id",
                                                @"correlation_id" : [parameters.correlationId UUIDString],
@@ -167,7 +167,7 @@
                                                @"scope" : @"myscope1 myscope2",
                                                @"oidc_scope" : @"oidcscope1 oidcscope2"
                                                };
-    
+
     XCTAssertEqualObjects(expectedResumeDictionary, request.resumeDictionary);
 }
 
@@ -175,12 +175,12 @@
 {
     MSIDInteractiveRequestParameters *parameters = [self defaultTestParameters];
     parameters.extraScopesToConsent = @"extraScope1 extraScope2";
-    
+
     NSError *error = nil;
     MSIDDefaultBrokerTokenRequest *request = [[MSIDDefaultBrokerTokenRequest alloc] initWithRequestParameters:parameters brokerKey:@"brokerKey" error:&error];
     XCTAssertNotNil(request);
     XCTAssertNil(error);
-    
+
     NSDictionary *expectedRequest = @{@"authority" : @"https://login.microsoftonline.com/contoso.com",
                                       @"client_id" : @"my_client_id",
                                       @"correlation_id" : [parameters.correlationId UUIDString],
@@ -196,13 +196,13 @@
                                       //extra scopes should be set
                                       @"extra_consent_scopes" : @"extraScope1 extraScope2",
                                       };
-    
+
     NSURL *actualURL = request.brokerRequestURL;
-    
+
     NSString *expectedUrlString = [NSString stringWithFormat:@"mybrokerscheme://broker?%@", [expectedRequest msidWWWFormURLEncode]];
     NSURL *expectedURL = [NSURL URLWithString:expectedUrlString];
     XCTAssertTrue([expectedURL matchesURL:actualURL]);
-    
+
     NSDictionary *expectedResumeDictionary = @{@"authority" : @"https://login.microsoftonline.com/contoso.com",
                                                @"client_id" : @"my_client_id",
                                                @"correlation_id" : [parameters.correlationId UUIDString],
@@ -212,7 +212,7 @@
                                                @"scope" : @"myscope1 myscope2",
                                                @"oidc_scope" : @"oidcscope1 oidcscope2"
                                                };
-    
+
     XCTAssertEqualObjects(expectedResumeDictionary, request.resumeDictionary);
 }
 

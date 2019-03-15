@@ -79,7 +79,7 @@
 - (void)acquireToken:(nonnull MSIDRequestCompletionBlock)completionBlock
 {
     MSID_LOG_INFO(self.requestParameters, @"Beginning silent flow.");
-    
+
     if (!completionBlock)
     {
         MSID_LOG_ERROR(nil, @"Passed nil completionBlock");
@@ -98,7 +98,7 @@
             MSID_LOG_INFO(self.requestParameters, @"Silent flow finished result %@, error: %ld error domain: %@", _PII_NULLIFY(result), (long)error.code, error.domain);
             completionBlock(result, error);
         };
-        
+
         if (result || !self.interactiveController)
         {
             MSIDTelemetryAPIEvent *telemetryEvent = [self telemetryAPIEvent];

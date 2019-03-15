@@ -41,7 +41,7 @@
 {
     NSString *localizedTemplate = NSLocalizedString(@"Please select a certificate for %1", @"certificate dialog selection prompt \"%1\" will be replaced with the URL host");
     NSString *message = [localizedTemplate stringByReplacingOccurrencesOfString:@"%1" withString:host];
-    
+
     MSIDCertificateChooserHelper *helper = [MSIDCertificateChooserHelper new];
     helper->_correlationId = correlationId;
     helper->_window = webview.window;
@@ -52,7 +52,7 @@
 - (void)beginSheet:(NSArray *)identities
            message:(NSString *)message
 {
-    
+
     _panel = [SFChooseIdentityPanel new];
     [_panel setAlternateButtonTitle:NSLocalizedString(@"Cancel", "Cancel button on cert selection sheet")];
     [_panel beginSheetForWindow:_window
@@ -61,7 +61,7 @@
                     contextInfo:NULL
                      identities:identities
                         message:message];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(webAuthDidFail:) name:MSIDNotifications.webAuthDidFailNotificationName object:nil];
 }
 
@@ -69,7 +69,7 @@
                        message:(NSString *)message
 {
     MSID_LOG_INFO_CORR(_correlationId, @"Displaying Cert Selection Sheet");
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [self beginSheet:identities message:message];
     });
@@ -86,7 +86,7 @@
         _completionHandler(NULL);
         return;
     }
-    
+
     SecIdentityRef identity = _panel.identity;
     _completionHandler(identity);
     _completionHandler = nil;
@@ -99,10 +99,10 @@
     {
         return;
     }
-    
+
     // If web auth fails while the sheet is up that usually means the connection timed out, tear
     // down the cert selection sheet.
-    
+
     MSID_LOG_INFO_CORR(_correlationId, @"Aborting cert selection due to web auth failure");
     NSArray *sheets = _window.sheets;
     if (sheets.count < 1)

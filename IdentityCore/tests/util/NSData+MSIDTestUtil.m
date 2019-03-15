@@ -39,7 +39,7 @@
         wholeByte = strtol(byteChars, NULL, 16);
         [result appendBytes:&wholeByte length:1];
     }
-    
+
     return result;
 }
 

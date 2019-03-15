@@ -28,7 +28,7 @@
 
 + (void)resetHandler
 {
-    
+
 }
 
 + (BOOL)handleChallenge:(NSURLAuthenticationChallenge *)challenge
@@ -38,10 +38,10 @@
 {
     NSString *host = challenge.protectionSpace.host;
     NSArray<NSData*> *distinguishedNames = challenge.protectionSpace.distinguishedNames;
-    
+
     // Check if a preferred identity is set for this host
     SecIdentityRef identity = SecIdentityCopyPreferred((CFStringRef)host, NULL, (CFArrayRef)distinguishedNames);
-    
+
     if (!identity)
     {
         // If there was no identity matched for the exact host, try to match by URL
@@ -49,7 +49,7 @@
         // However, we need to do both, because if there's an entry by hostname, matching by URL won't find it
         identity = SecIdentityCopyPreferred((CFStringRef)webview.URL.absoluteString, NULL, (CFArrayRef)distinguishedNames);
     }
-    
+
     if (identity != NULL)
     {
         MSID_LOG_INFO(context, @"Using preferred identity");
@@ -67,19 +67,19 @@
              if (identity == NULL)
              {
                  MSID_LOG_INFO(context, @"No identity returned from cert chooser");
-                 
+
                  // If no identity comes back then we can't handle the request
                  completionHandler(NSURLSessionAuthChallengeRejectProtectionSpace, nil);
                  return;
              }
-             
+
              // Adding a retain count to match the retain count from SecIdentityCopyPreferred
              CFRetain(identity);
              MSID_LOG_INFO(context, @"Using user selected certificate");
              [self respondCertAuthChallengeWithIdentity:identity context:context completionHandler:completionHandler];
          }];
     }
-    
+
     return YES;
 }
 
@@ -108,14 +108,14 @@
        (id)kSecClass : (id)kSecClassIdentity,
        (id)kSecMatchLimit : (id)kSecMatchLimitAll,
        } mutableCopy];
-    
+
     if (issuers.count > 0)
     {
         [query setObject:issuers forKey:(id)kSecMatchIssuers];
     }
-    
+
     CFTypeRef result = NULL;
-    
+
     OSStatus status = SecItemCopyMatching((CFDictionaryRef)query, &result);
     if (status == errSecItemNotFound)
     {
@@ -129,7 +129,7 @@
         completionHandler(nil);
         return;
     }
-    
+
     [MSIDCertificateChooserHelper showCertSelectionSheet:(__bridge NSArray *)result host:host webview:webview correlationId:correlationId completionHandler:completionHandler];
 }
 

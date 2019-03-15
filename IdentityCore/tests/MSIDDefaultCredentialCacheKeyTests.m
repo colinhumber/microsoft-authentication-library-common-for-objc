@@ -43,7 +43,7 @@
     XCTAssertEqualObjects(key.account, @"uid.utid-login.microsoftonline.com");
     XCTAssertEqualObjects(key.service, @"accesstoken-client-contoso.com-user.read user.write");
     XCTAssertEqualObjects(key.type, @2001);
-    
+
     NSData *genericData = [@"accesstoken-client-contoso.com" dataUsingEncoding:NSUTF8StringEncoding];
     XCTAssertEqualObjects(key.generic, genericData);
 }
@@ -54,15 +54,15 @@
                                                                                           environment:@"login.microsoftonline.com"
                                                                                              clientId:@"client"
                                                                                        credentialType:MSIDAccessTokenType];
-    
+
     key.realm = @"contoso.com";
     key.target = @"user.read user.write";
     key.enrollmentId = @"enrollmentId";
-    
+
     XCTAssertEqualObjects(key.account, @"uid.utid-login.microsoftonline.com");
     XCTAssertEqualObjects(key.service, @"accesstoken-client-contoso.com-enrollmentid-user.read user.write");
     XCTAssertEqualObjects(key.type, @2001);
-    
+
     NSData *genericData = [@"accesstoken-client-contoso.com-enrollmentid" dataUsingEncoding:NSUTF8StringEncoding];
     XCTAssertEqualObjects(key.generic, genericData);
 }
@@ -94,11 +94,11 @@
 
     key.realm = @"contoso.com";
     key.credentialType = MSIDIDTokenType;
-    
+
     XCTAssertEqualObjects(key.account, @"uid.utid-login.microsoftonline.com");
     XCTAssertEqualObjects(key.service, @"idtoken-client-contoso.com-");
     XCTAssertEqualObjects(key.type, @2003);
-    
+
     NSData *genericData = [@"idtoken-client-contoso.com" dataUsingEncoding:NSUTF8StringEncoding];
     XCTAssertEqualObjects(key.generic, genericData);
 }
@@ -129,7 +129,7 @@
 
     XCTAssertEqualObjects(key.account, @"uid.utid-login.microsoftonline.com");
     XCTAssertEqualObjects(key.service, @"refreshtoken-client--");
-    
+
     NSData *genericData = [@"refreshtoken-client-" dataUsingEncoding:NSUTF8StringEncoding];
     XCTAssertEqualObjects(key.generic, genericData);
     XCTAssertEqualObjects(key.type, @2002);

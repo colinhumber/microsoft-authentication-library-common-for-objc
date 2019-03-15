@@ -62,12 +62,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:MSIDAccount.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDAccount *)object];
 }
 
@@ -88,7 +88,7 @@
     {
         return NO;
     }
-    
+
     BOOL result = YES;
 
     if (self.accountIdentifier.homeAccountId && account.accountIdentifier.homeAccountId)
@@ -115,14 +115,14 @@
 - (instancetype)initWithAccountCacheItem:(MSIDAccountCacheItem *)cacheItem
 {
     self = [super init];
-    
+
     if (self)
     {
         if (!cacheItem)
         {
             return nil;
         }
-        
+
         _accountType = cacheItem.accountType;
         _givenName = cacheItem.givenName;
         _familyName = cacheItem.familyName;
@@ -136,11 +136,11 @@
 
         NSString *environment = cacheItem.environment;
         NSString *tenant = cacheItem.realm;
-        
+
         __auto_type authorityUrl = [NSURL msidURLWithEnvironment:environment tenant:tenant];
         _authority = [MSIDAuthorityFactory authorityFromUrl:authorityUrl context:nil error:nil];
     }
-    
+
     return self;
 }
 
@@ -167,7 +167,7 @@
     cacheItem.name = self.name;
     cacheItem.familyName = self.familyName;
     cacheItem.clientInfo = self.clientInfo;
-    
+
     return cacheItem;
 }
 

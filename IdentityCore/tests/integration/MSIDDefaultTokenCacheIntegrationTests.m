@@ -124,26 +124,26 @@
 - (void)testSaveTokensWithRequestParams_withAccessToken_andIntuneEnrolled_shouldSaveToken
 {
     [self setUpEnrollmentIdsCache:NO];
-    
+
     MSIDTokenResponse *tokenResponse = [MSIDTestTokenResponse v2DefaultTokenResponse];
-    
+
     NSError *error = nil;
     BOOL result = [_cacheAccessor saveTokensWithConfiguration:[MSIDTestConfiguration v2DefaultConfiguration]
                                                      response:tokenResponse
                                                       factory:[MSIDAADV2Oauth2Factory new]
                                                       context:nil
                                                         error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertTrue(result);
-    
+
     NSArray *accessTokens = [MSIDTestCacheAccessorHelper getAllDefaultAccessTokens:_cacheAccessor];
     XCTAssertNil(error);
-    
+
     XCTAssertEqual([accessTokens count], 1);
     XCTAssertEqualObjects([accessTokens[0] accessToken], tokenResponse.accessToken);
     XCTAssertEqualObjects([accessTokens[0] enrollmentId], @"enrollmentId");
-    
+
     [self setUpEnrollmentIdsCache:YES];
 }
 
@@ -257,7 +257,7 @@
 
     // save 2nd token with different authority
     MSIDTokenResponse *tokenResponse2 = [MSIDTestTokenResponse v2DefaultTokenResponse];
-    
+
     MSIDConfiguration *configuration = [MSIDTestConfiguration configurationWithAuthority:@"https://login.microsoftonline.com/8eaef023-2b34-4da1-9baa-8bc8c9d6a490"
                                                                                 clientId:DEFAULT_TEST_CLIENT_ID
                                                                              redirectUri:nil
@@ -543,34 +543,34 @@
 - (void)testGetTokenWithType_whenTypeAccessCorrectAccountAndParameters_andIntuneEnrolled_shouldReturnToken
 {
     [self setUpEnrollmentIdsCache:NO];
-    
+
     MSIDAccountIdentifier *account = [[MSIDAccountIdentifier alloc] initWithDisplayableId:DEFAULT_TEST_ID_TOKEN_USERNAME
                                                                             homeAccountId:@"1.1234-5678-90abcdefg"];
-    
+
     MSIDTokenResponse *tokenResponse = [MSIDTestTokenResponse v2DefaultTokenResponse];
-    
+
     // Save token
     [_cacheAccessor saveTokensWithConfiguration:[MSIDTestConfiguration v2DefaultConfiguration]
                                        response:tokenResponse
                                         factory:[MSIDAADV2Oauth2Factory new]
                                         context:nil
                                           error:nil];
-    
+
     MSIDConfiguration *configuration = [MSIDTestConfiguration v2DefaultConfiguration];
     configuration.authority = [@"https://login.microsoftonline.com/1234-5678-90abcdefg" authority];
-    
+
     NSError *error = nil;
-    
+
     MSIDAccessToken *returnedToken = [_cacheAccessor getAccessTokenForAccount:account
                                                                 configuration:configuration
                                                                       context:nil
                                                                         error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertNotNil(returnedToken);
     XCTAssertEqualObjects(returnedToken.accessToken, DEFAULT_TEST_ACCESS_TOKEN);
     XCTAssertEqualObjects(returnedToken.enrollmentId, @"enrollmentId");
-    
+
     [self setUpEnrollmentIdsCache:YES];
 }
 
@@ -716,7 +716,7 @@
 - (void)setUpEnrollmentIdsCache:(BOOL)isEmpty
 {
     NSDictionary *emptyDict = @{};
-    
+
     NSDictionary *dict = @{MSID_INTUNE_ENROLLMENT_ID_KEY: @{@"enrollment_ids": @[@{
                                                                                      @"tid" : @"fda5d5d9-17c3-4c29-9cf9-a27c3d3f03e1",
                                                                                      @"oid" : @"d3444455-mike-4271-b6ea-e499cc0cab46",
@@ -732,7 +732,7 @@
                                                                                      @"enrollment_id" : @"64d0557f-dave-4193-b630-8491ffd3b180"
                                                                                      }
                                                                                  ]}};
-    
+
     MSIDCache *msidCache = [[MSIDCache alloc] initWithDictionary:isEmpty ? emptyDict : dict];
     MSIDIntuneInMemoryCacheDataSource *memoryCache = [[MSIDIntuneInMemoryCacheDataSource alloc] initWithCache:msidCache];
     MSIDIntuneEnrollmentIdsCache *enrollmentIdsCache = [[MSIDIntuneEnrollmentIdsCache alloc] initWithDataSource:memoryCache];

@@ -32,7 +32,7 @@ static WKWebViewConfiguration *s_webConfig;
 @interface MSIDWebviewUIController ( )
 {
     UIActivityIndicatorView *_loadingIndicator;
-    
+
     UIBackgroundTaskIdentifier _bgTask;
     id _bgObserver;
     id _foregroundObserver;
@@ -57,7 +57,7 @@ static WKWebViewConfiguration *s_webConfig;
     {
         _context = context;
     }
-    
+
     return self;
 }
 
@@ -74,12 +74,12 @@ static WKWebViewConfiguration *s_webConfig;
     {
         [self startTrackingBackroundAppTransition];
     }
-    
+
     if (_webView)
     {
         return YES;
     }
-    
+
     // Get UI container to hold the webview
     // Need parent controller to proceed
     if (![self obtainParentController])
@@ -94,22 +94,22 @@ static WKWebViewConfiguration *s_webConfig;
     [rootView setFrame:[[UIScreen mainScreen] bounds]];
     [rootView setAutoresizesSubviews:YES];
     [rootView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-    
+
     // Prepare the WKWebView
     WKWebView *webView = [[WKWebView alloc] initWithFrame:rootView.frame configuration:s_webConfig];
     [webView setAccessibilityIdentifier:@"MSID_SIGN_IN_WEBVIEW"];
-    
+
     // Customize the UI
     [webView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self setupCancelButton];
     _loadingIndicator = [self prepareLoadingIndicator:rootView];
     self.view = rootView;
-    
+
     // Append webview and loading indicator
     _webView = webView;
     [rootView addSubview:_webView];
     [rootView addSubview:_loadingIndicator];
-    
+
     return YES;
 }
 
@@ -117,7 +117,7 @@ static WKWebViewConfiguration *s_webConfig;
 {
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self];
     [navController setModalPresentationStyle:_presentationType];
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [_parentController presentViewController:navController animated:YES completion:nil];
     });
@@ -126,7 +126,7 @@ static WKWebViewConfiguration *s_webConfig;
 - (void)dismissWebview:(void (^)(void))completion
 {
     [self cleanupBackgroundTask];
-    
+
     //if webview is created by us, dismiss and then complete and return;
     //otherwise just complete and return.
     if (_parentController)
@@ -137,7 +137,7 @@ static WKWebViewConfiguration *s_webConfig;
     {
         completion();
     }
-    
+
     _parentController = nil;
 }
 
@@ -159,9 +159,9 @@ static WKWebViewConfiguration *s_webConfig;
     {
         return YES;
     }
-    
+
     _parentController = [UIApplication msidCurrentViewController];
-    
+
     return (_parentController != nil);
 }
 
@@ -200,7 +200,7 @@ static WKWebViewConfiguration *s_webConfig;
     {
         return;
     }
-    
+
     _bgObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification
                                                                     object:nil
                                                                      queue:nil
@@ -228,12 +228,12 @@ static WKWebViewConfiguration *s_webConfig;
     {
         return;
     }
-    
+
     _foregroundObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
                                                                             object:nil
                                                                              queue:nil
                                                                         usingBlock:^(__unused NSNotification * _Nonnull note) {
-                                                                            
+
                                                                             MSID_LOG_VERBOSE(_context, @"Application did become active");
                                                                             [self stopBackgroundTask];
                                                                             [self stopTrackingForegroundAppTransition];
@@ -245,7 +245,7 @@ static WKWebViewConfiguration *s_webConfig;
     if (_foregroundObserver)
     {
         MSID_LOG_VERBOSE(_context, @"Stop foreground application tracking");
-        
+
         [[NSNotificationCenter defaultCenter] removeObserver:_foregroundObserver];
         _foregroundObserver = nil;
     }
@@ -263,9 +263,9 @@ static WKWebViewConfiguration *s_webConfig;
         // Background task already started
         return;
     }
-    
+
     MSID_LOG_INFO(_context, @"Start background app task");
-    
+
     _bgTask = [[MSIDAppExtensionUtil sharedApplication] beginBackgroundTaskWithName:@"Interactive login"
                                                                   expirationHandler:^{
                                                                       MSID_LOG_INFO(_context, @"Background task expired");
@@ -281,7 +281,7 @@ static WKWebViewConfiguration *s_webConfig;
         // Background task already ended or not started
         return;
     }
-    
+
     MSID_LOG_INFO(_context, @"Stop background task");
     [[MSIDAppExtensionUtil sharedApplication] endBackgroundTask:_bgTask];
     _bgTask = UIBackgroundTaskInvalid;
@@ -290,7 +290,7 @@ static WKWebViewConfiguration *s_webConfig;
 - (void)cleanupBackgroundTask
 {
     [self stopTrackingBackgroundAppTransition];
-    
+
     // If authentication is stopped while app is in background
     [self stopTrackingForegroundAppTransition];
     [self stopBackgroundTask];

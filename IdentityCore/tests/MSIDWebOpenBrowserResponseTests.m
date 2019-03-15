@@ -41,10 +41,10 @@
     MSIDWebOpenBrowserResponse *response = [[MSIDWebOpenBrowserResponse alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://somehost"]]
                                                                                    context:nil
                                                                                      error:&error];
-    
+
     XCTAssertNil(response);
     XCTAssertNotNil(error);
-    
+
     XCTAssertEqualObjects(error.domain, MSIDOAuthErrorDomain);
     XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
 }
@@ -54,10 +54,10 @@
     MSIDWebOpenBrowserResponse *response = [[MSIDWebOpenBrowserResponse alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"browser://somehost"]]
                                                                                                          context:nil
                                                                                                            error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertNil(error);
-    
+
     XCTAssertEqualObjects(response.browserURL.absoluteString, @"https://somehost");
 }
 @end

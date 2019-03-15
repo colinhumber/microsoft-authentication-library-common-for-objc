@@ -32,11 +32,11 @@ static BOOL s_swizzleState = NO;
 + (void)mockCurrentDate:(NSDate *)date
 {
     s_mockDate = date;
-    
+
     if (!s_swizzleState)
     {
         [self swapMethods];
-        
+
         s_swizzleState = YES;
     }
 }
@@ -46,7 +46,7 @@ static BOOL s_swizzleState = NO;
     if (s_swizzleState)
     {
         [self swapMethods];
-        
+
         s_swizzleState = NO;
     }
 }

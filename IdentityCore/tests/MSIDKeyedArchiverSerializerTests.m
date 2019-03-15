@@ -40,7 +40,7 @@
 - (void)test_whenSerializeToken_shouldReturnSameTokenOnDeserialize
 {
     MSIDKeyedArchiverSerializer *serializer = [[MSIDKeyedArchiverSerializer alloc] init];
-    
+
     MSIDLegacyTokenCacheItem *cacheItem = [[MSIDLegacyTokenCacheItem alloc] init];
     cacheItem.refreshToken = @"refresh token value";
     cacheItem.familyId = @"familyId value";
@@ -52,10 +52,10 @@
     cacheItem.secret = cacheItem.refreshToken;
     cacheItem.realm = cacheItem.authority.msidTenant;
     cacheItem.environment = cacheItem.authority.msidHostWithPortIfNecessary;
-    
+
     NSData *data = [serializer serializeCredentialCacheItem:cacheItem];
     MSIDCredentialCacheItem *resultToken = [serializer deserializeCredentialCacheItem:data];
-    
+
     XCTAssertNotNil(data);
     XCTAssertEqualObjects(resultToken, cacheItem);
 }
@@ -79,27 +79,27 @@
 - (void)testSerialize_whenTokenNil_shouldReturnNil
 {
     MSIDKeyedArchiverSerializer *serializer = [[MSIDKeyedArchiverSerializer alloc] init];
-    
+
     NSData *data = [serializer serializeCredentialCacheItem:nil];
-    
+
     XCTAssertNil(data);
 }
 
 - (void)testSerialize_whenTokenWithDefaultProperties_shouldReturnNotNilData
 {
     MSIDKeyedArchiverSerializer *serializer = [[MSIDKeyedArchiverSerializer alloc] init];
-    
+
     NSData *data = [serializer serializeCredentialCacheItem:[MSIDLegacyTokenCacheItem new]];
-    
+
     XCTAssertNotNil(data);
 }
 
 - (void)testDeserialize_whenDataNilNil_shouldReturnNil
 {
     MSIDKeyedArchiverSerializer *serializer = [[MSIDKeyedArchiverSerializer alloc] init];
-    
+
     MSIDCredentialCacheItem *token = [serializer deserializeCredentialCacheItem:nil];
-    
+
     XCTAssertNil(token);
 }
 
@@ -107,9 +107,9 @@
 {
     MSIDKeyedArchiverSerializer *serializer = [[MSIDKeyedArchiverSerializer alloc] init];
     NSData *data = [@"some" dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     MSIDCredentialCacheItem *token = [serializer deserializeCredentialCacheItem:data];
-    
+
     XCTAssertNil(token);
 }
 
@@ -120,12 +120,12 @@
     NSDictionary *wipeInfo = @{ @"bundleId" : @"bundleId",
                                 @"wipeTime" : [NSDate date]
                                 };
-    
+
     NSData *wipeData = [NSKeyedArchiver archivedDataWithRootObject:wipeInfo];
-    
+
     MSIDKeyedArchiverSerializer *serializer = [[MSIDKeyedArchiverSerializer alloc] init];
     MSIDCredentialCacheItem *token = [serializer deserializeCredentialCacheItem:wipeData];
-    
+
     XCTAssertNil(token);
 }
 

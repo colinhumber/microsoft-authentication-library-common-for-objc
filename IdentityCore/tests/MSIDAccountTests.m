@@ -78,7 +78,7 @@
 - (void)testInitWithLegacyUserIdHomeAccountId_shouldInitAccountAndSetProperties
 {
     MSIDAccountIdentifier *account = [[MSIDAccountIdentifier alloc] initWithDisplayableId:@"legacy user id" homeAccountId:@"some id"];
-    
+
     XCTAssertNotNil(account);
     XCTAssertEqualObjects(account.displayableId, @"legacy user id");
     XCTAssertEqualObjects(account.homeAccountId, @"some id");
@@ -89,9 +89,9 @@
 {
     NSString *base64String = [@{ @"uid" : @"1", @"utid" : @"1234-5678-90abcdefg"} msidBase64UrlJson];
     MSIDClientInfo *clientInfo = [[MSIDClientInfo alloc] initWithRawClientInfo:base64String error:nil];
-    
+
     MSIDAccountIdentifier *account = [[MSIDAccountIdentifier alloc] initWithDisplayableId:@"legacy user id" clientInfo:clientInfo];
-    
+
     XCTAssertNotNil(account);
     XCTAssertEqualObjects(account.displayableId, @"legacy user id");
     XCTAssertEqualObjects(account.homeAccountId, @"1.1234-5678-90abcdefg");
@@ -101,9 +101,9 @@
 {
     NSString *base64String = [@{ @"uid" : @"1", @"utid" : @"1234-5678-90abcdefg"} msidBase64UrlJson];
     MSIDClientInfo *clientInfo = [[MSIDClientInfo alloc] initWithRawClientInfo:base64String error:nil];
-    
+
     MSIDAccountIdentifier *account = [[MSIDAccountIdentifier alloc] initWithDisplayableId:@"legacy user id" clientInfo:clientInfo];
-    
+
     XCTAssertNotNil(account);
     XCTAssertEqualObjects(account.displayableId, @"legacy user id");
     XCTAssertEqualObjects(account.homeAccountId, @"1.1234-5678-90abcdefg");
@@ -145,7 +145,7 @@
 - (void)testAccountCacheItem_shouldReturnProperCacheItem
 {
     __auto_type authority = [@"https://login.microsoftonline.com/common" authority];
-    
+
     MSIDAccount *account = [MSIDAccount new];
     account.authority = authority;
     account.username = @"eric999";
@@ -156,7 +156,7 @@
     account.accountIdentifier = [[MSIDAccountIdentifier alloc] initWithDisplayableId:@"legacy.id" homeAccountId:@"some id"];
 
     MSIDAccountCacheItem *cacheItem = [account accountCacheItem];
-    
+
     XCTAssertNotNil(cacheItem);
     XCTAssertEqualObjects(cacheItem.localAccountId, @"local account id");
     XCTAssertEqualObjects(cacheItem.homeAccountId, @"some id");
@@ -183,9 +183,9 @@
     cacheItem.accountType = MSIDAccountTypeMSA;
     MSIDClientInfo *clientInfo = [self createClientInfo:@{@"key" : @"value"}];
     cacheItem.clientInfo = clientInfo;
-    
+
     MSIDAccount *account = [[MSIDAccount alloc] initWithAccountCacheItem:cacheItem];
-    
+
     XCTAssertNotNil(account);
     XCTAssertEqualObjects(account.localAccountId, @"local account id");
     XCTAssertEqualObjects(account.accountIdentifier.homeAccountId, @"uid.utid");

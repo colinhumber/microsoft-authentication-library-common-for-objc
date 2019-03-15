@@ -67,7 +67,7 @@
 - (void)acquireToken:(MSIDRequestCompletionBlock)completionBlock
 {
     MSID_LOG_INFO(self.requestParameters, @"Beginning interactive flow.");
-    
+
     if (!completionBlock)
     {
         MSID_LOG_ERROR(self.requestParameters, @"Passed nil completionBlock. Interactive flow finished.");
@@ -85,7 +85,7 @@
             MSID_LOG_INFO(self.requestParameters, @"Interactive flow finished result %@, error: %ld error domain: %@", _PII_NULLIFY(result), (long)error.code, error.domain);
             completionBlock(result, error);
         };
-        
+
         if (msauthResponse)
         {
             [self handleWebMSAuthResponse:msauthResponse completion:completionBlockWrapper];
@@ -102,7 +102,7 @@
 - (void)handleWebMSAuthResponse:(MSIDWebWPJResponse *)response completion:(MSIDRequestCompletionBlock)completionBlock
 {
     MSID_LOG_INFO(self.requestParameters, @"Handling msauth response.");
-    
+
     if (![NSString msidIsStringNilOrBlank:response.appInstallLink])
     {
         MSID_LOG_INFO(self.requestParameters, @"Prompt broker install.");
@@ -113,11 +113,11 @@
     if (![NSString msidIsStringNilOrBlank:response.upn])
     {
         MSID_LOG_INFO(self.requestParameters, @"Workplace join is required.");
-        
+
         NSMutableDictionary *additionalInfo = [NSMutableDictionary new];
         additionalInfo[MSIDUserDisplayableIdkey] = response.upn;
         additionalInfo[MSIDHomeAccountIdkey] = response.clientInfo.accountIdentifier;
-        
+
         NSError *registrationError = MSIDCreateError(MSIDErrorDomain, MSIDErrorWorkplaceJoinRequired, @"Workplace join is required", nil, nil, nil, self.requestParameters.correlationId, additionalInfo);
         MSIDTelemetryAPIEvent *telemetryEvent = [self telemetryAPIEvent];
         [telemetryEvent setLoginHint:response.upn];

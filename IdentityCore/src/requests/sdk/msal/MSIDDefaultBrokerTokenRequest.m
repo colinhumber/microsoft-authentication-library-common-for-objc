@@ -34,7 +34,7 @@
 {
     NSString *homeAccountId = self.requestParameters.accountIdentifier.homeAccountId;
     NSString *username = self.requestParameters.accountIdentifier.displayableId;
-    
+
     // if value is nil, it won't appear in the dictionary
     NSMutableDictionary *contents = [NSMutableDictionary new];
     [contents msidSetNonEmptyString:self.requestParameters.target forKey:@"request_scopes"];
@@ -46,7 +46,7 @@
     NSString *promptParam = MSIDPromptParamFromType(self.requestParameters.promptType);
     [contents msidSetNonEmptyString:promptParam forKey:@"prompt"];
     [contents setValue:@"3" forKey:@"msg_protocol_ver"];
-    
+
     return contents;
 }
 

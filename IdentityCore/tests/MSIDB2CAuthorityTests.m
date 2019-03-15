@@ -44,9 +44,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"http://login.microsoftonline.com/tfp/tenant/policy"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"authority must use HTTPS.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -56,9 +56,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/tfp/tenant/policy"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNotNil(authority);
     XCTAssertNil(error);
 }
@@ -67,9 +67,9 @@
 {
     __auto_type authorityUrl = [@"https://login.microsoftonline.com/tfp/tenant" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(error.userInfo[MSIDErrorDescriptionKey], @"B2C authority should have at least 3 segments in the path (i.e. https://<host>/tfp/<tenant>/<policy>/...)");
@@ -79,9 +79,9 @@
 {
     __auto_type authorityUrl = [@"https://login.microsoftonline.com/tfp/tenant/policy/qwe" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertEqualObjects(authority.url, [@"https://login.microsoftonline.com/tfp/tenant/policy" msidUrl]);
     XCTAssertNil(error);
 }
@@ -90,9 +90,9 @@
 {
     __auto_type authorityUrl = [@"https://login.microsoftonline.com/tfp/tenant/policy/" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertEqualObjects(authority.url, [@"https://login.microsoftonline.com/tfp/tenant/policy" msidUrl]);
     XCTAssertNil(error);
 }
@@ -101,9 +101,9 @@
 {
     __auto_type authorityUrl = [@"https://login.microsoftonline.com/tfp/tenant/policy" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertEqualObjects(authority.environment, @"login.microsoftonline.com");
     XCTAssertNil(error);
 }
@@ -112,9 +112,9 @@
 {
     __auto_type authorityUrl = [@"https://login.microsoftonline.com:8080/tfp/tenant/policy" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertEqualObjects(authority.environment, @"login.microsoftonline.com:8080");
     XCTAssertNil(error);
 }
@@ -135,9 +135,9 @@
 - (void)testUniversalAuthorityURL_whenB2CAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/tfp/tenant/policy"];
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority universalAuthorityURL]);
 }
 
@@ -146,9 +146,9 @@
 - (void)testCacheUrlWithContext_whenB2CAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com:8080/tfp/tenant/policy"];
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority universalAuthorityURL]);
 }
 
@@ -157,9 +157,9 @@
 - (void)testNetworkUrlWithContext_whenB2CAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com:8080/tfp/tenant/policy"];
-    
+
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority networkUrlWithContext:nil]);
 }
 
@@ -169,9 +169,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com:8080/tfp/tenant/policy"];
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     __auto_type aliases = [authority legacyAccessTokenLookupAuthorities];
-    
+
     XCTAssertEqualObjects(@[authorityUrl], aliases);
 }
 
@@ -181,9 +181,9 @@
 {
     __auto_type authority = [@"https://login.microsoftonline.com/tfp/tenant/policy" authority];
     NSArray *expectedAliases = @[authority.url];
-    
+
     NSArray *aliases = [authority legacyRefreshTokenLookupAliases];
-    
+
     XCTAssertEqualObjects(aliases, expectedAliases);
 }
 
@@ -194,31 +194,31 @@
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/tfp/tenant/policy"];
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.us/tfp/tenant/policy"];
     authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.chinacloudapi.cn/tfp/tenant/policy"];
     authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.partner.microsoftonline.cn/tfp/tenant/policy"];
     authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.de/tfp/tenant/policy"];
     authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/tfp/tenant/policy"];
     authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login-us.microsoftonline.com/tfp/tenant/policy"];
     authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.usgovcloudapi.net/tfp/tenant/policy"];
     authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
@@ -229,7 +229,7 @@
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://some.net/tfp/tenant/policy"];
     __auto_type authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertFalse([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://example.com/tfp/tenant/policy"];
     authority = [[MSIDB2CAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertFalse([authority isKnown]);
@@ -240,15 +240,15 @@
 - (void)testisEqual_whenAllPropertiesAreEqual_shouldReturnTrue
 {
     __auto_type metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     __auto_type *lhs = (MSIDB2CAuthority *)[@"https://some.net/tfp/tenant/policy" authority];
     lhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
     lhs.metadata = metadata;
-    
+
     __auto_type *rhs = (MSIDB2CAuthority *)[@"https://some.net/tfp/tenant/policy" authority];
     rhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
     rhs.metadata = metadata;
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -256,10 +256,10 @@
 {
     __auto_type *lhs = (MSIDB2CAuthority *)[@"https://some.net/tfp/tenant/policy" authority];
     lhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
-    
+
     __auto_type *rhs = (MSIDB2CAuthority *)[@"https://some.net/tfp/tenant/policy" authority];
     rhs.openIdConfigurationEndpoint = [@"https://example.com/qwe" msidUrl];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -267,10 +267,10 @@
 {
     __auto_type *lhs = (MSIDB2CAuthority *)[@"https://some.net/tfp/tenant/policy" authority];
     lhs.metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     __auto_type *rhs = (MSIDB2CAuthority *)[@"https://some.net/tfp/tenant/policy" authority];
     rhs.metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 

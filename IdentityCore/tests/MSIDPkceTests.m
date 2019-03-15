@@ -52,9 +52,9 @@ NSUInteger const kCodeVerifierMaxLength = 128;
     MSIDPkce *pkce = [MSIDPkce new];
     XCTAssertTrue(pkce.codeVerifier.length >= kCodeVerifierMinLength);
     XCTAssertTrue(pkce.codeVerifier.length <= kCodeVerifierMaxLength);
-    
+
     XCTAssertNotNil(pkce.codeChallenge);
-    
+
     XCTAssertEqualObjects(@"S256", pkce.codeChallengeMethod);
 }
 

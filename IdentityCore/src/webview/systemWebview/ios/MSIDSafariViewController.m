@@ -45,13 +45,13 @@
 @implementation MSIDSafariViewController
 {
     SFSafariViewController *_safariViewController;
-    
+
     NSURL *_startURL;
-    
+
     MSIDWebUICompletionHandler _completionHandler;
-    
+
     id<MSIDRequestContext> _context;
-    
+
     NSString *_telemetryRequestId;
     MSIDTelemetryUIEvent *_telemetryEvent;
 }
@@ -65,10 +65,10 @@
     {
         _startURL = url;
         _context = context;
-        
+
         _safariViewController = [[SFSafariViewController alloc] initWithURL:url entersReaderIfAvailable:NO];
         _safariViewController.delegate = self;
-        
+
         _parentController = parentController;
     }
     return self;
@@ -77,7 +77,7 @@
 - (void)cancel
 {
     NSError *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorSessionCanceledProgrammatically, @"Authorization session was cancelled programatically", nil, nil, nil, _context.correlationId, nil);
-    
+
     [self completeSessionWithResponse:nil context:_context error:error];
 }
 
@@ -88,7 +88,7 @@
         MSID_LOG_WARN(_context, @"CompletionHandler cannot be nil for interactive session.");
         return;
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *viewController = _parentController ? _parentController :
         [UIApplication msidCurrentViewController];
@@ -99,17 +99,17 @@
             completionHandler(nil, error);
             return;
         }
-        
+
         _completionHandler = [completionHandler copy];
-        
+
         _telemetryRequestId = [_context telemetryRequestId];
-        
+
         [[MSIDTelemetry sharedInstance] startEvent:_telemetryRequestId eventName:MSID_TELEMETRY_EVENT_UI_EVENT];
         _telemetryEvent = [[MSIDTelemetryUIEvent alloc] initWithName:MSID_TELEMETRY_EVENT_UI_EVENT
                                                              context:_context];
-        
+
         [MSIDNotifications notifyWebAuthDidStartLoad:_startURL];
-        
+
         [viewController presentViewController:_safariViewController animated:YES completion:nil];
     });
 }
@@ -121,7 +121,7 @@
     {
         return NO;
     }
-    
+
     return [self completeSessionWithResponse:url context:nil error:nil];
 }
 
@@ -134,16 +134,16 @@
             _safariViewController = nil;
         }];
     });
-    
+
     [[MSIDTelemetry sharedInstance] stopEvent:_telemetryRequestId event:_telemetryEvent];
-    
+
     if (error)
     {
         [MSIDNotifications notifyWebAuthDidFailWithError:error];
         _completionHandler(nil, error);
         return NO;
     }
-    
+
     [MSIDNotifications notifyWebAuthDidCompleteWithURL:url];
 
     _completionHandler(url, nil);

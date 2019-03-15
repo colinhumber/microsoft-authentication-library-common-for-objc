@@ -20,7 +20,7 @@
     {
         jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
     }
-    
+
     return jsonObject;
 }
 

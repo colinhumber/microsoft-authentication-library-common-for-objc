@@ -50,7 +50,7 @@
         _tenant = [self.class tenantFromAuthorityUrl:self.url context:context error:error];
         _authorityCache = [MSIDAadAuthorityCache sharedInstance];
     }
-    
+
     return self;
 }
 
@@ -65,13 +65,13 @@
         if (rawTenant && self.tenant.type != MSIDAADTenantTypeIdentifier)
         {
             _url = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@", [_url msidHostWithPortIfNecessary], rawTenant]];
-            
+
             if (![self.class isAuthorityFormatValid:_url context:context error:error]) return nil;
-            
+
             _tenant = [self.class tenantFromAuthorityUrl:self.url context:context error:error];
         }
     }
-    
+
     return self;
 }
 
@@ -85,7 +85,7 @@
     __auto_type universalAuthorityURL = [self universalAuthorityURL];
     __auto_type authority = (MSIDAADAuthority *)[MSIDAuthorityFactory authorityFromUrl:universalAuthorityURL context:context error:nil];
     if (authority) NSParameterAssert([authority isKindOfClass:MSIDAADAuthority.class]);
-    
+
     return [self.authorityCache cacheUrlForAuthority:authority context:context];
 }
 
@@ -94,7 +94,7 @@
     __auto_type universalAuthorityURL = [self universalAuthorityURL];
     __auto_type authority = (MSIDAADAuthority *)[MSIDAuthorityFactory authorityFromUrl:universalAuthorityURL context:nil error:nil];
     if (authority) NSParameterAssert([authority isKindOfClass:MSIDAADAuthority.class]);
-    
+
     return [self.authorityCache cacheAliasesForAuthority:authority];
 }
 
@@ -110,14 +110,14 @@
 //    For legacy cache lookups we need to use common authority for compatibility purposes.
 //    This method returns "common" authority if "organizations" authority was passed.
 //    Otherwise, returns original authority.
-    
+
     if (self.tenant.type == MSIDAADTenantTypeOrganizations)
     {
         __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:self.url rawTenant:MSIDAADTenantTypeCommonRawValue context:nil error:nil];
-        
+
         return authority.url;
     }
-    
+
     return self.url;
 }
 
@@ -128,14 +128,14 @@
         // AAD v1 doesn't support consumer authority
         return @[];
     }
-    
+
     NSMutableArray *aliases = [NSMutableArray array];
-    
+
     if (self.tenant.type == MSIDAADTenantTypeIdentifier)
     {
         // If it's a tenanted authority, lookup original authority and common as those are the same, but start with original authority
         [aliases addObjectsFromArray:[self legacyAccessTokenLookupAuthorities]];
-        
+
         __auto_type aadAuthorityCommon = [MSIDAADAuthority aadAuthorityWithEnvironment:[self.url msidHostWithPortIfNecessary] rawTenant:MSIDAADTenantTypeCommonRawValue context:nil error:nil];
         [aliases addObjectsFromArray:[aadAuthorityCommon legacyAccessTokenLookupAuthorities]];
     }
@@ -144,7 +144,7 @@
         // If it's a tenantless authority, lookup by universal "common" authority, which is supported by both v1 and v2
         [aliases addObjectsFromArray:[self legacyAccessTokenLookupAuthorities]];
     }
-    
+
     return aliases;
 }
 
@@ -153,9 +153,9 @@
                          error:(NSError **)error
 {
     if (![super isAuthorityFormatValid:url context:context error:error]) return NO;
-    
+
     __auto_type tenant = [self tenantFromAuthorityUrl:url context:context error:error];
-    
+
     if ([tenant.rawTenant isEqualToString:@"adfs"])
     {
         if (error)
@@ -165,7 +165,7 @@
         }
         return NO;
     }
-    
+
     if ([tenant.rawTenant isEqualToString:@"tfp"])
     {
         if (error)
@@ -175,7 +175,7 @@
         }
         return NO;
     }
-    
+
     return tenant != nil;
 }
 
@@ -186,7 +186,7 @@
 {
     __auto_type authorityUrl = [NSURL msidURLWithEnvironment:environment tenant:rawTenant];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:context error:error];
-    
+
     return authority;
 }
 
@@ -217,7 +217,7 @@
 {
     MSIDAADAuthority *authority = [super copyWithZone:zone];
     authority->_tenant = [_tenant copyWithZone:zone];
-    
+
     return authority;
 }
 
@@ -238,7 +238,7 @@
     {
         return nil;
     }
-    
+
     return [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@", [url msidHostWithPortIfNecessary], url.pathComponents[1]]];
 }
 
@@ -247,17 +247,17 @@
                                     error:(NSError **)error
 {
     NSArray *paths = url.pathComponents;
-    
+
     if ([paths count] < 2)
     {
         if (error)
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, @"authority must have AAD tenant.", nil, nil, nil, context.correlationId, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSString *rawTenant = [paths[1] lowercaseString];
     return [[MSIDAADTenant alloc] initWithRawTenant:rawTenant context:context error:error];
 }

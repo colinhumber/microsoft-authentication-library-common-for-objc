@@ -41,7 +41,7 @@
 {
     MSIDLegacyRefreshToken *token = [self createToken];
     MSIDLegacyRefreshToken *tokenCopy = [token copy];
-    
+
     XCTAssertEqualObjects(tokenCopy, token);
 }
 
@@ -51,7 +51,7 @@
 {
     MSIDLegacyRefreshToken *lhs = [self createToken];
     MSIDLegacyRefreshToken *rhs = [self createToken];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -63,7 +63,7 @@
     [lhs setValue:@"value 1" forKey:@"idToken"];
     MSIDLegacyRefreshToken *rhs = [MSIDLegacyRefreshToken new];
     [rhs setValue:@"value 2" forKey:@"idToken"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -73,7 +73,7 @@
     [lhs setValue:@"value 1" forKey:@"idToken"];
     MSIDLegacyRefreshToken *rhs = [MSIDLegacyRefreshToken new];
     [rhs setValue:@"value 1" forKey:@"idToken"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -83,7 +83,7 @@
     [lhs setValue:@"value 1" forKey:@"refreshToken"];
     MSIDLegacyRefreshToken *rhs = [MSIDLegacyRefreshToken new];
     [rhs setValue:@"value 2" forKey:@"refreshToken"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -93,7 +93,7 @@
     [lhs setValue:@"value 1" forKey:@"refreshToken"];
     MSIDLegacyRefreshToken *rhs = [MSIDLegacyRefreshToken new];
     [rhs setValue:@"value 1" forKey:@"refreshToken"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -103,7 +103,7 @@
     [lhs setValue:@"value 1" forKey:@"familyId"];
     MSIDLegacyRefreshToken *rhs = [MSIDLegacyRefreshToken new];
     [rhs setValue:@"value 2" forKey:@"familyId"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -113,7 +113,7 @@
     [lhs setValue:@"value 1" forKey:@"familyId"];
     MSIDLegacyRefreshToken *rhs = [MSIDLegacyRefreshToken new];
     [rhs setValue:@"value 1" forKey:@"familyId"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -129,7 +129,7 @@
 {
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDIDTokenType;
-    
+
     MSIDLegacyRefreshToken *token = [[MSIDLegacyRefreshToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -144,7 +144,7 @@
     cacheItem.clientId = @"client id";
     cacheItem.secret = @"token";
     cacheItem.familyId = @"1";
-    
+
     MSIDLegacyRefreshToken *token = [[MSIDLegacyRefreshToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNotNil(token);
     XCTAssertEqualObjects(token.authority, [@"https://login.microsoftonline.com/common" authority]);
@@ -152,7 +152,7 @@
     XCTAssertEqualObjects(token.additionalServerInfo, @{@"test": @"test2"});
     XCTAssertEqualObjects(token.accountIdentifier.homeAccountId, @"uid.utid");
     XCTAssertEqualObjects(token.familyId, @"1");
-    
+
     MSIDCredentialCacheItem *newCacheItem = [token tokenCacheItem];
     XCTAssertEqualObjects(cacheItem, newCacheItem);
 }

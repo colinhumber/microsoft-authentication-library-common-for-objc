@@ -33,32 +33,32 @@
 - (instancetype)initWithTokenCacheItem:(MSIDCredentialCacheItem *)tokenCacheItem
 {
     self = [super initWithTokenCacheItem:tokenCacheItem];
-    
+
     if (self)
     {
         _sessionKey = [NSData msidDataFromBase64UrlEncodedString:tokenCacheItem.jsonDictionary[MSID_SESSION_KEY_CACHE_KEY]];
-        
+
         if (!_sessionKey)
         {
             MSID_LOG_ERROR(nil, @"Trying to initialize primary refresh token when missing session key field");
             return nil;
         }
     }
-    
+
     return self;
 }
 
 - (MSIDCredentialCacheItem *)tokenCacheItem
 {
     MSIDCredentialCacheItem *cacheItem = [super tokenCacheItem];
-    
+
     NSError *error;
     MSIDPRTCacheItem *prtCacheItem = [[MSIDPRTCacheItem alloc] initWithJSONDictionary:cacheItem.jsonDictionary error:&error];
     if (!prtCacheItem) return nil;
-    
+
     prtCacheItem.sessionKey = self.sessionKey;
     prtCacheItem.credentialType = MSIDPrimaryRefreshTokenType;
-    
+
     return prtCacheItem;
 }
 
@@ -66,18 +66,18 @@
 - (instancetype)initWithLegacyTokenCacheItem:(MSIDLegacyTokenCacheItem *)tokenCacheItem
 {
     self = [super initWithLegacyTokenCacheItem:tokenCacheItem];
-    
+
     if (self)
     {
         _sessionKey = [NSData msidDataFromBase64UrlEncodedString:tokenCacheItem.jsonDictionary[MSID_SESSION_KEY_CACHE_KEY]];
-        
+
         if (!_sessionKey)
         {
             MSID_LOG_ERROR(nil, @"Trying to initialize primary refresh token when missing session key field");
             return nil;
         }
     }
-    
+
     return self;
 }
 
@@ -85,11 +85,11 @@
 - (MSIDLegacyTokenCacheItem *)legacyTokenCacheItem
 {
     MSIDLegacyTokenCacheItem *legacyPrtCacheItem = [MSIDLegacyTokenCacheItem new];
-    
+
     legacyPrtCacheItem.credentialType = MSIDPrimaryRefreshTokenType;
     legacyPrtCacheItem.authority = self.storageAuthority.url ? self.storageAuthority.url : self.authority.url;
     legacyPrtCacheItem.clientId = self.clientId;
-    
+
     return legacyPrtCacheItem;
 }
 
@@ -101,12 +101,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:MSIDPrimaryRefreshToken.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDPrimaryRefreshToken *)object];
 }
 
@@ -123,7 +123,7 @@
     {
         return NO;
     }
-    
+
     BOOL result = [super isEqualToItem:token];
     result &= (!self.sessionKey && !token.sessionKey) || [self.sessionKey isEqualToData:token.sessionKey];
     return result;

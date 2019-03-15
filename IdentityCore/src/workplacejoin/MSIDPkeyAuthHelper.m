@@ -41,22 +41,22 @@
     MSIDRegistrationInformation *info =
     [MSIDWorkPlaceJoinUtil getRegistrationInformation:context
                                                 error:&localError];
-    
+
     if (!info && localError)
     {
         // If some error ocurred other then "I found nothing in the keychain" we want to short circuit out of
         // the rest of the code, but if there was no error, we still create a response header, even if we
         // don't have registration info
         MSID_LOG_ERROR(context, @"Failed to create PKeyAuth request");
-        
+
         if (error)
         {
             *error = localError;
         }
         return nil;
     }
-    
-    
+
+
     if (!challengeData)
     {
         // Error should have been logged before this where there is more information on why the challenge data was bad
@@ -70,14 +70,14 @@
     {
         NSString *certAuths = [challengeData valueForKey:@"CertAuthorities"];
         NSString *expectedThumbprint = [challengeData valueForKey:@"CertThumbprint"];
-        
+
         if (certAuths)
         {
             NSString *issuerOU = [MSIDPkeyAuthHelper getOrgUnitFromIssuer:[info certificateIssuer]];
             if (![self isValidIssuer:certAuths keychainCertIssuer:issuerOU])
             {
                 MSID_LOG_ERROR(context, @"PKeyAuth Error: Certificate Authority specified by device auth request does not match certificate in keychain.");
-                
+
                 info = nil;
             }
         }
@@ -89,24 +89,24 @@
             if (![expectedThumbprint isEqualToString:thumbprint])
             {
                 MSID_LOG_ERROR(context, @"PKeyAuth Error: Certificate Thumbprint does not match certificate in keychain.");
-                
+
                 info = nil;
             }
         }
     }
-    
+
     NSString *pKeyAuthHeader = @"";
     if (info)
     {
         NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:authorizationServer resolvingAgainstBaseURL:NO];
         urlComponents.query = nil; // Strip out query parameters.
         __auto_type audience = urlComponents.string;
-        
+
         pKeyAuthHeader = [NSString stringWithFormat:@"AuthToken=\"%@\",", [MSIDPkeyAuthHelper createDeviceAuthResponse:audience nonce:[challengeData valueForKey:@"nonce"] identity:info]];
         MSID_LOG_INFO(context, @"Found WPJ Info and responded to PKeyAuth Request.");
         info = nil;
     }
-    
+
     return [NSString stringWithFormat:@"PKeyAuth %@ Context=\"%@\", Version=\"%@\"", pKeyAuthHeader,[challengeData valueForKey:@"Context"],  [challengeData valueForKey:@"Version"]];
 }
 
@@ -115,14 +115,14 @@
 {
     NSString *regexString = @"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
-    
+
     for (NSTextCheckingResult *myMatch in [regex matchesInString:issuer options:0 range:NSMakeRange(0, [issuer length])]){
         if (myMatch.numberOfRanges > 0) {
             NSRange matchedRange = [myMatch rangeAtIndex: 0];
             return [NSString stringWithFormat:@"OU=%@", [issuer substringWithRange: matchedRange]];
         }
     }
-    
+
     return nil;
 }
 
@@ -133,7 +133,7 @@
     keychainCertIssuer = [keychainCertIssuer uppercaseString];
     certAuths = [certAuths uppercaseString];
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
-    
+
     for (NSTextCheckingResult *myMatch in [regex matchesInString:certAuths options:0 range:NSMakeRange(0, [certAuths length])]){
         for (NSUInteger i = 0; i < myMatch.numberOfRanges; ++i)
         {
@@ -144,7 +144,7 @@
             }
         }
     }
-    
+
     return false;
 }
 
@@ -155,7 +155,7 @@
     if (!audience || !nonce)
     {
         MSID_LOG_ERROR(nil, @"audience or nonce is nil in device auth request!");
-        
+
         return nil;
     }
     NSArray *arrayOfStrings = @[[NSString stringWithFormat:@"%@", [[identity certificateData] base64EncodedStringWithOptions:0]]];
@@ -164,13 +164,13 @@
                              @"typ" : @"JWT",
                              @"x5c" : arrayOfStrings
                              };
-    
+
     NSDictionary *payload = @{
                               @"aud" : audience,
                               @"nonce" : nonce,
                               @"iat" : [NSString stringWithFormat:@"%d", (CC_LONG)[[NSDate date] timeIntervalSince1970]]
                               };
-    
+
     return [MSIDJWTHelper createSignedJWTforHeader:header payload:payload signingKey:[identity privateKey]];
 }
 

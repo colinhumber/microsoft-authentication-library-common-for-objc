@@ -93,7 +93,7 @@
     }
 
     NSString *scopesString = scopes.msidToString;
-    
+
     NSMutableDictionary *jsonDictionary = [@{MSID_OAUTH2_TOKEN_TYPE: @"Bearer",
                                             MSID_OAUTH2_EXPIRES_IN: @"3600",
                                             MSID_OAUTH2_EXT_EXPIRES_IN: @"3600",
@@ -104,27 +104,27 @@
     {
         jsonDictionary[MSID_OAUTH2_CLIENT_INFO] = clientInfoString;
     }
-    
+
     if (accessToken)
     {
         jsonDictionary[MSID_OAUTH2_ACCESS_TOKEN] = accessToken;
     }
-    
+
     if (refreshToken)
     {
         jsonDictionary[MSID_OAUTH2_REFRESH_TOKEN] = refreshToken;
     }
-    
+
     if (idToken)
     {
         jsonDictionary[MSID_OAUTH2_ID_TOKEN] = idToken;
     }
-    
+
     if (familyId)
     {
         jsonDictionary[MSID_FAMILY_ID] = familyId;
     }
-    
+
     return [self v2TokenResponseFromJSONDictionary:jsonDictionary];
 }
 
@@ -172,11 +172,11 @@
                                  additionalFields:(NSDictionary *)additionalFields
 {
     NSString *clientInfoString = (uid && utid) ? [@{ @"uid" : uid, @"utid" : utid} msidBase64UrlJson] : nil;
-    
+
     NSMutableDictionary *jsonDictionary = [@{MSID_OAUTH2_TOKEN_TYPE: @"Bearer",
                                              MSID_OAUTH2_EXPIRES_IN: @"3600"
                                              } mutableCopy];
-    
+
     if (resource) jsonDictionary[MSID_OAUTH2_RESOURCE] = resource;
     if (accessToken) jsonDictionary[MSID_OAUTH2_ACCESS_TOKEN] = accessToken;
     if (refreshToken) jsonDictionary[MSID_OAUTH2_REFRESH_TOKEN] = refreshToken;
@@ -184,12 +184,12 @@
     if (clientInfoString) jsonDictionary[MSID_OAUTH2_CLIENT_INFO] = clientInfoString;
 
     [jsonDictionary addEntriesFromDictionary:additionalFields];
-    
+
     return [self v1TokenResponseFromJSONDictionary:jsonDictionary];
 }
 
 + (MSIDAADV1TokenResponse *)v1DefaultTokenResponseWithoutClientInfo
-{    
+{
     return [self v1TokenResponseWithAT:DEFAULT_TEST_ACCESS_TOKEN
                                     rt:DEFAULT_TEST_REFRESH_TOKEN
                               resource:DEFAULT_TEST_RESOURCE
@@ -203,7 +203,7 @@
 {
     NSString *clientInfoString = [@{ @"uid" : DEFAULT_TEST_UID, @"utid" : DEFAULT_TEST_UTID} msidBase64UrlJson];
     NSString *idToken = [MSIDTestIdTokenUtil defaultV1IdToken];
-    
+
     NSDictionary *jsonDict = @{MSID_OAUTH2_ACCESS_TOKEN: DEFAULT_TEST_ACCESS_TOKEN,
                                MSID_OAUTH2_TOKEN_TYPE: @"Bearer",
                                MSID_OAUTH2_EXPIRES_IN: @"3600",
@@ -213,7 +213,7 @@
                                MSID_OAUTH2_CLIENT_INFO: clientInfoString,
                                MSID_FAMILY_ID: familyId
                                };
-    
+
     return [self v1TokenResponseFromJSONDictionary:jsonDict];
 }
 
@@ -228,17 +228,17 @@
 {
     NSMutableDictionary *jsonDictionary = [@{MSID_OAUTH2_TOKEN_TYPE: @"Bearer",
                                             MSID_OAUTH2_EXPIRES_IN: @"3600"} mutableCopy];
-    
+
     if (accessToken)
     {
         jsonDictionary[MSID_OAUTH2_ACCESS_TOKEN] = accessToken;
     }
-    
+
     if (refreshToken)
     {
         jsonDictionary[MSID_OAUTH2_REFRESH_TOKEN] = refreshToken;
     }
-    
+
     return [self v1TokenResponseFromJSONDictionary:jsonDictionary];
 }
 
@@ -254,7 +254,7 @@
                                           subject:(NSString *)subject
 {
     NSString *idToken = [MSIDTestIdTokenUtil idTokenWithPreferredUsername:username subject:subject];
-    
+
     NSString *scopesString = scopes.msidToString;
 
     NSMutableDictionary *dictionary = [@{MSID_OAUTH2_TOKEN_TYPE: @"Bearer",
@@ -276,7 +276,7 @@
     {
         dictionary[MSID_OAUTH2_ID_TOKEN] = idToken;
     }
-    
+
     return [[MSIDTokenResponse alloc] initWithJSONDictionary:dictionary error:nil];
 }
 

@@ -43,7 +43,7 @@
               tokenResponseValidator:(MSIDTokenResponseValidator *)responseValidator
 {
     self = [super initWithOauthFactory:factory tokenResponseValidator:responseValidator];
-    
+
     if (self)
     {
         _userInfoKeyMapping = @{@"error_description" : MSIDErrorDescriptionKey,
@@ -59,7 +59,7 @@
                                 @"granted_scopes" : MSIDGrantedScopesKey,
                                 };
     }
-    
+
     return self;
 }
 
@@ -73,24 +73,24 @@
     NSDictionary *decryptedResponse = [self.brokerCryptoProvider decryptBrokerResponse:encryptedParams
                                                                          correlationId:correlationID
                                                                                  error:error];
-    
+
     if (!decryptedResponse)
     {
         return nil;
     }
-    
+
     // Save additional tokens,
     // assuming they could come in both successful case and failure case.
     if (decryptedResponse[@"additional_tokens"])
     {
         MSIDTokenResult *tokenResult = nil;
         NSError *additionalTokensError = nil;
-        
+
         NSDictionary *additionalTokensDict = [decryptedResponse[@"additional_tokens"] msidJson];
         if (additionalTokensDict)
         {
             MSIDAADV2BrokerResponse *brokerResponse = [[MSIDAADV2BrokerResponse alloc] initWithDictionary:additionalTokensDict error:&additionalTokensError];
-            
+
             if (!additionalTokensError)
             {
                 tokenResult = [self.tokenResponseValidator validateAndSaveBrokerResponse:brokerResponse
@@ -105,35 +105,35 @@
         {
             additionalTokensError = MSIDCreateError(MSIDErrorDomain, MSIDErrorBrokerCorruptedResponse, @"Unable to parse additional tokens.", nil, nil, nil, nil, nil);
         }
-        
+
         if (!tokenResult)
         {
             MSID_LOG_NO_PII(MSIDLogLevelWarning, correlationID, nil, @"Unable to save additional tokens with error %ld, %@", (long)additionalTokensError.code, additionalTokensError.domain);
             MSID_LOG_PII(MSIDLogLevelWarning, correlationID, nil, @"Unable to save additional token with error %@", additionalTokensError);
         }
     }
-    
+
     // Successful case
     if ([NSString msidIsStringNilOrBlank:decryptedResponse[@"error_domain"]])
     {
         return [[MSIDAADV2BrokerResponse alloc] initWithDictionary:decryptedResponse error:error];
     }
-    
+
     // Failure case
     MSIDAADV2BrokerResponse *brokerResponse = [[MSIDAADV2BrokerResponse alloc] initWithDictionary:decryptedResponse error:error];
-    
+
     if (!brokerResponse)
     {
         return nil;
     }
-    
+
     NSError *brokerError = [self resultFromBrokerErrorResponse:brokerResponse];
-    
+
     if (error)
     {
         *error = brokerError;
     }
-    
+
     return nil;
 }
 
@@ -150,7 +150,7 @@
     {
         *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, @"Broker responses not supported on macOS", nil, nil, nil, nil, nil);
     }
-    
+
     return nil;
 #endif
 }
@@ -158,24 +158,24 @@
 - (NSError *)resultFromBrokerErrorResponse:(MSIDAADV2BrokerResponse *)errorResponse
 {
     NSString *errorDomain = errorResponse.errorDomain;
-    
+
     NSString *errorCodeString = errorResponse.errorCode;
     NSInteger errorCode = MSIDErrorBrokerUnknown;
     if (errorCodeString && ![errorCodeString isEqualToString:@"0"])
     {
         errorCode = [errorCodeString integerValue];
     }
-    
+
     NSString *errorDescription = errorResponse.errorDescription;
     if (!errorDescription)
     {
         errorDescription = @"Broker did not provide any details";
     }
-    
+
     NSString *oauthErrorCode = errorResponse.oauthErrorCode;
     NSString *subError = errorResponse.subError;
     NSUUID *correlationId = [[NSUUID alloc] initWithUUIDString:errorResponse.correlationId];
-    
+
     //Add string-type error metadata to userInfo
     NSMutableDictionary *userInfo = [NSMutableDictionary new];
     for (NSString *metadataKey in errorResponse.errorMetadata.allKeys)
@@ -191,11 +191,11 @@
     NSDictionary *httpHeaders = [NSDictionary msidDictionaryFromWWWFormURLEncodedString:errorResponse.httpHeaders];
     if (httpHeaders)
         userInfo[MSIDHTTPHeadersKey] = httpHeaders;
-    
+
     userInfo[MSIDBrokerVersionKey] = errorResponse.brokerAppVer;
 
     NSError *brokerError = MSIDCreateError(errorDomain, errorCode, errorDescription, oauthErrorCode, subError, nil, correlationId, userInfo);
-    
+
     return brokerError;
 }
 

@@ -31,7 +31,7 @@
     {
         return [value integerValue];
     }
-    
+
     return 0;
 }
 

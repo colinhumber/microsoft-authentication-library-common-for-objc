@@ -54,7 +54,7 @@ static WKWebViewConfiguration *s_webConfig;
     {
         _context = context;
     }
-    
+
     return self;
 }
 
@@ -64,25 +64,25 @@ static WKWebViewConfiguration *s_webConfig;
     {
         return YES;
     }
-    
+
     // Get UI container to hold the webview
     NSWindow *window = [self obtainSignInWindow];
     NSView *rootView = window.contentView;
-    
+
     // Prepare the WKWebView
     WKWebView *webView = [[WKWebView alloc] initWithFrame:rootView.frame configuration:s_webConfig];
     [webView setAccessibilityIdentifier:@"MSID_SIGN_IN_WEBVIEW"];
-    
+
     // Customize the UI
     [webView setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
     _loadingIndicator = [self prepareLoadingIndicator];
     self.window = window;
-    
+
     // Append webview and loading indicator
     _webView = webView;
     [rootView addSubview:_webView];
     [rootView addSubview:_loadingIndicator];
-    
+
     return YES;
 }
 
@@ -123,10 +123,10 @@ static WKWebViewConfiguration *s_webConfig;
         // If we didn't get a main window then center it in the screen
         windowRect = [[NSScreen mainScreen] frame];
     }
-    
+
     // Calculate the center of the current main window so we can position our window in the center of it
     NSRect centerRect = [self getCenterRect:windowRect rect2:NSMakeRect(0, 0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)];
-    
+
     NSWindow *window = [[NSWindow alloc] initWithContentRect:centerRect
                                                    styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
                                                      backing:NSBackingStoreBuffered
@@ -134,7 +134,7 @@ static WKWebViewConfiguration *s_webConfig;
     [window setDelegate:self];
     [window setAccessibilityIdentifier:@"MSID_SIGN_IN_WINDOW"];
     [window.contentView setAutoresizesSubviews:YES];
-    
+
     return window;
 }
 
@@ -143,10 +143,10 @@ static WKWebViewConfiguration *s_webConfig;
 {
     CGFloat x = rect1.origin.x + ((rect1.size.width - rect2.size.width) / 2);
     CGFloat y = rect1.origin.y + ((rect1.size.height - rect2.size.height) / 2);
-    
+
     rect2.origin.x = x;
     rect2.origin.y = y;
-    
+
     return rect2;
 }
 
@@ -168,12 +168,12 @@ static WKWebViewConfiguration *s_webConfig;
     [loadingIndicator setStyle:NSProgressIndicatorSpinningStyle];
     // Keep the item centered in the window even if it's resized.
     [loadingIndicator setAutoresizingMask:NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin];
-    
+
     // On OS X there's a noticable lag between the window showing and the page loading, so starting with the spinner
     // at least make it looks like something is happening.
     [loadingIndicator setHidden:NO];
     [loadingIndicator startAnimation:nil];
-    
+
     return loadingIndicator;
 }
 

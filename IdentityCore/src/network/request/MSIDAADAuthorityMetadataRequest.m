@@ -36,26 +36,26 @@
     {
         NSParameterAssert(endpoint);
         NSParameterAssert(authority);
-        
+
         _context = context;
-        
+
         NSMutableDictionary *parameters = [NSMutableDictionary new];
         parameters[@"api-version"] = MSIDAADNetworkConfiguration.defaultConfiguration.aadAuthorityDiscoveryApiVersion;
         __auto_type authorizationEndpoint = [MSIDAADNetworkConfiguration.defaultConfiguration.endpointProvider oauth2AuthorizeEndpointWithUrl:authority].absoluteString;
         parameters[@"authorization_endpoint"] = authorizationEndpoint;
         _parameters = parameters;
-        
+
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest new];
         urlRequest.URL = endpoint;
         urlRequest.HTTPMethod = @"GET";
         _urlRequest = urlRequest;
-        
+
         __auto_type requestConfigurator = [MSIDAADRequestConfigurator new];
         [requestConfigurator configure:self];
-        
+
         _responseSerializer = [MSIDAADAuthorityMetadataResponseSerializer new];
     }
-    
+
     return self;
 }
 

@@ -199,7 +199,7 @@
     cacheItem1.idToken = @"id";
     cacheItem1.oauthTokenType = @"token type";
     cacheItem1.authority = [NSURL URLWithString:@"https://login.microsoftonline.com/contoso.com"];
-    
+
     MSIDLegacyTokenCacheItem *cacheItem2 = [MSIDLegacyTokenCacheItem new];
     cacheItem2.accessToken = @"at";
     cacheItem2.refreshToken = @"rt";

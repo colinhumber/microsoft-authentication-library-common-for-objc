@@ -37,16 +37,16 @@ static MSIDAutomationCancelTappedCallback s_cancelTappedCallback;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     _webview = [[WKWebView alloc] initWithFrame:self.view.bounds];
     _webview.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
      [self.view addSubview:_webview];
-    
+
     self.passedInWebview = _webview;
 }
 
 - (IBAction)cancelTapped:(id)sender {
-    
+
     if (self.class.cancelTappedCallback)
     {
         self.class.cancelTappedCallback();

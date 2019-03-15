@@ -62,7 +62,7 @@ static MSIDWebviewSession *s_currentSession = nil;
 {
     MSIDWebviewFactory *webviewFactory = [oauth2Factory webviewFactory];
     MSIDWebviewSession *session = [webviewFactory embeddedWebviewSessionFromConfiguration:configuration customWebview:webview context:context];
-    
+
     [self startSession:session context:context completionHandler:completionHandler];
 }
 
@@ -81,7 +81,7 @@ static MSIDWebviewSession *s_currentSession = nil;
                                                                useAuthenticationSession:useAuthenticationSession
                                                               allowSafariViewController:allowSafariViewController
                                                                                 context:context];
-    
+
     [self startSession:session context:context completionHandler:completionHandler];
 }
 #endif
@@ -97,7 +97,7 @@ static MSIDWebviewSession *s_currentSession = nil;
         MSID_LOG_WARN(context, @"CompletionHandler cannot be nil for interactive session.");
         return;
     }
-    
+
     // check session nil
     if (!session)
     {
@@ -105,33 +105,33 @@ static MSIDWebviewSession *s_currentSession = nil;
         completionHandler(nil, error);
         return;
     }
-    
+
     if (![self setCurrentSession:session])
     {
         NSError *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInteractiveSessionAlreadyRunning, @"Only one interactive session is allowed at a time.", nil, nil, nil, context.correlationId, nil);
         completionHandler(nil, error);
         return;
     }
-    
+
     void (^startCompletionBlock)(NSURL *, NSError *) = ^void(NSURL *callbackURL, NSError *error) {
         if (error) {
             [MSIDWebviewAuthorization clearCurrentWebAuthSessionAndFactory];
             completionHandler(nil, error);
             return;
         }
-        
+
         NSError *responseError = nil;
-        
+
         MSIDWebviewResponse *response = [s_currentSession.factory responseWithURL:callbackURL
                                                                      requestState:s_currentSession.requestState
                                                                ignoreInvalidState:s_currentSession.ignoreInvalidState
                                                                           context:nil
                                                                             error:&responseError];
-        
+
         [MSIDWebviewAuthorization clearCurrentWebAuthSessionAndFactory];
         completionHandler(response, responseError);
     };
-    
+
     [s_currentSession.webviewController startWithCompletionHandler:startCompletionBlock];
 }
 
@@ -143,9 +143,9 @@ static MSIDWebviewSession *s_currentSession = nil;
             MSID_LOG_INFO(nil, @"Session is already running. Please wait or cancel the session before setting it new.");
             return NO;
         }
-        
+
         s_currentSession = session;
-        
+
         return YES;
     }
     return NO;
@@ -162,7 +162,7 @@ static MSIDWebviewSession *s_currentSession = nil;
             // trying to clear a session when there isn't one.
             MSID_LOG_INFO(nil, @"Trying to clear out an empty session");
         }
-        
+
         s_currentSession = nil;
     }
 }

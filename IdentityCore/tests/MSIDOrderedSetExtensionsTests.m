@@ -44,7 +44,7 @@
 {
     NSString *string = nil;
     NSOrderedSet *set = [NSOrderedSet msidOrderedSetFromString:string];
-    
+
     XCTAssertTrue(set.count == 0);
 }
 
@@ -52,9 +52,9 @@
 {
     NSString *string = @"scope1 scope2   scope3";
     NSOrderedSet *set = [NSOrderedSet msidOrderedSetFromString:string];
-    
+
     XCTAssertTrue(set.count == 3);
-    
+
     XCTAssertTrue([set containsObject:@"scope1"]);
     XCTAssertTrue([set containsObject:@"scope2"]);
     XCTAssertTrue([set containsObject:@"scope3"]);

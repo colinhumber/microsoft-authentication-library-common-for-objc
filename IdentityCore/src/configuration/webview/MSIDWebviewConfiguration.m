@@ -47,12 +47,12 @@
         _resource = resource;
         _scopes = scopes;
         _correlationId = correlationId;
-        
+
         if (enablePkce)
         {
             _pkce = [MSIDPkce new];
         }
-        
+
         _ignoreInvalidState = NO;
         _customHeaders = [NSMutableDictionary new];
     }

@@ -52,10 +52,10 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertEqualObjects(response.authorizationEndpoint.absoluteString, @"https://login.microsoftonline.com/common/oauth2/v2.0/authorize");
     XCTAssertEqualObjects(response.tokenEndpoint.absoluteString, @"https://login.microsoftonline.com/common/oauth2/v2.0/token");
@@ -65,10 +65,10 @@
 - (void)testResponseObjectForResponse_whenJsonNil_shouldReturnNilWithNilError
 {
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:nil context:nil error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertNil(response);
 }
@@ -84,7 +84,7 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
 
@@ -101,7 +101,7 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
 
@@ -120,10 +120,10 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(response);
 }
@@ -137,10 +137,10 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(response);
 }
@@ -156,10 +156,10 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(response);
 }
@@ -173,10 +173,10 @@
                                  };
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(response);
 }
@@ -190,13 +190,13 @@
                                   @"trace_id": @"d855",
                                   @"correlation_id": @"6f62"
                                   };
-    
+
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
-    
+
     NSError *error = nil;
     __auto_type response = (MSIDOpenIdProviderMetadata *)[responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNil(response);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(error.domain, MSIDErrorDomain);

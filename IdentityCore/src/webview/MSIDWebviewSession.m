@@ -45,7 +45,7 @@
         _requestState = state;
         _ignoreInvalidState = ignoreInvalidState;
     }
-    
+
     return self;
 }
 

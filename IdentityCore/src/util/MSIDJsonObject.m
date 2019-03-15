@@ -44,19 +44,19 @@
             NSString *errorDescription = [NSString stringWithFormat:@"Attempt to initialize JSON object (%@) with nil data", NSStringFromClass(self.class)];
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, errorDescription, nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
                                                          options:NSJSONReadingMutableContainers
                                                            error:error];
-    
+
     if (!json)
     {
         return nil;
     }
-    
+
     return [self initWithJSONDictionary:json error:error];
 }
 
@@ -69,17 +69,17 @@
         {
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, @"Attempt to initialize JSON object with nil dictionary", nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     if (!(self = [super init]))
     {
         return nil;
     }
-    
+
     _json = [json mutableCopy];
-    
+
     return self;
 }
 

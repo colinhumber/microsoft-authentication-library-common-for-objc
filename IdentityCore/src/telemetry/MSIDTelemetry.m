@@ -62,11 +62,11 @@ static NSString* const s_delimiter = @"|";
 {
     static dispatch_once_t once;
     static MSIDTelemetry *singleton = nil;
-    
+
     dispatch_once(&once, ^{
         singleton = [[MSIDTelemetry alloc] initInternal];
     });
-    
+
     return singleton;
 }
 
@@ -113,9 +113,9 @@ static NSString* const s_delimiter = @"|";
     {
         return;
     }
-    
+
     NSDate *currentTime = [NSDate date];
-    
+
     @synchronized (self)
     {
         NSString *key = [self getEventTrackingKey:requestId eventName:eventName];
@@ -147,16 +147,16 @@ static NSString* const s_delimiter = @"|";
 {
     NSDate *stopTime = [NSDate date];
     NSString *eventName = [event propertyWithName:MSID_TELEMETRY_KEY_EVENT_NAME];
-    
+
     if ([NSString msidIsStringNilOrBlank:requestId] || [NSString msidIsStringNilOrBlank:eventName] || !event)
     {
         return;
     }
-    
+
     NSString *key = [self getEventTrackingKey:requestId eventName:eventName];
-    
+
     NSDate *startTime = nil;
-    
+
     @synchronized (self)
     {
         startTime = [_eventTracking objectForKey:key];
@@ -165,15 +165,15 @@ static NSString* const s_delimiter = @"|";
             return;
         }
     }
-    
+
     [event setStartTime:startTime];
     [event setStopTime:stopTime];
     [event setResponseTime:[stopTime timeIntervalSinceDate:startTime]];
-    
+
     @synchronized (self)
     {
         [_eventTracking removeObjectForKey:key];
-        
+
         [self dispatchEventNow:requestId event:event];
     }
 }
@@ -188,13 +188,13 @@ static NSString* const s_delimiter = @"|";
             for (NSString *propertyName in [event.propertyMap allKeys])
             {
                 BOOL isPiiOrOii = [MSIDTelemetryPiiOiiRules isPiiOrOii:propertyName];
-                
+
                 if (isPiiOrOii && !self.piiEnabled)
                 {
                     [event deleteProperty:propertyName];
                 }
             }
-            
+
             [dispatcher receive:requestId event:event];
         }
     }

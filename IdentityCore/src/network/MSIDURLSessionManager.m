@@ -33,15 +33,15 @@ static MSIDURLSessionManager *s_defaultManager = nil;
     if (self == [MSIDURLSessionManager self])
     {
         __auto_type configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        
+
         NSString *queueName = [NSString stringWithFormat:@"com.microsoft.networking.delegateQueue-%@", [NSUUID UUID].UUIDString];
         __auto_type delegateQueue = [NSOperationQueue new];
         delegateQueue.name = queueName;
-        
+
         // https://developer.apple.com/documentation/foundation/nsurlsession/1411597-sessionwithconfiguration?language=objc
         // An operation queue for scheduling the delegate calls and completion handlers. The queue should be a serial queue, in order to ensure the correct ordering of callbacks
         delegateQueue.maxConcurrentOperationCount = 1;
-        
+
         // https://developer.apple.com/library/archive/documentation/Performance/Conceptual/EnergyGuide-iOS/PrioritizeWorkWithQoS.html
         // if this is not set, this gets NSQualityOfServiceDefault,which falls between user-initiated and utility.
         // tests have been observed that some subsequent delegate calls were being assigned unspecified.
@@ -63,7 +63,7 @@ static MSIDURLSessionManager *s_defaultManager = nil;
         _configuration = configuration;
         _session = [NSURLSession sessionWithConfiguration:configuration delegate:delegate delegateQueue:delegateQueue];
     }
-    
+
     return self;
 }
 

@@ -44,12 +44,12 @@
     NSURL *_endURL;
     MSIDWebUICompletionHandler _completionHandler;
     NSDictionary<NSString *, NSString *> *_customHeaders;
-    
+
     NSLock *_completionLock;
     NSTimer *_spinnerTimer; // Used for managing the activity spinner
-    
+
     id<MSIDRequestContext> _context;
-    
+
     NSString *_telemetryRequestId;
     MSIDTelemetryUIEvent *_telemetryEvent;
 }
@@ -67,29 +67,29 @@
         MSID_LOG_WARN(context, @"Attemped to start with nil URL");
         return nil;
     }
-    
+
     if (!endURL)
     {
         MSID_LOG_WARN(context, @"Attemped to start with nil endURL");
         return nil;
     }
-    
+
     self = [super initWithContext:context];
-    
+
     if (self)
     {
         self.webView = webview;
         _startURL = startURL;
         _endURL = endURL;
         _customHeaders = customHeaders;
-        
+
         _completionLock = [[NSLock alloc] init];
 
         _context = context;
-        
+
         self.complete = NO;
     }
-    
+
     return self;
 }
 
@@ -99,7 +99,7 @@
     {
         [self.webView setNavigationDelegate:nil];
     }
-    
+
     self.webView = nil;
 }
 
@@ -110,10 +110,10 @@
         MSID_LOG_WARN(_context, @"CompletionHandler cannot be nil for interactive session.");
         return;
     }
-    
+
     // Save the completion block
     _completionHandler = [completionHandler copy];
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
 
         NSError *error = nil;
@@ -123,11 +123,11 @@
             [self endWebAuthWithURL:nil error:error];
             return;
         }
-        
+
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:_startURL];
         for (NSString *headerKey in _customHeaders)
             [request addValue:_customHeaders[headerKey] forHTTPHeaderField:headerKey];
-        
+
         [self startRequest:request];
     });
 }
@@ -135,10 +135,10 @@
 - (void)cancel
 {
     MSID_LOG_INFO(self.context, @"Canceled web view contoller.");
-    
+
     // End web auth with error
     NSError *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorSessionCanceledProgrammatically, @"Authorization session was cancelled programatically.", nil, nil, nil, self.context.correlationId, nil);
-    
+
     [_telemetryEvent setIsCancelled:YES];
     [self endWebAuthWithURL:nil error:error];
 }
@@ -146,10 +146,10 @@
 - (void)userCancel
 {
     MSID_LOG_INFO(self.context, @"Canceled web view contoller.");
-    
+
     // End web auth with error
     NSError *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorUserCancel, @"User cancelled the authorization session.", nil, nil, nil, self.context.correlationId, nil);
-    
+
     [_telemetryEvent setIsCancelled:YES];
     [self endWebAuthWithURL:nil error:error];
 }
@@ -158,9 +158,9 @@
 {
     // create and load the view if not provided
     BOOL result = [super loadView:error];
-    
+
     self.webView.navigationDelegate = self;
-    
+
     return result;
 }
 
@@ -168,7 +168,7 @@
                     error:(NSError *)error
 {
     self.complete = YES;
-    
+
     if (error)
     {
         [MSIDNotifications notifyWebAuthDidFailWithError:error];
@@ -177,14 +177,14 @@
     {
         [MSIDNotifications notifyWebAuthDidCompleteWithURL:endURL];
     }
-    
+
     [[MSIDTelemetry sharedInstance] stopEvent:_telemetryRequestId event:_telemetryEvent];
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         MSID_LOG_INFO(self.context, @"Dismissed web view contoller.");
         [self dismissWebview:^{[self dispatchCompletionBlock:endURL error:error];}];
     });
-    
+
     return;
 }
 
@@ -197,24 +197,24 @@
     //       be resilient to this condition and should not generate
     //       two callbacks.
     [_completionLock lock];
-    
+
     [MSIDChallengeHandler resetHandlers];
-    
+
     if ( _completionHandler )
     {
         MSIDWebUICompletionHandler completionHandler = _completionHandler;
         _completionHandler = nil;
-        
+
         completionHandler(url, error);
     }
-    
+
     [_completionLock unlock];
 }
 
 - (void)startRequest:(NSURLRequest *)request
 {
     MSID_LOG_INFO(self.context, @"Presenting web view contoller.");
-    
+
     _telemetryRequestId = [_context telemetryRequestId];
     [[MSIDTelemetry sharedInstance] startEvent:_telemetryRequestId eventName:MSID_TELEMETRY_EVENT_UI_EVENT];
     _telemetryEvent = [[MSIDTelemetryUIEvent alloc] initWithName:MSID_TELEMETRY_EVENT_UI_EVENT
@@ -235,12 +235,12 @@
 {
     NSURL *requestURL = navigationAction.request.URL;
     __auto_type isKnown = [MSIDAADNetworkConfiguration.defaultConfiguration isAADPublicCloud:requestURL.host];
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelVerbose, nil, self.context, @"-decidePolicyForNavigationAction host: %@", isKnown ? requestURL.host : @"unknown host");
     MSID_LOG_PII(MSIDLogLevelVerbose, nil, self.context, @"-decidePolicyForNavigationAction host: %@", requestURL.host);
-    
+
     [MSIDNotifications notifyWebAuthDidStartLoad:requestURL];
-    
+
     [self decidePolicyForNavigationAction:navigationAction webview:webView decisionHandler:decisionHandler];
 }
 
@@ -266,12 +266,12 @@
 {
     NSURL *url = webView.URL;
     __auto_type isKnown = [MSIDAADNetworkConfiguration.defaultConfiguration isAADPublicCloud:url.host];
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelVerbose, nil, self.context, @"-didFinishNavigation host: %@", isKnown ? url.host : @"unknown host");
     MSID_LOG_PII(MSIDLogLevelVerbose, nil, self.context, @"-didFinishNavigation host: %@", url.host);
-    
+
     [MSIDNotifications notifyWebAuthDidFinishLoad:url];
-    
+
     [self stopSpinner];
 }
 
@@ -288,12 +288,12 @@
 - (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(ChallengeCompletionHandler)completionHandler
 {
     NSString *authMethod = [challenge.protectionSpace.authenticationMethod lowercaseString];
-    
+
     MSID_LOG_VERBOSE(self.context,
                      @"%@ - %@. Previous challenge failure count: %ld",
                      @"webView:didReceiveAuthenticationChallenge:completionHandler",
                      authMethod, (long)challenge.previousFailureCount);
-    
+
     [MSIDChallengeHandler handleChallenge:challenge
                                   webview:webView
                                   context:self.context
@@ -303,10 +303,10 @@
 - (void)completeWebAuthWithURL:(NSURL *)endURL
 {
     __auto_type isKnown = [MSIDAADNetworkConfiguration.defaultConfiguration isAADPublicCloud:endURL.host];
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, self.context, @"-completeWebAuthWithURL: %@", isKnown ? endURL.host : @"unknown host");
     MSID_LOG_PII(MSIDLogLevelInfo, nil, self.context, @"-completeWebAuthWithURL: %@", [endURL msidPIINullifiedURL]);
-    
+
     [self endWebAuthWithURL:endURL error:nil];
 }
 
@@ -317,26 +317,26 @@
     {
         return;
     }
-    
+
     if ([error.domain isEqualToString:NSURLErrorDomain] && NSURLErrorCancelled == error.code)
     {
         //This is a common error that webview generates and could be ignored.
         //See this thread for details: https://discussions.apple.com/thread/1727260
         return;
     }
-    
+
     [self stopSpinner];
-    
+
     // WebKitErrorDomain includes WebKitErrorFrameLoadInterruptedByPolicyChange and
     // other web page errors like JavaUnavailable etc. Ignore them here.
     if([error.domain isEqualToString:@"WebKitErrorDomain"])
     {
         return;
     }
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelError, nil, self.context, @"-webAuthFailWithError error code %ld", (long)error.code);
     MSID_LOG_PII(MSIDLogLevelError, nil, self.context, @"-webAuthFailWithError: %@", error);
-    
+
     [self endWebAuthWithURL:nil error:error];
 }
 
@@ -346,7 +346,7 @@
 {
     NSURL *requestURL = navigationAction.request.URL;
     NSString *requestURLString = [requestURL.absoluteString lowercaseString];
-    
+
     // Stop at the end URL.
     if ([requestURLString hasPrefix:[_endURL.absoluteString lowercaseString]])
     {
@@ -355,25 +355,25 @@
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }
-    
+
     if ([requestURLString isEqualToString:@"about:blank"])
     {
         decisionHandler(WKNavigationActionPolicyAllow);
         return;
     }
-    
+
     // redirecting to non-https url is not allowed
     if (![requestURL.scheme.lowercaseString isEqualToString:@"https"])
     {
         MSID_LOG_INFO(self.context, @"Server is redirecting to a non-https url");
-        
+
         NSError *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorServerNonHttpsRedirect, @"The server has redirected to a non-https url.", nil, nil, nil, self.context.correlationId, nil);
         [self endWebAuthWithURL:nil error:error];
-        
+
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }
-    
+
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
@@ -394,14 +394,14 @@
     {
         return;
     }
-    
+
     self.loading = NO;
     if (_spinnerTimer)
     {
         [_spinnerTimer invalidate];
         _spinnerTimer = nil;
     }
-    
+
     [self dismissLoadingIndicator];
 }
 

@@ -39,7 +39,7 @@
     {
         _cache = cache ? cache : [MSIDCache new];
     }
-    
+
     return self;
 }
 

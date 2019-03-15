@@ -132,7 +132,7 @@
                     self.requestParameters.redirectUri = cbaResponse.redirectUri;
                 }
                 // handle instance aware flow (cloud host)
-                
+
                 if ([response isKindOfClass:MSIDWebAADAuthResponse.class])
                 {
                     MSIDWebAADAuthResponse *aadResponse = (MSIDWebAADAuthResponse *)response;
@@ -187,7 +187,7 @@
 
     BOOL useSession = YES;
     BOOL allowSafariViewController = YES;
-    
+
     switch (self.requestParameters.webviewType) {
         case MSIDWebviewTypeWKWebView:
         {
@@ -247,13 +247,13 @@
         }
 
         NSError *validationError = nil;
-        
+
         MSIDTokenResult *tokenResult = [self.tokenResponseValidator validateAndSaveTokenResponse:tokenResponse
                                                                                     oauthFactory:self.oauthFactory
                                                                                       tokenCache:self.tokenCache
                                                                                requestParameters:self.requestParameters
                                                                                            error:&validationError];
-        
+
         if (!tokenResult)
         {
             // Special case - need to return homeAccountId in case of Intune policies required.
@@ -261,7 +261,7 @@
             {
                 NSMutableDictionary *updatedUserInfo = [validationError.userInfo mutableCopy];
                 updatedUserInfo[MSIDHomeAccountIdkey] = self.authCodeClientInfo.accountIdentifier;
-                
+
                 validationError = MSIDCreateError(validationError.domain,
                                                   validationError.code,
                                                   nil,
@@ -271,22 +271,22 @@
                                                   nil,
                                                   updatedUserInfo);
             }
-            
+
             completionBlock(nil, validationError, nil);
             return;
         }
-        
+
         BOOL accountChecked = [self.tokenResponseValidator validateAccount:self.requestParameters.accountIdentifier
                                                                tokenResult:tokenResult
                                                              correlationID:self.requestParameters.correlationId
                                                                      error:&validationError];
-        
+
         if (!accountChecked)
         {
             completionBlock(nil, validationError, nil);
             return;
         }
-        
+
         completionBlock(tokenResult, nil, nil);
     }];
 }

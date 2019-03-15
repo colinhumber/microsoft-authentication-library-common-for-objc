@@ -47,26 +47,26 @@
         __auto_type b2cAuthority = [[MSIDB2CAuthority alloc] initWithURL:url rawTenant:rawTenant context:context error:&underlyingError];
         if (b2cAuthority) return b2cAuthority;
     }
-    
+
     if ([MSIDADFSAuthority isAuthorityFormatValid:url context:context error:nil])
     {
         __auto_type adfsAuthority = [[MSIDADFSAuthority alloc] initWithURL:url context:context error:&underlyingError];
         if (adfsAuthority) return adfsAuthority;
     }
-    
+
     if ([MSIDAADAuthority isAuthorityFormatValid:url context:context error:nil])
     {
         __auto_type aadAuthority = [[MSIDAADAuthority alloc] initWithURL:url rawTenant:rawTenant context:context error:&underlyingError];
         if (aadAuthority) return aadAuthority;
     }
-    
+
     if (error)
     {
         *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInvalidDeveloperParameter, @"Provided authority url is not a valid authority.", nil, nil, underlyingError, context.correlationId, nil);
-        
+
         MSID_LOG_ERROR(context, @"Provided authority url is not a valid authority.");
     }
-    
+
     return nil;
 }
 

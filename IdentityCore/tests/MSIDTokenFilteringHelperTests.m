@@ -53,23 +53,23 @@
     testItem.clientId = DEFAULT_TEST_CLIENT_ID;
     testItem.secret = @"id";
     testItem.credentialType = MSIDIDTokenType;
-    
+
     NSArray *input = @[testItem, testItem];
-    
+
     NSArray *result = [MSIDTokenFilteringHelper filterTokenCacheItems:input
                                                             tokenType:MSIDIDTokenType
                                                           returnFirst:YES
                                                              filterBy:^BOOL(MSIDCredentialCacheItem *tokenCacheItem) {
                                                                  return YES;
                                                              }];
-    
+
     XCTAssertEqual([result count], 1);
-    
+
     MSIDIdToken *expectedToken = [MSIDIdToken new];
     expectedToken.authority = [@"https://login.microsoftonline.com/contoso.com" authority];
     expectedToken.clientId = DEFAULT_TEST_CLIENT_ID;
     expectedToken.rawIdToken = @"id";
-    
+
     XCTAssertEqualObjects(result[0], expectedToken);
 }
 
@@ -81,23 +81,23 @@
     testItem.clientId = DEFAULT_TEST_CLIENT_ID;
     testItem.secret = @"id";
     testItem.credentialType = MSIDIDTokenType;
-    
+
     NSArray *input = @[testItem, testItem];
-    
+
     NSArray *result = [MSIDTokenFilteringHelper filterTokenCacheItems:input
                                                             tokenType:MSIDIDTokenType
                                                           returnFirst:NO
                                                              filterBy:^BOOL(MSIDCredentialCacheItem *tokenCacheItem) {
                                                                  return YES;
                                                              }];
-    
+
     XCTAssertEqual([result count], 2);
-    
+
     MSIDIdToken *expectedToken = [MSIDIdToken new];
     expectedToken.authority = [@"https://login.microsoftonline.com/contoso.com" authority];
     expectedToken.clientId = DEFAULT_TEST_CLIENT_ID;
     expectedToken.rawIdToken = @"id";
-    
+
     XCTAssertEqualObjects(result[0], expectedToken);
     XCTAssertEqualObjects(result[1], expectedToken);
 }
@@ -105,28 +105,28 @@
 - (void)testFilterTokenCacheItems_whenReturnFirstYesAndFilterNone_shouldReturnEmptyResult
 {
     NSArray *input = @[[MSIDCredentialCacheItem new], [MSIDCredentialCacheItem new]];
-    
+
     NSArray *result = [MSIDTokenFilteringHelper filterTokenCacheItems:input
                                                             tokenType:MSIDCredentialTypeOther
                                                           returnFirst:YES
                                                              filterBy:^BOOL(MSIDCredentialCacheItem *tokenCacheItem) {
                                                                  return NO;
                                                              }];
-    
+
     XCTAssertEqual([result count], 0);
 }
 
 - (void)testFilterTokenCacheItems_whenReturnFirstNoFilterNone_shouldReturnEmptyResult
 {
     NSArray *input = @[[MSIDCredentialCacheItem new], [MSIDCredentialCacheItem new]];
-    
+
     NSArray *result = [MSIDTokenFilteringHelper filterTokenCacheItems:input
                                                             tokenType:MSIDCredentialTypeOther
                                                           returnFirst:NO
                                                              filterBy:^BOOL(MSIDCredentialCacheItem *tokenCacheItem) {
                                                                  return NO;
                                                              }];
-    
+
     XCTAssertEqual([result count], 0);
 }
 

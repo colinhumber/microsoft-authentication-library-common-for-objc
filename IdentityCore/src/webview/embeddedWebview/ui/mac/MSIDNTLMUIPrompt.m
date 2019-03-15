@@ -36,7 +36,7 @@ __weak static NSAlert *_presentedPrompt = nil;
 + (void)dismissPrompt
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        
+
         if (_presentedPrompt)
         {
             [_presentedPrompt.window.sheetParent endSheet:_presentedPrompt.window];
@@ -49,18 +49,18 @@ __weak static NSAlert *_presentedPrompt = nil;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSAlert *alert = [NSAlert new];
-        
+
         [alert setMessageText:NSLocalizedString(@"Enter your credentials", nil)];
         NSButton *loginButton = [alert addButtonWithTitle:NSLocalizedString(@"Login", nil)];
         NSButton *cancelButton = [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
-        
+
         MSIDCredentialCollectionController *view = [MSIDCredentialCollectionController new];
         [view.usernameLabel setStringValue:NSLocalizedString(@"Username", nil)];
         [view.passwordLabel setStringValue:NSLocalizedString(@"Password", nil)];
         [alert setAccessoryView:view.customView];
-        
+
         [[alert window] setInitialFirstResponder:view.usernameField];
-        
+
         [alert beginSheetModalForWindow:[NSApp keyWindow] completionHandler:^(NSModalResponse returnCode)
          {
              // The first button being added is "Login" button
@@ -68,7 +68,7 @@ __weak static NSAlert *_presentedPrompt = nil;
              {
                  NSString *username = [view.usernameField stringValue];
                  NSString *password = [view.passwordField stringValue];
-                 
+
                  completionHandler(username, password, NO);
              }
              else
@@ -76,9 +76,9 @@ __weak static NSAlert *_presentedPrompt = nil;
                  completionHandler(nil, nil, YES);
              }
          }];
-        
+
         _presentedPrompt = alert;
-        
+
         [view.usernameField setNextKeyView:view.passwordField];
         [view.passwordField setNextKeyView:cancelButton];
         [cancelButton setNextKeyView:loginButton];

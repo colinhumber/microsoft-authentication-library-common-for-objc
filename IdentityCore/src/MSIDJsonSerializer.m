@@ -41,7 +41,7 @@
     {
         return nil;
     }
-    
+
     NSError *internalError;
     NSData *data = [NSJSONSerialization dataWithJSONObject:jsonDictionary
                                                    options:0
@@ -50,11 +50,11 @@
     {
         MSID_LOG_NO_PII(MSIDLogLevelError, nil, context, @"Failed to serialize to json data.");
         MSID_LOG_PII(MSIDLogLevelError, nil, context, @"Failed to serialize to json data, error: %@", internalError);
-        
+
         if (error) *error = internalError;
         return nil;
     }
-    
+
     return data;
 }
 
@@ -65,19 +65,19 @@
 {
     NSParameterAssert([klass conformsToProtocol:@protocol(MSIDJsonSerializable)]);
     if (![klass conformsToProtocol:@protocol(MSIDJsonSerializable)]) return nil;
-    
+
     NSError *internalError;
     NSDictionary *jsonDictionary = [self deserializeJSON:data error:&internalError];
-    
+
     if (internalError)
     {
         MSID_LOG_NO_PII(MSIDLogLevelError, nil, context, @"Failed to deserialize json object.");
         MSID_LOG_PII(MSIDLogLevelError, nil, context, @"Failed to deserialize json object, error: %@", internalError);
-        
+
         if (error) *error = internalError;
         return nil;
     }
-    
+
     return [[klass alloc] initWithJSONDictionary:jsonDictionary error:error];
 }
 
@@ -96,7 +96,7 @@
 {
     NSParameterAssert([klass conformsToProtocol:@protocol(MSIDJsonSerializable)]);
     if (![klass conformsToProtocol:@protocol(MSIDJsonSerializable)]) return nil;
-    
+
     NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     return [self fromJsonData:jsonData ofType:klass context:context error:error];
 }
@@ -112,14 +112,14 @@
             NSString *errorDescription = [NSString stringWithFormat:@"Attempt to initialize JSON object with nil data in (%@)", NSStringFromClass(self.class)];
             *error = MSIDCreateError(MSIDErrorDomain, MSIDErrorInternal, errorDescription, nil, nil, nil, nil, nil);
         }
-        
+
         return nil;
     }
-    
+
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
                                                          options:NSJSONReadingMutableContainers
                                                            error:error];
-    
+
     return json;
 }
 

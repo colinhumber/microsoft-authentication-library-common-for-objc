@@ -57,9 +57,9 @@ MSID_JSON_ACCESSOR(ID_TOKEN_EMAIL, email)
 
         return nil;
     }
-    
+
     _rawIdToken = rawIdTokenString;
-    
+
     NSArray* parts = [rawIdTokenString componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"."]];
     if (parts.count != 3)
     {
@@ -91,7 +91,7 @@ MSID_JSON_ACCESSOR(ID_TOKEN_EMAIL, email)
             NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:decoded options:0 error:&jsonError];
 
             if (jsonError)
-            { 
+            {
                 MSID_LOG_NO_PII(MSIDLogLevelWarning, nil, nil, @"Failed to deserialize part of the id_token");
                 MSID_LOG_PII(MSIDLogLevelWarning, nil, nil, @"Failed to deserialize part of the id_token %@", jsonError);
 
@@ -132,7 +132,7 @@ MSID_JSON_ACCESSOR(ID_TOKEN_EMAIL, email)
         MSID_LOG_WARN(nil, @"Id token is invalid");
         return nil;
     }
-    
+
     [self initDerivedProperties];
     return self;
 }

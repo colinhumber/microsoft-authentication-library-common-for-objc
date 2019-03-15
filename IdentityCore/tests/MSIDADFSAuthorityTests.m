@@ -43,9 +43,9 @@
 {
     NSURL *authorityUrl = nil;
     NSError *error;
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"'authority' is a required parameter and must not be nil or empty.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -55,9 +55,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/8eaef023-2b34-4da1-9baa-8bc8c9d6a490"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"It is not ADFS authority.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -67,9 +67,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com/adfs"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNotNil(authority);
     XCTAssertNil(error);
 }
@@ -78,9 +78,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"http://contoso.com/adfs"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"authority must use HTTPS.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -90,9 +90,9 @@
 {
     __auto_type authorityUrl = [@"https://contoso.com/adfs" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertEqualObjects(authority.environment, @"contoso.com");
     XCTAssertNil(error);
 }
@@ -101,9 +101,9 @@
 {
     __auto_type authorityUrl = [@"https://contoso.com:8080/adfs" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertEqualObjects(authority.environment, @"contoso.com:8080");
     XCTAssertNil(error);
 }
@@ -113,9 +113,9 @@
 - (void)testUniversalAuthorityURL_whenADFSAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com/adfs"];
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority universalAuthorityURL]);
 }
 
@@ -124,9 +124,9 @@
 - (void)testCacheUrlWithContext_whenADFSAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com:8080/adfs"];
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority universalAuthorityURL]);
 }
 
@@ -135,9 +135,9 @@
 - (void)testNetworkUrlWithContext_whenADFSAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com:8080/adfs"];
-    
+
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority networkUrlWithContext:nil]);
 }
 
@@ -147,9 +147,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com:8080/adfs"];
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     __auto_type aliases = [authority legacyAccessTokenLookupAuthorities];
-    
+
     XCTAssertEqualObjects(@[authorityUrl], aliases);
 }
 
@@ -159,9 +159,9 @@
 {
     __auto_type authority = [@"https://login.microsoftonline.com/adfs" authority];
     NSArray *expectedAliases = @[authority.url];
-    
+
     NSArray *aliases = [authority legacyRefreshTokenLookupAliases];
-    
+
     XCTAssertEqualObjects(aliases, expectedAliases);
 }
 
@@ -172,31 +172,31 @@
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/adfs"];
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.us/adfs"];
     authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.chinacloudapi.cn/adfs"];
     authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.partner.microsoftonline.cn/adfs"];
     authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.de/adfs"];
     authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/adfs"];
     authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login-us.microsoftonline.com/adfs"];
     authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.usgovcloudapi.net/adfs"];
     authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
@@ -207,7 +207,7 @@
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://some.net/adfs"];
     __auto_type authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertFalse([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://example.com/adfs"];
     authority = [[MSIDADFSAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertFalse([authority isKnown]);
@@ -218,15 +218,15 @@
 - (void)testisEqual_whenAllPropertiesAreEqual_shouldReturnTrue
 {
     __auto_type metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     __auto_type *lhs = (MSIDADFSAuthority *)[@"https://login.microsoftonline.com/adfs" authority];
     lhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
     lhs.metadata = metadata;
-    
+
     __auto_type *rhs = (MSIDADFSAuthority *)[@"https://login.microsoftonline.com/adfs" authority];
     rhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
     rhs.metadata = metadata;
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -234,10 +234,10 @@
 {
     __auto_type *lhs = (MSIDADFSAuthority *)[@"https://login.microsoftonline.com/adfs" authority];
     lhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
-    
+
     __auto_type *rhs = (MSIDADFSAuthority *)[@"https://login.microsoftonline.com/adfs" authority];
     rhs.openIdConfigurationEndpoint = [@"https://example.com/qwe" msidUrl];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -245,10 +245,10 @@
 {
     __auto_type *lhs = (MSIDADFSAuthority *)[@"https://login.microsoftonline.com/adfs" authority];
     lhs.metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     __auto_type *rhs = (MSIDADFSAuthority *)[@"https://login.microsoftonline.com/adfs" authority];
     rhs.metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 

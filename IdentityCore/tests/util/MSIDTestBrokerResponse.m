@@ -31,7 +31,7 @@
 + (MSIDBrokerResponse *)testBrokerResponse
 {
     NSString *clientInfoString = [@{ @"uid" : DEFAULT_TEST_UID, @"utid" : DEFAULT_TEST_UTID} msidBase64UrlJson];
-    
+
     NSDictionary *brokerDictionary = @{@"authority": DEFAULT_TEST_AUTHORITY,
                                        @"client_id": DEFAULT_TEST_CLIENT_ID,
                                        @"resource": DEFAULT_TEST_RESOURCE,
@@ -43,7 +43,7 @@
                                        @"vt": @YES,
                                        @"client_info": clientInfoString
                                        };
-    
+
     return [[MSIDBrokerResponse alloc] initWithDictionary:brokerDictionary error:nil];
 }
 

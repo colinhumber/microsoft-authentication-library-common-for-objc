@@ -32,17 +32,17 @@
 - (NSArray<NSURLQueryItem *> *)urlQueryItemsArray
 {
     NSMutableArray<NSURLQueryItem *> *array = [NSMutableArray new];
-    
+
     for (id key in self.allKeys)
     {
-        
+
         NSString *value = [self[key] isKindOfClass:NSUUID.class] ?
         ((NSUUID *)self[key]).UUIDString : [self[key] description];
-        
+
         [array addObject:[NSURLQueryItem queryItemWithName:[[key description] msidWWWFormURLEncode]
                                                      value:[value description]]];
     }
-    
+
     return array;
 }
 
@@ -55,7 +55,7 @@
       dictionaryDescription:(NSString *)description
 {
     BOOL fSame = YES;
-    
+
     for (NSString *key in self)
     {
         id myVal = self[key];
@@ -64,7 +64,7 @@
         {
             continue;
         }
-        
+
         if (!otherVal)
         {
             NSLog(@"\"%@\" : \"%@\" missing from %@.", key, myVal, description);
@@ -76,21 +76,21 @@
             fSame = NO;
         }
     }
-    
+
     for (NSString *key in dictionary)
     {
         if ([dictionary[key] isKindOfClass:[MSIDTestIgnoreSentinel class]])
         {
             continue;
         }
-        
+
         if (!self[key])
         {
             NSLog(@"@\"%@\" : @\"%@\" in %@, not found in expected", key, dictionary[key], description);
             fSame = NO;
         }
     }
-    
+
     return fSame;
 }
 

@@ -40,7 +40,7 @@
 - (void)testInitWithParameters_whenNoRequestStateAndNoAuthCodeAndNoError_shouldReturnNilAndInvalidServerResponse
 {
     NSError *error = nil;
-    
+
     XCTAssertNil([[MSIDWebOAuth2Response alloc] initWithURL:[NSURL URLWithString:@"https://contoso.com"]
                                                     context:nil
                                                       error:&error]);
@@ -50,11 +50,11 @@
 - (void)testInitWithParameters_whenNoRequestStateAndAuthCode_shouldReturnAuthCode
 {
     NSError *error = nil;
-    
+
     MSIDWebOAuth2Response *response = [[MSIDWebOAuth2Response alloc] initWithURL:[NSURL URLWithString:@"https://contoso.com?code=authCode"]
                                                                          context:nil
                                                                            error:&error];
-    
+
     XCTAssertEqualObjects(response.authorizationCode, @"authCode");
     XCTAssertNil(response.oauthError);
     XCTAssertNil(error);
@@ -64,11 +64,11 @@
 {
     NSError *error = nil;
     NSString *state = @"state";
-    
+
     MSIDWebOAuth2Response *response = [[MSIDWebOAuth2Response alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://contoso.com?code=authCode&state=%@", state.msidBase64UrlEncode]]
                                                                          context:nil
                                                                            error:&error];
-    
+
     XCTAssertEqualObjects(response.authorizationCode, @"authCode");
     XCTAssertNil(response.oauthError);
     XCTAssertNil(error);
@@ -78,11 +78,11 @@
 {
     NSError *error = nil;
     NSString *state = @"state";
-    
+
     MSIDWebOAuth2Response *response = [[MSIDWebOAuth2Response alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://contoso.com?code=&state=%@", state.msidBase64UrlEncode]]
                                                                          context:nil
                                                                            error:&error];
-    
+
     XCTAssertNil(response.authorizationCode);
     XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
 }
@@ -94,7 +94,7 @@
     NSString *errorDescription = @"error description";
     NSString *subError = @"suberror";
     NSString *state = @"state";
-    
+
     NSURLComponents *urlComponents = [NSURLComponents componentsWithString:@"https://contoso.com"];
     urlComponents.queryItems = @{
                                  MSID_OAUTH2_ERROR : errorString,
@@ -102,22 +102,22 @@
                                  MSID_OAUTH2_SUB_ERROR : subError,
                                  MSID_OAUTH2_STATE : state.msidBase64UrlEncode
                                  }.urlQueryItemsArray;
-    
+
     MSIDWebOAuth2Response *response = [[MSIDWebOAuth2Response alloc] initWithURL:urlComponents.URL
                                                                     requestState:state
                                                               ignoreInvalidState:NO
                                                                          context:nil
                                                                            error:&error];
-    
+
     XCTAssertNil(response.authorizationCode);
     XCTAssertNil(error);
-    
+
     XCTAssertNotNil(response.oauthError);
-    
+
     XCTAssertEqualObjects(response.oauthError.domain, MSIDOAuthErrorDomain);
     XCTAssertEqual(response.oauthError.code, MSIDErrorServerInvalidGrant);
     XCTAssertEqualObjects(response.oauthError.userInfo[MSIDErrorDescriptionKey], errorDescription);
-    
+
     XCTAssertEqualObjects(response.oauthError.userInfo[MSIDOAuthErrorKey], errorString);
     XCTAssertEqualObjects(response.oauthError.userInfo[MSIDOAuthSubErrorKey], subError);
 }
@@ -129,30 +129,30 @@
     NSString *errorString = @"invalid_grant";
     NSString *errorDescription = @"error description";
     NSString *subError = @"suberror";
-    
+
     NSURLComponents *urlComponents = [NSURLComponents componentsWithString:@"https://contoso.com"];
     urlComponents.queryItems = @{
                                  MSID_OAUTH2_ERROR : errorString,
                                  MSID_OAUTH2_ERROR_DESCRIPTION : errorDescription,
                                  MSID_OAUTH2_SUB_ERROR : subError,
                                  }.urlQueryItemsArray;
-    
-    
-    
-    
+
+
+
+
     MSIDWebOAuth2Response *response = [[MSIDWebOAuth2Response alloc] initWithURL:urlComponents.URL
                                                                          context:nil
                                                                            error:&error];
-    
+
     XCTAssertNil(response.authorizationCode);
     XCTAssertNil(error);
-    
+
     XCTAssertNotNil(response.oauthError);
-    
+
     XCTAssertEqualObjects(response.oauthError.domain, MSIDOAuthErrorDomain);
     XCTAssertEqual(response.oauthError.code, MSIDErrorServerInvalidGrant);
     XCTAssertEqualObjects(response.oauthError.userInfo[MSIDErrorDescriptionKey], errorDescription);
-    
+
     XCTAssertEqualObjects(response.oauthError.userInfo[MSIDOAuthErrorKey], errorString);
     XCTAssertEqualObjects(response.oauthError.userInfo[MSIDOAuthSubErrorKey], subError);
 }
@@ -243,12 +243,12 @@
                                                               ignoreInvalidState:YES
                                                                          context:nil
                                                                            error:&error];
-    
+
     XCTAssertNil(response.authorizationCode);
     XCTAssertNil(error);
-    
+
     XCTAssertNotNil(response.oauthError);
-    
+
     XCTAssertEqualObjects(response.oauthError.domain, MSIDOAuthErrorDomain);
 }
 

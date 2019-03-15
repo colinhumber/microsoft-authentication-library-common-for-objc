@@ -43,7 +43,7 @@
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
-    
+
     [MSIDWebviewAuthorization cancelCurrentSession];
 }
 
@@ -52,7 +52,7 @@
 {
     MSIDTestWebviewInteractingViewController *testWebviewController = [MSIDTestWebviewInteractingViewController new];
     testWebviewController.successAfterInterval = 0.1;
-    
+
     MSIDWebviewSession *session = [[MSIDWebviewSession alloc] initWithWebviewController:testWebviewController
                                                                                 factory:[MSIDWebviewFactory new]
                                                                            requestState:nil
@@ -77,17 +77,17 @@
 - (void)testStartSession_whenSessionIsNil_shouldReturnErrorAtCompletionHandler
 {
     XCTestExpectation *expectation = [self expectationWithDescription:@"wait for response"];
-    
+
     [MSIDWebviewAuthorization startSession:nil
                                    context:nil
                          completionHandler:^(MSIDWebviewResponse *response, NSError *error) {
                              XCTAssertNil(response);
                              XCTAssertNotNil(error);
                              XCTAssertEqual(error.code, MSIDErrorInternal);
-                             
+
                              [expectation fulfill];
                          }];
-    
+
     [self waitForExpectationsWithTimeout:0.5 handler:nil];
 }
 
@@ -136,9 +136,9 @@
 {
     MSIDWebviewSession *session = [[MSIDWebviewSession alloc] initWithWebviewController:nil factory:nil requestState:nil ignoreInvalidState:NO];
     XCTAssertTrue([MSIDWebviewAuthorization setCurrentSession:session]);
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"wait for response"];
-    
+
     [MSIDWebviewAuthorization startSession:[self sessionWithSuccessfulResponse]
                                    context:nil
                          completionHandler:^(MSIDWebviewResponse *response, NSError *error) {
@@ -146,7 +146,7 @@
                              XCTAssertNotNil(error);
 
                              XCTAssertEqual(error.code, MSIDErrorInteractiveSessionAlreadyRunning);
-                             
+
                              [expectation fulfill];
                          }];
     [self waitForExpectationsWithTimeout:0.5 handler:nil];
@@ -188,9 +188,9 @@
 {
     MSIDWebviewSession *session = [[MSIDWebviewSession alloc] initWithWebviewController:nil factory:nil requestState:nil ignoreInvalidState:NO];
     [MSIDWebviewAuthorization setCurrentSession:session];
-    
+
     [MSIDWebviewAuthorization cancelCurrentSession];
-    
+
     XCTAssertNil([MSIDWebviewAuthorization currentSession]);
 }
 

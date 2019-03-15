@@ -68,7 +68,7 @@
 - (void)resume
 {
     MSIDTestURLResponse *response = [MSIDTestURLSession removeResponseForRequest:self.request];
-    
+
     if (!response)
     {
         [self.session dispatchIfNeed:^{
@@ -76,15 +76,15 @@
                                                  code:NSURLErrorNotConnectedToInternet
                                              userInfo:nil];
             if (self.completionHandler) self.completionHandler(nil, nil, error);
-            
+
             [self.delegate URLSession:(NSURLSession *)self.session
                                  task:(NSURLSessionDataTask *)self
                  didCompleteWithError:error];
         }];
-        
+
         return;
     }
-    
+
     [self.session dispatchIfNeed:^{
         if (self.completionHandler) self.completionHandler(response->_responseData, response->_response, response->_error);
     }];
@@ -93,7 +93,7 @@
     {
         dispatch_semaphore_wait(response->_waitSemaphore, DISPATCH_TIME_FOREVER);
     }
-    
+
     if (response->_error)
     {
         [self.session dispatchIfNeed:^{
@@ -103,7 +103,7 @@
         }];
         return;
     }
-    
+
     if (response->_expectedRequestHeaders)
     {
         BOOL failed = NO;
@@ -111,20 +111,20 @@
         {
             NSString *value = [response->_expectedRequestHeaders objectForKey:key];
             NSString *requestValue = [_request.allHTTPHeaderFields objectForKey:key];
-            
+
             if (!requestValue)
             {
                 //AD_LOG_ERROR(nil, @"Missing request header, expected \"%@\" header", key);
                 failed = YES;
             }
-            
+
             if (![requestValue isEqualToString:value])
             {
                 //AD_LOG_ERROR(nil, @"Mismatched request header. On \"%@\" header, expected:\"%@\" actual:\"%@\"", key, value, requestValue);
                 failed = YES;
             }
         }
-        
+
         if (failed)
         {
             [self.session dispatchIfNeed:^{
@@ -132,7 +132,7 @@
                                                         code:NSURLErrorNotConnectedToInternet
                                                     userInfo:nil];
                 if (self.completionHandler) self.completionHandler(nil, nil, error);
-                
+
                 [self.delegate URLSession:(NSURLSession *)self.session
                                      task:(NSURLSessionDataTask *)self
                      didCompleteWithError:error];
@@ -141,7 +141,7 @@
         }
     }
 
-    
+
     if (response->_response)
     {
         [self.session dispatchIfNeed:^{
@@ -152,16 +152,16 @@
                         (void)disposition;
                     }];
         }];
-        
+
     }
-    
+
     if (response->_responseData)
     {
         [self.session dispatchIfNeed:^{
             [self.delegate URLSession:(NSURLSession *)self.session dataTask:(NSURLSessionDataTask *)self didReceiveData:response->_responseData];
         }];
     }
-    
+
     [self.session dispatchIfNeed:^{
         [self.delegate URLSession:(NSURLSession *)self.session
                              task:(NSURLSessionDataTask *)self

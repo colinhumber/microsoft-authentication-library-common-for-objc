@@ -34,9 +34,9 @@
     if (self)
     {
         NSParameterAssert(endpoint);
-        
+
         self.context =  context;
-        
+
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest new];;
         urlRequest.URL = endpoint;
         urlRequest.HTTPMethod = @"GET";
@@ -45,7 +45,7 @@
         __auto_type requestConfigurator = [MSIDAADRequestConfigurator new];
         [requestConfigurator configure:self];
     }
-    
+
     return self;
 }
 

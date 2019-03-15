@@ -32,25 +32,25 @@ __weak static UIAlertController *_presentedPrompt = nil;
 + (void)dismissPrompt
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        
+
         if (_presentedPrompt.presentingViewController)
         {
             [_presentedPrompt.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         }
-        
+
         _presentedPrompt = nil;
     });
 }
 
 + (void)presentPrompt:(void (^)(NSString *username, NSString *password, BOOL cancel))block
 {
-    
+
     if ([MSIDAppExtensionUtil isExecutingInAppExtension])
     {
         block(nil, nil, YES);
         return;
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *viewController = [UIApplication msidCurrentViewController];
         if (!viewController)
@@ -58,14 +58,14 @@ __weak static UIAlertController *_presentedPrompt = nil;
             block(nil, nil, YES);
             return;
         }
-        
+
         NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-        
+
         NSString *title = NSLocalizedStringFromTableInBundle(@"Enter your credentials", nil, bundle, nil);
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
                                                                        message:nil
                                                                 preferredStyle:UIAlertControllerStyleAlert];
-        
+
         UIAlertAction *cancelAction =
         [UIAlertAction actionWithTitle:NSLocalizedStringFromTableInBundle(@"Cancel", nil, bundle, nil)
                                  style:UIAlertActionStyleCancel
@@ -73,7 +73,7 @@ __weak static UIAlertController *_presentedPrompt = nil;
          {
              block(nil, nil, YES);
          }];
-        
+
         UIAlertAction *loginAction =
         [UIAlertAction actionWithTitle:NSLocalizedStringFromTableInBundle(@"Login", nil, bundle, nil)
                                  style:UIAlertActionStyleDefault
@@ -81,20 +81,20 @@ __weak static UIAlertController *_presentedPrompt = nil;
          {
              UITextField *username = alert.textFields.firstObject;
              UITextField *password = alert.textFields.lastObject;
-             
+
              block(username.text, password.text, NO);
          }];
-        
+
         [alert addAction:cancelAction];
         [alert addAction:loginAction];
-        
+
         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) { (void)textField; }];
         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
             textField.secureTextEntry = YES;
         }];
-        
+
         [viewController presentViewController:alert animated:YES completion:^{}];
-        
+
         _presentedPrompt = alert;
     });
 }

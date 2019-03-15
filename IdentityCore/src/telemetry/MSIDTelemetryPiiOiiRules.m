@@ -36,7 +36,7 @@ static NSSet *_oiiFields;
                                                MSID_TELEMETRY_KEY_LOGIN_HINT,
                                                MSID_TELEMETRY_KEY_ERROR_DESCRIPTION,
                                                MSID_TELEMETRY_KEY_REQUEST_QUERY_PARAMS]];
-    
+
     _oiiFields = [[NSSet alloc] initWithArray:@[MSID_TELEMETRY_KEY_TENANT_ID,
                                                 MSID_TELEMETRY_KEY_CLIENT_ID,
                                                 MSID_TELEMETRY_KEY_HTTP_PATH,
@@ -54,7 +54,7 @@ static NSSet *_oiiFields;
     {
         return NO;
     }
-    
+
     return [_piiFields containsObject:propertyName];
 }
 
@@ -64,7 +64,7 @@ static NSSet *_oiiFields;
     {
         return NO;
     }
-    
+
     return [_oiiFields containsObject:propertyName];
 }
 

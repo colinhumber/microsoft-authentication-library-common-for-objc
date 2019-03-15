@@ -35,7 +35,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     self.requestInfo.text = nil;
 }
 
@@ -54,7 +54,7 @@
     }
 
     MSIDAutomationTestRequest *request = [[MSIDAutomationTestRequest alloc] initWithJSONDictionary:params error:nil];
-    
+
     self.completionBlock(request);
 }
 

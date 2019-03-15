@@ -42,11 +42,11 @@
     if (self)
     {
         NSParameterAssert(domain);
-        
+
         _domain = domain;
         _adfsType = adfsType;
         _context = context;
-        
+
         NSMutableDictionary *parameters = [NSMutableDictionary new];
         parameters[@"api-version"] = MSIDAADNetworkConfiguration.defaultConfiguration.drsDiscoveryApiVersion;
         _parameters = parameters;
@@ -55,13 +55,13 @@
         urlRequest.URL = [self endpointWithDomain:domain adfsType:adfsType];
         urlRequest.HTTPMethod = @"GET";
         _urlRequest = urlRequest;
-        
+
         __auto_type requestConfigurator = [MSIDAADRequestConfigurator new];
         [requestConfigurator configure:self];
-        
+
         _responseSerializer = [MSIDDRSDiscoveryResponseSerializer new];
     }
-    
+
     return self;
 }
 
@@ -77,7 +77,7 @@
         return [NSURL URLWithString:
                 [NSString stringWithFormat:@"https://enterpriseregistration.windows.net/%@/enrollmentserver/contract", domain.lowercaseString]];
     }
-    
+
     return nil;
 }
 

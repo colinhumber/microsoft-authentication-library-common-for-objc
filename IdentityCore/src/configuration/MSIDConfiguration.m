@@ -45,7 +45,7 @@
     configuration.clientId = [_clientId copyWithZone:zone];
     configuration.resource = [_resource copyWithZone:zone];
     configuration.scopes = [_scopes copyWithZone:zone];
-    
+
     return configuration;
 }
 
@@ -56,21 +56,21 @@
                            target:(NSString *)target
 {
     self = [super init];
-    
+
     if (self)
     {
         _authority = authority;
         _redirectUri = redirectUri;
         _clientId = clientId;
         _target = target;
-        
+
         if (target)
         {
             _resource = target;
             _scopes = [target msidScopeSet];
         }
     }
-    
+
     return self;
 }
 
@@ -81,7 +81,7 @@
                            scopes:(NSOrderedSet<NSString *> *)scopes
 {
     self = [super init];
-    
+
     if (self)
     {
         _authority = authority;
@@ -91,7 +91,7 @@
         _scopes = scopes;
         _target = _scopes ? [scopes msidToString] : _resource;
     }
-    
+
     return self;
 }
 

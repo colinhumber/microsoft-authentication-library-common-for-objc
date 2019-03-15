@@ -28,13 +28,13 @@ typedef NS_ENUM(NSInteger, MSIDAADTenantType)
 {
     // Either the friendly domain name of the Azure AD tenant or the tenant's guid identifier can be used.
     MSIDAADTenantTypeIdentifier,
-    
+
     // Allows users with both personal Microsoft accounts and work/school accounts from Azure Active Directory to sign into the application.
     MSIDAADTenantTypeCommon,
-    
+
     // Allows only users with work/school accounts from Azure Active Directory to sign into the application.
     MSIDAADTenantTypeOrganizations,
-    
+
     // Allows only users with personal Microsoft accounts (MSA) to sign into the application.
     MSIDAADTenantTypeConsumers
 };

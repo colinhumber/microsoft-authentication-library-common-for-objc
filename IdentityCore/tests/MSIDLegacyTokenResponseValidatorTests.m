@@ -55,13 +55,13 @@
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeRequiredDisplayableId;
     testAccount.displayableId = @"user2@contoso.com";
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertFalse(result);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(error.domain, MSIDErrorDomain);
@@ -73,13 +73,13 @@
     MSIDTokenResult *testResult = [self testTokenResult];
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeRequiredDisplayableId;
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
 }
@@ -90,13 +90,13 @@
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeRequiredDisplayableId;
     testAccount.displayableId = @"user@contoso.com";
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertFalse(result);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(error.domain, MSIDErrorDomain);
@@ -109,13 +109,13 @@
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeOptionalDisplayableId;
     testAccount.displayableId = @"user@contoso.com";
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
 }
@@ -125,13 +125,13 @@
     MSIDTokenResult *testResult = [self testTokenResult];
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeOptionalDisplayableId;
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
 }
@@ -142,13 +142,13 @@
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeOptionalDisplayableId;
     testAccount.displayableId = @"user2@contoso.com";
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
 }
@@ -159,13 +159,13 @@
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeUniqueNonDisplayableId;
     testAccount.localAccountId = @"oid2";
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertFalse(result);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(error.domain, MSIDErrorDomain);
@@ -177,13 +177,13 @@
     MSIDTokenResult *testResult = [self testTokenResult];
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeUniqueNonDisplayableId;
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
 }
@@ -194,13 +194,13 @@
     MSIDAccountIdentifier *testAccount = [MSIDAccountIdentifier new];
     testAccount.legacyAccountIdentifierType = MSIDLegacyIdentifierTypeUniqueNonDisplayableId;
     testAccount.localAccountId = @"unique_oid";
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateAccount:testAccount
                                       tokenResult:testResult
                                     correlationID:[NSUUID new]
                                             error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
 }
@@ -208,14 +208,14 @@
 - (void)testValidateTokenResult_whenResultContainsAccount_shouldReturnNoError
 {
     MSIDTokenResult *testResult = [self testTokenResult];
-    
+
     NSError *error = nil;
     BOOL result = [self.validator validateTokenResult:testResult
                                         configuration:[MSIDConfiguration new]
                                             oidcScope:nil
                                         correlationID:[NSUUID new]
                                                 error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
 }
@@ -228,7 +228,7 @@
     account.username = @"user@contoso.com";
     account.accountIdentifier.homeAccountId = @"uid.utid";
     account.localAccountId = @"unique_oid";
-    
+
     MSIDTokenResult *result = [[MSIDTokenResult alloc] initWithAccessToken:[MSIDAccessToken new]
                                                               refreshToken:nil
                                                                    idToken:@"id token"
@@ -236,7 +236,7 @@
                                                                  authority:[@"https://login.microsoftonline.com/contoso.com" authority]
                                                              correlationId:[NSUUID new]
                                                              tokenResponse:nil];
-    
+
     return result;
 }
 

@@ -79,7 +79,7 @@ static NSMutableArray<MSIDTestSwizzle *> *s_currentMonkeyPatches = nil;
             MSIDTestSwizzle *patch = s_currentMonkeyPatches[i];
             method_setImplementation(patch->_m, patch->_originalImp);
         }
-        
+
         [s_currentMonkeyPatches removeAllObjects];
     }
 }
@@ -142,7 +142,7 @@ static NSMutableArray<MSIDTestSwizzle *> *s_currentMonkeyPatches = nil;
         _originalImp = method_setImplementation(_m, impl);
         [s_currentMonkeyPatches addObject:self];
     }
-    
+
     return self;
 }
 
@@ -152,7 +152,7 @@ static NSMutableArray<MSIDTestSwizzle *> *s_currentMonkeyPatches = nil;
     {
         return NO;
     }
-    
+
     if (_instance)
     {
         return [obj isKindOfClass:_class];

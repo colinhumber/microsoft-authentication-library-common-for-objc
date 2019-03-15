@@ -33,19 +33,19 @@
     {
         NSParameterAssert(issuer);
         NSParameterAssert(authority);
-        
+
         _context = context;
-        
+
         NSMutableDictionary *parameters = [NSMutableDictionary new];
         parameters[@"resource"] = authority.absoluteString;
         _parameters = parameters;
-        
+
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest new];
         urlRequest.URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/.well-known/webfinger", issuer.host]];
         urlRequest.HTTPMethod = @"GET";
         _urlRequest = urlRequest;
     }
-    
+
     return self;
 }
 

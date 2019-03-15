@@ -38,12 +38,12 @@
 - (instancetype)initWithRawIdToken:(NSString *)rawIdTokenString
 {
     self = [super init];
-    
+
     if (self)
     {
         _rawIdToken = rawIdTokenString;
     }
-    
+
     return self;
 }
 
@@ -53,7 +53,7 @@
     {
         return nil;
     }
-    
+
     _rawIdToken = [coder decodeObjectOfClass:[NSString class] forKey:@"rawIdToken"];
     return self;
 }
@@ -76,7 +76,7 @@
 - (void)encodeWithCoder:(NSCoder *)coder
 {
     [coder encodeObject:_rawIdToken forKey:@"rawIdToken"];
-    
+
 #if TARGET_OS_IPHONE
     // These are needed for back-compat with ADAL 1.x
     // ADAL 1.2x only supported AAD v1, so use MSIDAADV1IdToken

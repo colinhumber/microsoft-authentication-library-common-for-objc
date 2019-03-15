@@ -217,7 +217,7 @@
         _resource = responseDict[@"Resource_ids"][0];
 
         _authority = responseDict[@"Authority"][0];
-        
+
         NSURL *authorityURL = [NSURL URLWithString:_authority];
         _authorityHost = [authorityURL msidHostWithPortIfNecessary];
 
@@ -286,7 +286,7 @@
             return uri;
         }
     }
-    
+
     return _registeredRedirectURIs[0];
 }
 

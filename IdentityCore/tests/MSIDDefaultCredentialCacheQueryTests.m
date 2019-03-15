@@ -61,7 +61,7 @@
     query.target = @"user.read";
     query.clientId = @"client";
     query.enrollmentId = @"enrollmentId";
-    
+
     XCTAssertTrue(query.exactMatch);
     XCTAssertEqualObjects(query.account, @"uid.utid-login.microsoftonline.com");
     XCTAssertEqualObjects(query.service, @"accesstoken-client-contoso.com-enrollmentid-user.read");

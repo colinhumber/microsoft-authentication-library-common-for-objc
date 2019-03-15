@@ -42,7 +42,7 @@
         _userDefaults = userDefaults ? userDefaults : NSUserDefaults.standardUserDefaults;
         _jsonSerializer = [MSIDJsonSerializer new];
     }
-    
+
     return self;
 }
 
@@ -57,7 +57,7 @@
 {
     NSString *jsonString = [self.userDefaults objectForKey:key];
     if ([NSString msidIsStringNilOrBlank:jsonString]) return nil;
-    
+
     return (NSDictionary *)[self.jsonSerializer fromJsonString:jsonString
                                                         ofType:NSDictionary.self
                                                        context:nil
@@ -69,7 +69,7 @@
     NSString *jsonString = [self.jsonSerializer toJsonString:dictionary
                                                      context:nil
                                                        error:nil];
-    
+
     [self.userDefaults setObject:jsonString forKey:key];
 }
 

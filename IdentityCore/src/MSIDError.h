@@ -80,12 +80,12 @@ typedef NS_ENUM(NSInteger, MSIDErrorCode)
     // General internal errors that do not fall into one of the specific type
     // of an error described below.
     MSIDErrorInternal = -51100,
-    
+
     // Parameter errors
     MSIDErrorInvalidInternalParameter   = -51111,
     MSIDErrorInvalidDeveloperParameter  = -51112,
     MSIDErrorMissingAccountParameter    = -51113,
-   
+
     // Unsupported functionality
     MSIDErrorUnsupportedFunctionality   = -51114,
 
@@ -107,13 +107,13 @@ typedef NS_ENUM(NSInteger, MSIDErrorCode)
     // Multiple users found in cache when one was intended
     MSIDErrorCacheMultipleUsers     = -51200,
     MSIDErrorCacheBadFormat         = -51201,
-    
+
     /*!
      =========================================================
      Server errors  (514xx) - MSIDOAuthErrorDomain
      =========================================================
      */
-    
+
     // Server returned a response indicating an OAuth error
     MSIDErrorServerOauth                = -51400,
     // Server returned an invalid response
@@ -121,14 +121,14 @@ typedef NS_ENUM(NSInteger, MSIDErrorCode)
     // Server returned a refresh token reject response
     MSIDErrorServerRefreshTokenRejected = -514102,
     // Other specific server response errors
-    
+
     MSIDErrorServerInvalidRequest       = -51410,
     MSIDErrorServerInvalidClient        = -51411,
     MSIDErrorServerInvalidGrant         = -51412,
     MSIDErrorServerInvalidScope         = -51413,
     MSIDErrorServerUnauthorizedClient   = -51414,
     MSIDErrorServerDeclinedScopes       = -51415,
-    
+
     // State verification has failed
     MSIDErrorServerInvalidState         = -51420,
 
@@ -147,7 +147,7 @@ typedef NS_ENUM(NSInteger, MSIDErrorCode)
      */
 
     MSIDErrorServerUnhandledResponse    = -51500,
-    
+
     /*!
      =========================================================
      Authority Validation  (516xx) - MSIDErrorDomain
@@ -164,10 +164,10 @@ typedef NS_ENUM(NSInteger, MSIDErrorCode)
 
     // User has cancelled the interactive flow.
     MSIDErrorUserCancel                 = -51700,
-    
+
     // The interactive flow was cancelled programmatically.
     MSIDErrorSessionCanceledProgrammatically = -51701,
-    
+
     // Interactive authentication session failed to start.
     MSIDErrorInteractiveSessionStartFailure = -51702,
     /*!

@@ -869,14 +869,14 @@
 - (MSIDTokenResponse *)aadTestFociTokenResponse
 {
     NSString *jsonResponse = @"{\"token_type\":\"Bearer\",\"scope\":\"Calendars.Read openid profile Tasks.Read User.Read email\",\"expires_in\":3600,\"ext_expires_in\":262800,\"access_token\":\"<removed_at>\",\"refresh_token\":\"<removed_rt>\",\"id_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJiNmM2OWEzNy1kZjk2LTRkYjAtOTA4OC0yYWI5NmUxZDgyMTUiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vZjY0NWFkOTItZTM4ZC00ZDFhLWI1MTAtZDFiMDlhNzRhOGNhL3YyLjAiLCJpYXQiOjE1Mzg1Mzg0MjIsIm5iZiI6MTUzODUzODQyMiwiZXhwIjoxNTM4NTQyMzIyLCJuYW1lIjoiQ2xvdWQgSURMQUIgQmFzaWMgVXNlciIsIm9pZCI6IjlmNDg4MGQ4LTgwYmEtNGM0MC05N2JjLWY3YTIzYzcwMzA4NCIsInByZWZlcnJlZF91c2VybmFtZSI6ImlkbGFiQG1zaWRsYWI0Lm9ubWljcm9zb2Z0LmNvbSIsInN1YiI6Ilk2WWtCZEhOTkxITm1US2VsOUtoUno4d3Jhc3hkTFJGaVAxNEJSUFdybjQiLCJ0aWQiOiJmNjQ1YWQ5Mi1lMzhkLTRkMWEtYjUxMC1kMWIwOWE3NGE4Y2EiLCJ1dGkiOiI2bmNpWDAyU01raTlrNzMtRjFzWkFBIiwidmVyIjoiMi4wIn0.\",\"client_info\":\"eyJ1aWQiOiI5ZjQ4ODBkOC04MGJhLTRjNDAtOTdiYy1mN2EyM2M3MDMwODQiLCJ1dGlkIjoiZjY0NWFkOTItZTM4ZC00ZDFhLWI1MTAtZDFiMDlhNzRhOGNhIn0\",\"foci\":\"1\"}";
-    
+
     NSError *responseError = nil;
     MSIDAADV2TokenResponse *response = [[MSIDAADV2TokenResponse alloc] initWithJSONData:[jsonResponse dataUsingEncoding:NSUTF8StringEncoding] error:&responseError];
-    
+
     XCTAssertNotNil(response);
     XCTAssertEqualObjects(response.familyId, @"1");
     XCTAssertNil(responseError);
-    
+
     return response;
 }
 
@@ -885,18 +885,18 @@
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDTokenResponse *response = [self aadTestFociTokenResponse];
     MSIDConfiguration *configuration = [self aadTestConfiguration];
-    
+
     MSIDAccessToken *accessToken = [factory accessTokenFromResponse:response
                                                       configuration:configuration];
-    
+
     MSIDCredentialCacheItem *credential = accessToken.tokenCacheItem;
     NSDictionary *accessTokenJSON = credential.jsonDictionary;
-    
+
     NSDate *currentDate = [NSDate new];
     NSString *expiresOn = [NSString stringWithFormat:@"%ld", (long)([currentDate timeIntervalSince1970] + 3600)];
     NSString *extExpiresOn = [NSString stringWithFormat:@"%ld", (long)([currentDate timeIntervalSince1970] + 262800)];
     NSString *cachedAt = [NSString stringWithFormat:@"%ld", (long)[currentDate timeIntervalSince1970]];
-    
+
     // 1. Verify payload
     NSDictionary *expectedJSON = @{
                                    @"secret": @"<removed_at>",
@@ -910,28 +910,28 @@
                                    @"client_id": @"b6c69a37-df96-4db0-9088-2ab96e1d8215",
                                    @"home_account_id": @"9f4880d8-80ba-4c40-97bc-f7a23c703084.f645ad92-e38d-4d1a-b510-d1b09a74a8ca"
                                    };
-    
+
     XCTAssertEqualObjects(accessTokenJSON, expectedJSON);
-    
+
     // 2. Verify cache key
     MSIDDefaultCredentialCacheKey *key = [[MSIDDefaultCredentialCacheKey alloc] initWithHomeAccountId:credential.homeAccountId
                                                                                           environment:credential.environment
                                                                                              clientId:credential.clientId
                                                                                        credentialType:credential.credentialType];
-    
+
     key.familyId = credential.familyId;
     key.realm = credential.realm;
     key.target = credential.target;
-    
+
     NSString *expectedServiceKey = @"accesstoken-b6c69a37-df96-4db0-9088-2ab96e1d8215-f645ad92-e38d-4d1a-b510-d1b09a74a8ca-calendars.read openid profile tasks.read user.read email";
     XCTAssertEqualObjects(key.service, expectedServiceKey);
-    
+
     NSString *expectedAccountKey = @"9f4880d8-80ba-4c40-97bc-f7a23c703084.f645ad92-e38d-4d1a-b510-d1b09a74a8ca-login.microsoftonline.com";
     XCTAssertEqualObjects(key.account, expectedAccountKey);
-    
+
     NSString *expectedGenericKey = @"accesstoken-b6c69a37-df96-4db0-9088-2ab96e1d8215-f645ad92-e38d-4d1a-b510-d1b09a74a8ca";
     XCTAssertEqualObjects(key.generic, [expectedGenericKey dataUsingEncoding:NSUTF8StringEncoding]);
-    
+
     XCTAssertEqualObjects(key.type, @2001);
 }
 
@@ -940,10 +940,10 @@
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDTokenResponse *response = [self aadTestFociTokenResponse];
     MSIDConfiguration *configuration = [self aadTestConfiguration];
-    
+
     MSIDIdToken *idToken = [factory idTokenFromResponse:response configuration:configuration];
     MSIDCredentialCacheItem *credential = idToken.tokenCacheItem;
-    
+
     // 1. Verify payload
     NSDictionary *expectedJSON = @{
                                    @"secret": @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJiNmM2OWEzNy1kZjk2LTRkYjAtOTA4OC0yYWI5NmUxZDgyMTUiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vZjY0NWFkOTItZTM4ZC00ZDFhLWI1MTAtZDFiMDlhNzRhOGNhL3YyLjAiLCJpYXQiOjE1Mzg1Mzg0MjIsIm5iZiI6MTUzODUzODQyMiwiZXhwIjoxNTM4NTQyMzIyLCJuYW1lIjoiQ2xvdWQgSURMQUIgQmFzaWMgVXNlciIsIm9pZCI6IjlmNDg4MGQ4LTgwYmEtNGM0MC05N2JjLWY3YTIzYzcwMzA4NCIsInByZWZlcnJlZF91c2VybmFtZSI6ImlkbGFiQG1zaWRsYWI0Lm9ubWljcm9zb2Z0LmNvbSIsInN1YiI6Ilk2WWtCZEhOTkxITm1US2VsOUtoUno4d3Jhc3hkTFJGaVAxNEJSUFdybjQiLCJ0aWQiOiJmNjQ1YWQ5Mi1lMzhkLTRkMWEtYjUxMC1kMWIwOWE3NGE4Y2EiLCJ1dGkiOiI2bmNpWDAyU01raTlrNzMtRjFzWkFBIiwidmVyIjoiMi4wIn0.",
@@ -953,28 +953,28 @@
                                    @"realm": @"f645ad92-e38d-4d1a-b510-d1b09a74a8ca",
                                    @"client_id": @"b6c69a37-df96-4db0-9088-2ab96e1d8215"
                                    };
-    
+
     XCTAssertEqualObjects(credential.jsonDictionary, expectedJSON);
-    
+
     // 2. Verify cache key
     MSIDDefaultCredentialCacheKey *key = [[MSIDDefaultCredentialCacheKey alloc] initWithHomeAccountId:credential.homeAccountId
                                                                                           environment:credential.environment
                                                                                              clientId:credential.clientId
                                                                                        credentialType:credential.credentialType];
-    
+
     key.familyId = credential.familyId;
     key.realm = credential.realm;
     key.target = credential.target;
-    
+
     NSString *expectedServiceKey = @"idtoken-b6c69a37-df96-4db0-9088-2ab96e1d8215-f645ad92-e38d-4d1a-b510-d1b09a74a8ca-";
     XCTAssertEqualObjects(key.service, expectedServiceKey);
-    
+
     NSString *expectedAccountKey = @"9f4880d8-80ba-4c40-97bc-f7a23c703084.f645ad92-e38d-4d1a-b510-d1b09a74a8ca-login.microsoftonline.com";
     XCTAssertEqualObjects(key.account, expectedAccountKey);
-    
+
     NSString *expectedGenericKey = @"idtoken-b6c69a37-df96-4db0-9088-2ab96e1d8215-f645ad92-e38d-4d1a-b510-d1b09a74a8ca";
     XCTAssertEqualObjects(key.generic, [expectedGenericKey dataUsingEncoding:NSUTF8StringEncoding]);
-    
+
     XCTAssertEqualObjects(key.type, @2003);
 }
 
@@ -983,11 +983,11 @@
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDTokenResponse *response = [self aadTestFociTokenResponse];
     MSIDConfiguration *configuration = [self aadTestConfiguration];
-    
+
     MSIDRefreshToken *refreshToken = [factory refreshTokenFromResponse:response configuration:configuration];
     refreshToken.familyId = nil;
     MSIDCredentialCacheItem *credential = refreshToken.tokenCacheItem;
-    
+
     // 1. Verify payload
     NSDictionary *expectedJSON = @{
                                    @"client_id": @"b6c69a37-df96-4db0-9088-2ab96e1d8215",
@@ -996,28 +996,28 @@
                                    @"credential_type": @"RefreshToken",
                                    @"home_account_id": @"9f4880d8-80ba-4c40-97bc-f7a23c703084.f645ad92-e38d-4d1a-b510-d1b09a74a8ca"
                                    };
-    
+
     XCTAssertEqualObjects(credential.jsonDictionary, expectedJSON);
-    
+
     // 2. Verify cache key
     MSIDDefaultCredentialCacheKey *key = [[MSIDDefaultCredentialCacheKey alloc] initWithHomeAccountId:credential.homeAccountId
                                                                                           environment:credential.environment
                                                                                              clientId:credential.clientId
                                                                                        credentialType:credential.credentialType];
-    
+
     key.familyId = credential.familyId;
     key.realm = credential.realm;
     key.target = credential.target;
-    
+
     NSString *expectedServiceKey = @"refreshtoken-b6c69a37-df96-4db0-9088-2ab96e1d8215--";
     XCTAssertEqualObjects(key.service, expectedServiceKey);
-    
+
     NSString *expectedAccountKey = @"9f4880d8-80ba-4c40-97bc-f7a23c703084.f645ad92-e38d-4d1a-b510-d1b09a74a8ca-login.microsoftonline.com";
     XCTAssertEqualObjects(key.account, expectedAccountKey);
-    
+
     NSString *expectedGenericKey = @"refreshtoken-b6c69a37-df96-4db0-9088-2ab96e1d8215-";
     XCTAssertEqualObjects(key.generic, [expectedGenericKey dataUsingEncoding:NSUTF8StringEncoding]);
-    
+
     XCTAssertEqualObjects(key.type, @2002);
 }
 
@@ -1026,10 +1026,10 @@
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDTokenResponse *response = [self aadTestFociTokenResponse];
     MSIDConfiguration *configuration = [self aadTestConfiguration];
-    
+
     MSIDRefreshToken *refreshToken = [factory refreshTokenFromResponse:response configuration:configuration];
     MSIDCredentialCacheItem *credential = refreshToken.tokenCacheItem;
-    
+
     // 1. Verify payload
     NSDictionary *expectedJSON = @{
                                    @"client_id": @"b6c69a37-df96-4db0-9088-2ab96e1d8215",
@@ -1039,28 +1039,28 @@
                                    @"home_account_id": @"9f4880d8-80ba-4c40-97bc-f7a23c703084.f645ad92-e38d-4d1a-b510-d1b09a74a8ca",
                                    @"family_id":@"1"
                                    };
-    
+
     XCTAssertEqualObjects(credential.jsonDictionary, expectedJSON);
-    
+
     // 2. Verify cache key
     MSIDDefaultCredentialCacheKey *key = [[MSIDDefaultCredentialCacheKey alloc] initWithHomeAccountId:credential.homeAccountId
                                                                                           environment:credential.environment
                                                                                              clientId:credential.clientId
                                                                                        credentialType:credential.credentialType];
-    
+
     key.familyId = credential.familyId;
     key.realm = credential.realm;
     key.target = credential.target;
-    
+
     NSString *expectedServiceKey = @"refreshtoken-1--";
     XCTAssertEqualObjects(key.service, expectedServiceKey);
-    
+
     NSString *expectedAccountKey = @"9f4880d8-80ba-4c40-97bc-f7a23c703084.f645ad92-e38d-4d1a-b510-d1b09a74a8ca-login.microsoftonline.com";
     XCTAssertEqualObjects(key.account, expectedAccountKey);
-    
+
     NSString *expectedGenericKey = @"refreshtoken-1-";
     XCTAssertEqualObjects(key.generic, [expectedGenericKey dataUsingEncoding:NSUTF8StringEncoding]);
-    
+
     XCTAssertEqualObjects(key.type, @2002);
 }
 
@@ -1069,10 +1069,10 @@
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDTokenResponse *response = [self aadTestFociTokenResponse];
     MSIDConfiguration *configuration = [self aadTestConfiguration];
-    
+
     MSIDAccount *account = [factory accountFromResponse:response configuration:configuration];
     MSIDAccountCacheItem *accountCacheItem = account.accountCacheItem;
-    
+
     // 1. Verify payload compliance
     NSDictionary *expectedJSON = @{
                                    @"local_account_id": @"9f4880d8-80ba-4c40-97bc-f7a23c703084",
@@ -1084,27 +1084,27 @@
                                    @"name": @"Cloud IDLAB Basic User",
                                    @"client_info": @"eyJ1aWQiOiI5ZjQ4ODBkOC04MGJhLTRjNDAtOTdiYy1mN2EyM2M3MDMwODQiLCJ1dGlkIjoiZjY0NWFkOTItZTM4ZC00ZDFhLWI1MTAtZDFiMDlhNzRhOGNhIn0"
                                    };
-    
+
     XCTAssertEqualObjects(accountCacheItem.jsonDictionary, expectedJSON);
-    
+
     // 2. Verify cache key
-    
+
     MSIDDefaultAccountCacheKey *key = [[MSIDDefaultAccountCacheKey alloc] initWithHomeAccountId:accountCacheItem.homeAccountId
                                                                                     environment:accountCacheItem.environment
                                                                                           realm:accountCacheItem.realm
                                                                                            type:accountCacheItem.accountType];
-    
+
     key.username = account.username;
-    
+
     NSString *expectedServiceKey = @"f645ad92-e38d-4d1a-b510-d1b09a74a8ca";
     XCTAssertEqualObjects(key.service, expectedServiceKey);
-    
+
     NSString *expectedAccountKey = @"9f4880d8-80ba-4c40-97bc-f7a23c703084.f645ad92-e38d-4d1a-b510-d1b09a74a8ca-login.microsoftonline.com";
     XCTAssertEqualObjects(key.account, expectedAccountKey);
-    
+
     NSString *expectedGenericKey = @"idlab@msidlab4.onmicrosoft.com";
     XCTAssertEqualObjects(key.generic, [expectedGenericKey dataUsingEncoding:NSUTF8StringEncoding]);
-    
+
     XCTAssertEqualObjects(key.type, @1003);
 }
 
@@ -1113,33 +1113,33 @@
     MSIDAADV2Oauth2Factory *factory = [MSIDAADV2Oauth2Factory new];
     MSIDTokenResponse *response = [self aadTestFociTokenResponse];
     MSIDConfiguration *configuration = [self aadTestConfiguration];
-    
+
     MSIDAppMetadataCacheItem *appMetadata = [factory appMetadataFromResponse:response configuration:configuration];
-    
+
     // 1. Verify payload compliance
     NSDictionary *expectedJSON = @{
                                    @"client_id": @"b6c69a37-df96-4db0-9088-2ab96e1d8215",
                                    @"environment": @"login.microsoftonline.com",
                                    @"family_id": @"1"
                                    };
-    
+
     XCTAssertEqualObjects(appMetadata.jsonDictionary, expectedJSON);
-    
+
     // 2. Verify cache key
     MSIDAppMetadataCacheKey *key = [[MSIDAppMetadataCacheKey alloc] initWithClientId:appMetadata.clientId
                                                                          environment:appMetadata.environment
                                                                             familyId:appMetadata.familyId
                                                                          generalType:MSIDAppMetadataType];
-    
+
     NSString *expectedServiceKey = @"appmetadata-b6c69a37-df96-4db0-9088-2ab96e1d8215";
     XCTAssertEqualObjects(key.service, expectedServiceKey);
-    
+
     NSString *expectedAccountKey = @"login.microsoftonline.com";
     XCTAssertEqualObjects(key.account, expectedAccountKey);
-    
+
     NSString *expectedGenericKey = @"1";
     XCTAssertEqualObjects(key.generic, [expectedGenericKey dataUsingEncoding:NSUTF8StringEncoding]);
-    
+
     XCTAssertEqualObjects(key.type, @3001);
 }
 @end

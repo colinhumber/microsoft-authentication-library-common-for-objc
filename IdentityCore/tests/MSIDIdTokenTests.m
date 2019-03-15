@@ -39,7 +39,7 @@
 {
     MSIDIdToken *token = [self createToken];
     MSIDIdToken *tokenCopy = [token copy];
-    
+
     XCTAssertEqualObjects(tokenCopy, token);
 }
 
@@ -49,7 +49,7 @@
 {
     MSIDIdToken *lhs = [self createToken];
     MSIDIdToken *rhs = [self createToken];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -61,7 +61,7 @@
     [lhs setValue:@"token 1" forKey:@"rawIdToken"];
     MSIDIdToken *rhs = [MSIDIdToken new];
     [rhs setValue:@"token 2" forKey:@"rawIdToken"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -71,7 +71,7 @@
     [lhs setValue:@"token 1" forKey:@"rawIdToken"];
     MSIDIdToken *rhs = [MSIDIdToken new];
     [rhs setValue:@"token 1" forKey:@"rawIdToken"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -87,7 +87,7 @@
 {
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDRefreshTokenType;
-    
+
     MSIDIdToken *token = [[MSIDIdToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -101,7 +101,7 @@
     cacheItem.additionalInfo = @{@"test": @"test2"};
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
-    
+
     MSIDIdToken *token = [[MSIDIdToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -116,7 +116,7 @@
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     cacheItem.secret = @"id token";
-    
+
     MSIDIdToken *token = [[MSIDIdToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNotNil(token);
     XCTAssertEqualObjects(token.authority, [@"https://login.microsoftonline.com/contoso.com" authority]);
@@ -124,7 +124,7 @@
     XCTAssertEqualObjects(token.additionalServerInfo, @{@"test": @"test2"});
     XCTAssertEqualObjects(token.accountIdentifier.homeAccountId, @"uid.utid");
     XCTAssertEqualObjects(token.rawIdToken, @"id token");
-    
+
     MSIDCredentialCacheItem *newCacheItem = [token tokenCacheItem];
     XCTAssertEqualObjects(cacheItem, newCacheItem);
 }

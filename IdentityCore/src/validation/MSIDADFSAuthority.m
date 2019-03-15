@@ -38,7 +38,7 @@
         _url = [self.class normalizedAuthorityUrl:url context:context error:error];
         if (!_url) return nil;
     }
-    
+
     return self;
 }
 
@@ -47,13 +47,13 @@
                          error:(NSError **)error
 {
     if (![super isAuthorityFormatValid:url context:context error:error]) return NO;
-    
+
     BOOL isAdfs = NO;
     if (url.pathComponents.count >= 2)
     {
         isAdfs = [[url.pathComponents[1] lowercaseString] isEqualToString:@"adfs"];
     }
-    
+
     if (!isAdfs)
     {
         if (error)
@@ -62,7 +62,7 @@
         }
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -93,9 +93,9 @@
     {
         return nil;
     }
-   
+
     return [NSURL URLWithString:[NSString stringWithFormat:@"https://%@/%@", [url msidHostWithPortIfNecessary], url.pathComponents[1]]];
-    
+
     return url;
 }
 

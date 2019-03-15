@@ -37,7 +37,7 @@ static NSString *s_webAuthDidReceiveResponseFromBrokerNotificationName;
     s_webAuthDidFailNotificationName = webAuthDidFailNotificationName;
 }
 + (NSString *)webAuthDidFailNotificationName { return s_webAuthDidFailNotificationName; }
-                                             
+
 + (void)setWebAuthDidCompleteNotificationName:(NSString *)webAuthDidCompleteNotificationName
 {
     s_webAuthDidCompleteNotificationName = webAuthDidCompleteNotificationName;
@@ -109,7 +109,7 @@ static NSString *s_webAuthDidReceiveResponseFromBrokerNotificationName;
                                                             object:self
                                                           userInfo:url ? @{ @"url" : url } : nil];
     }
-    
+
 }
 
 + (void)notifyWebAuthWillSwitchToBroker

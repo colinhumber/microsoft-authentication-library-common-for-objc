@@ -52,7 +52,7 @@
                           context:(id<MSIDRequestContext>)context
 {
     self.networkUrlForAuthorityInvokedCount++;
-    
+
     return [super networkUrlForAuthority:authority context:context];
 }
 
@@ -60,14 +60,14 @@
                         context:(id<MSIDRequestContext>)context
 {
     self.cacheUrlForAuthorityInvokedCount++;
-    
+
     return [super cacheUrlForAuthority:authority context:context];
 }
 
 - (NSArray<NSURL *> *)cacheAliasesForAuthority:(MSIDAADAuthority *)authority
 {
     self.cacheAliasesForAuthorityInvokedCount++;
-    
+
     return [super cacheAliasesForAuthority:authority];
 }
 
@@ -89,7 +89,7 @@
 - (void)tearDown
 {
     [super tearDown];
-    
+
     [[MSIDAadAuthorityCache sharedInstance] removeAllObjects];
     [self setUpEnrollmentIdsCache:YES];
 }
@@ -100,9 +100,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/8eaef023-2b34-4da1-9baa-8bc8c9d6a490"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNotNil(authority);
     XCTAssertNil(error);
     XCTAssertEqual(authority.tenant.type, MSIDAADTenantTypeIdentifier);
@@ -113,9 +113,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/contoso.onmicrosoft.com"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNotNil(authority);
     XCTAssertNil(error);
     XCTAssertEqual(authority.tenant.type, MSIDAADTenantTypeIdentifier);
@@ -126,9 +126,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/common"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNotNil(authority);
     XCTAssertNil(error);
     XCTAssertEqual(authority.tenant.type, MSIDAADTenantTypeCommon);
@@ -139,9 +139,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/consumers"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNotNil(authority);
     XCTAssertNil(error);
     XCTAssertEqual(authority.tenant.type, MSIDAADTenantTypeConsumers);
@@ -152,9 +152,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/organizations"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNotNil(authority);
     XCTAssertNil(error);
     XCTAssertEqual(authority.tenant.type, MSIDAADTenantTypeOrganizations);
@@ -165,9 +165,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"authority must have AAD tenant.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -177,9 +177,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com/adfs"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Trying to initialize AAD authority with ADFS authority url.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -189,9 +189,9 @@
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://contoso.com/tfp/tenant/policy"];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"Trying to initialize AAD authority with B2C authority url.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -201,9 +201,9 @@
 {
     NSURL *authorityUrl = nil;
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertNil(authority);
     XCTAssertNotNil(error);
     XCTAssertEqualObjects(@"'authority' is a required parameter and must not be nil or empty.", error.userInfo[MSIDErrorDescriptionKey]);
@@ -213,7 +213,7 @@
 {
     __auto_type authorityUrl = [@"https://login.microsoftonline.com/common/qwe" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
 
     XCTAssertEqualObjects(authority.url, [@"https://login.microsoftonline.com/common" msidUrl]);
@@ -235,9 +235,9 @@
 {
     __auto_type authorityUrl = [@"https://login.microsoftonline.com/common" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertEqualObjects(authority.environment, @"login.microsoftonline.com");
     XCTAssertNil(error);
 }
@@ -246,9 +246,9 @@
 {
     __auto_type authorityUrl = [@"https://login.microsoftonline.com:8080/common" msidUrl];
     NSError *error;
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:&error];
-    
+
     XCTAssertEqualObjects(authority.environment, @"login.microsoftonline.com:8080");
     XCTAssertNil(error);
 }
@@ -306,36 +306,36 @@
 - (void)testUniversalAuthorityURL_whenTenantedAADAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/contoso.com"];
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority universalAuthorityURL]);
 }
 
 - (void)testUniversalAuthorityURL_whenCommonAADAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/common"];
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority universalAuthorityURL]);
 }
 
 - (void)testUniversalAuthorityURL_whenConsumersAADAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/consumers"];
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, [authority universalAuthorityURL]);
 }
 
 - (void)testUniversalAuthorityURL_whenOrganizationsAADAuhority_shouldReturnOriginalAuthority
 {
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/organizations"];
-    
+
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     XCTAssertEqualObjects([NSURL URLWithString:@"https://login.microsoftonline.com/common"], [authority universalAuthorityURL]);
 }
 
@@ -347,9 +347,9 @@
     __auto_type cacheMock = [MSIDAADAuthorityCacheMock new];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     [authority setValue:cacheMock forKey:@"authorityCache"];
-    
+
     __auto_type url = [authority cacheUrlWithContext:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, url);
     XCTAssertEqual(cacheMock.cacheUrlForAuthorityInvokedCount, 1);
 }
@@ -360,9 +360,9 @@
     __auto_type cacheMock = [MSIDAADAuthorityCacheMock new];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     [authority setValue:cacheMock forKey:@"authorityCache"];
-    
+
     __auto_type url = [authority cacheUrlWithContext:nil];
-    
+
     XCTAssertEqualObjects(@"https://login.microsoftonline.com:8080/common", url.absoluteString);
     XCTAssertEqual(cacheMock.cacheUrlForAuthorityInvokedCount, 1);
 }
@@ -373,9 +373,9 @@
     __auto_type cacheMock = [MSIDAADAuthorityCacheMock new];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     [authority setValue:cacheMock forKey:@"authorityCache"];
-    
+
     __auto_type url = [authority cacheUrlWithContext:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, url);
     XCTAssertEqual(cacheMock.cacheUrlForAuthorityInvokedCount, 1);
 }
@@ -386,9 +386,9 @@
     __auto_type cacheMock = [MSIDAADAuthorityCacheMock new];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     [authority setValue:cacheMock forKey:@"authorityCache"];
-    
+
     __auto_type url = [authority cacheUrlWithContext:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, url);
     XCTAssertEqual(cacheMock.cacheUrlForAuthorityInvokedCount, 1);
 }
@@ -401,9 +401,9 @@
     __auto_type cacheMock = [MSIDAADAuthorityCacheMock new];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     [authority setValue:cacheMock forKey:@"authorityCache"];
-    
+
     __auto_type url = [authority networkUrlWithContext:nil];
-    
+
     XCTAssertEqualObjects(authorityUrl, url);
     XCTAssertEqual(cacheMock.networkUrlForAuthorityInvokedCount, 1);
 }
@@ -416,9 +416,9 @@
     __auto_type cacheMock = [MSIDAADAuthorityCacheMock new];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     [authority setValue:cacheMock forKey:@"authorityCache"];
-    
+
     __auto_type aliases = [authority legacyAccessTokenLookupAuthorities];
-    
+
     XCTAssertEqual(cacheMock.cacheAliasesForAuthorityInvokedCount, 1);
     XCTAssertEqualObjects(@[authorityUrl], aliases);
 }
@@ -443,11 +443,11 @@
 - (void)testEnrollmentIdForHomeAccountId_whenValidHomeAccountId_shouldReturnEnrollmentId
 {
     [self setUpEnrollmentIdsCache:NO];
-    
+
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com:8080/common"];
     MSIDAADAuthority *authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSError *error = nil;
-    
+
     XCTAssertEqual([authority enrollmentIdForHomeAccountId:@"1e4dd613-dave-4527-b50a-97aca38b57ba" legacyUserId:nil context:nil error:&error], @"64d0557f-dave-4193-b630-8491ffd3b180");
     XCTAssertNil(error);
 }
@@ -455,11 +455,11 @@
 - (void)testEnrollmentIdForHomeAccountId_whenNilHomeAccountIdAndValidUserId_shouldReturnEnrollmentId
 {
     [self setUpEnrollmentIdsCache:NO];
-    
+
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com:8080/common"];
     MSIDAADAuthority *authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSError *error = nil;
-    
+
     XCTAssertEqual([authority enrollmentIdForHomeAccountId:nil legacyUserId:@"dave@contoso.com" context:nil error:&error], @"64d0557f-dave-4193-b630-8491ffd3b180");
     XCTAssertNil(error);
 }
@@ -467,11 +467,11 @@
 - (void)testEnrollmentIdForHomeAccountId_whenUnenrolledHomeAccountIdAndUserId_shouldReturnFirstEnrollmentId
 {
     [self setUpEnrollmentIdsCache:NO];
-    
+
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com:8080/common"];
     MSIDAADAuthority *authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSError *error = nil;
-    
+
     XCTAssertEqual([authority enrollmentIdForHomeAccountId:@"homeAccountId" legacyUserId:@"user@contoso.com" context:nil error:&error], @"adf79e3f-mike-454d-9f0f-2299e76dbfd5");
     XCTAssertNil(error);
 }
@@ -479,11 +479,11 @@
 - (void)testEnrollmentIdForHomeAccountId_whenNilHomeAccountIdAndUserId_shouldReturnFirstEnrollmentId
 {
     [self setUpEnrollmentIdsCache:NO];
-    
+
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com:8080/common"];
     MSIDAADAuthority *authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSError* error = nil;
-    
+
     XCTAssertEqual([authority enrollmentIdForHomeAccountId:nil legacyUserId:nil context:nil error:&error], @"adf79e3f-mike-454d-9f0f-2299e76dbfd5");
     XCTAssertNil(error);
 }
@@ -495,31 +495,31 @@
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/common"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.us/common"];
     authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.chinacloudapi.cn/common"];
     authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.partner.microsoftonline.cn/common"];
     authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.de/common"];
     authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.microsoftonline.com/common"];
     authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login-us.microsoftonline.com/common"];
     authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://login.usgovcloudapi.net/common"];
     authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertTrue([authority isKnown]);
@@ -530,7 +530,7 @@
     NSURL *authorityUrl = [[NSURL alloc] initWithString:@"https://some.net/common"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertFalse([authority isKnown]);
-    
+
     authorityUrl = [[NSURL alloc] initWithString:@"https://example.com/common"];
     authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     XCTAssertFalse([authority isKnown]);
@@ -541,14 +541,14 @@
 - (void)testLegacyAccessTokenLookupAuthorities_whenAuthorityProvided_shouldReturnAllAliases
 {
     [self setupAADAuthorityCache];
-    
+
     __auto_type authority = [@"https://login.microsoftonline.com/contoso.com" authority];
     NSArray *expectedAliases = @[[NSURL URLWithString:@"https://login.windows.net/contoso.com"],
                                  [NSURL URLWithString:@"https://login.microsoftonline.com/contoso.com"],
                                  [NSURL URLWithString:@"https://login.microsoft.com/contoso.com"]];
-    
+
     NSArray *aliases = [authority legacyAccessTokenLookupAuthorities];
-    
+
     XCTAssertEqualObjects(aliases, expectedAliases);
 }
 
@@ -571,7 +571,7 @@
 - (void)testLegacyRefreshTokenLookupAliases_whenAuthorityIsNotConsumers_shouldReturnAliases
 {
     [self setupAADAuthorityCache];
-    
+
     __auto_type authority = [@"https://login.microsoftonline.com/contoso.com" authority];
     NSArray *expectedAliases = @[[NSURL URLWithString:@"https://login.windows.net/contoso.com"],
                                  [NSURL URLWithString:@"https://login.microsoftonline.com/contoso.com"],
@@ -579,44 +579,44 @@
                                  [NSURL URLWithString:@"https://login.windows.net/common"],
                                  [NSURL URLWithString:@"https://login.microsoftonline.com/common"],
                                  [NSURL URLWithString:@"https://login.microsoft.com/common"]];
-    
+
     NSArray *aliases = [authority legacyRefreshTokenLookupAliases];
-    
+
     XCTAssertEqualObjects(aliases, expectedAliases);
 }
 
 - (void)testLegacyRefreshTokenLookupAliases_whenAuthorityIsOrganizations_shouldReturnAliases
 {
     [self setupAADAuthorityCache];
-    
+
     __auto_type authority = [@"https://login.microsoftonline.com/organizations" authority];
     NSArray *expectedAliases = @[[NSURL URLWithString:@"https://login.windows.net/common"],
                                  [NSURL URLWithString:@"https://login.microsoftonline.com/common"],
                                  [NSURL URLWithString:@"https://login.microsoft.com/common"]];
-    
+
     NSArray *aliases = [authority legacyRefreshTokenLookupAliases];
-    
+
     XCTAssertEqualObjects(aliases, expectedAliases);
 }
 
 - (void)testLegacyCacheRefreshTokenLookupAliases_whenAuthorityIsCommon_shouldReturnAliases
 {
     [self setupAADAuthorityCache];
-    
+
     __auto_type authority = [@"https://login.microsoftonline.com/common" authority];
     NSArray *expectedAliases = @[[NSURL URLWithString:@"https://login.windows.net/common"],
                                  [NSURL URLWithString:@"https://login.microsoftonline.com/common"],
                                  [NSURL URLWithString:@"https://login.microsoft.com/common"]];
-    
+
     NSArray *aliases = [authority legacyRefreshTokenLookupAliases];
-    
+
     XCTAssertEqualObjects(aliases, expectedAliases);
 }
 
 - (void)testLegacyCacheRefreshTokenLookupAliases_whenAuthorityIsTenanted_shouldReturnAliases
 {
     [self setupAADAuthorityCache];
-    
+
     __auto_type authority = [@"https://login.microsoftonline.com/contoso.com" authority];
     NSArray *expectedAliases = @[[NSURL URLWithString:@"https://login.windows.net/contoso.com"],
                                  [NSURL URLWithString:@"https://login.microsoftonline.com/contoso.com"],
@@ -624,21 +624,21 @@
                                  [NSURL URLWithString:@"https://login.windows.net/common"],
                                  [NSURL URLWithString:@"https://login.microsoftonline.com/common"],
                                  [NSURL URLWithString:@"https://login.microsoft.com/common"]];
-    
+
     NSArray *aliases = [authority legacyRefreshTokenLookupAliases];
-    
+
     XCTAssertEqualObjects(aliases, expectedAliases);
 }
 
 - (void)testLegacyRefreshTokenLookupAliases_whenAuthorityIsConsumers_shouldReturnEmptyAliases
 {
     [self setupAADAuthorityCache];
-    
+
     __auto_type authority = [@"https://login.microsoftonline.com/consumers" authority];
     NSArray *expectedAliases = @[];
-    
+
     NSArray *aliases = [authority legacyRefreshTokenLookupAliases];
-    
+
     XCTAssertEqualObjects(aliases, expectedAliases);
 }
 
@@ -650,7 +650,7 @@
     authority.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
     authority.metadata = [MSIDOpenIdProviderMetadata new];
     MSIDAADAuthority *authorityCopy = [authority copy];
-    
+
     XCTAssertEqualObjects(authority, authorityCopy);
 }
 
@@ -659,11 +659,11 @@
 - (void)testisEqual_whenAllPropertiesAreEqual_shouldReturnTrue
 {
     __auto_type metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     MSIDAADAuthority *lhs = (MSIDAADAuthority *)[@"https://login.microsoftonline.com/common" authority];
     lhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
     lhs.metadata = metadata;
-    
+
     MSIDAADAuthority *rhs = (MSIDAADAuthority *)[@"https://login.microsoftonline.com/common" authority];
     rhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
     rhs.metadata = metadata;
@@ -675,10 +675,10 @@
 {
     MSIDAADAuthority *lhs = (MSIDAADAuthority *)[@"https://login.microsoftonline.com/common" authority];
     lhs.openIdConfigurationEndpoint = [@"https://example.com" msidUrl];
-    
+
     MSIDAADAuthority *rhs = (MSIDAADAuthority *)[@"https://login.microsoftonline.com/common" authority];
     rhs.openIdConfigurationEndpoint = [@"https://example.com/qwe" msidUrl];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -686,10 +686,10 @@
 {
     MSIDAADAuthority *lhs = (MSIDAADAuthority *)[@"https://login.microsoftonline.com/common" authority];
     lhs.metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     MSIDAADAuthority *rhs = (MSIDAADAuthority *)[@"https://login.microsoftonline.com/common" authority];
     rhs.metadata = [MSIDOpenIdProviderMetadata new];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -709,7 +709,7 @@
 - (void)setUpEnrollmentIdsCache:(BOOL)isEmpty
 {
     NSDictionary *emptyDict = @{};
-    
+
     NSDictionary *dict = @{MSID_INTUNE_ENROLLMENT_ID_KEY: @{@"enrollment_ids": @[@{
                                                                                      @"tid" : @"fda5d5d9-17c3-4c29-9cf9-a27c3d3f03e1",
                                                                                      @"oid" : @"d3444455-mike-4271-b6ea-e499cc0cab46",
@@ -725,7 +725,7 @@
                                                                                      @"enrollment_id" : @"64d0557f-dave-4193-b630-8491ffd3b180"
                                                                                      }
                                                                                  ]}};
-    
+
     MSIDCache *msidCache = [[MSIDCache alloc] initWithDictionary:isEmpty ? emptyDict : dict];
     MSIDIntuneInMemoryCacheDataSource *memoryCache = [[MSIDIntuneInMemoryCacheDataSource alloc] initWithCache:msidCache];
     MSIDIntuneEnrollmentIdsCache *enrollmentIdsCache = [[MSIDIntuneEnrollmentIdsCache alloc] initWithDataSource:memoryCache];

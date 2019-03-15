@@ -29,28 +29,28 @@
 - (NSError *)msidErrorWithFilteringOptions:(MSIDErrorFilteringOptions)option
 {
     NSMutableDictionary *errorUserInfo = [self.userInfo mutableCopy];
-    
+
     if (option & MSIDErrorFilteringOptionRemoveUrlParameters)
     {
         // Don't put raw url in NSError because it can contain sensitive data.
         NSURL *failedUrl = errorUserInfo[NSURLErrorFailingURLErrorKey];
         [errorUserInfo removeObjectForKey:NSURLErrorFailingURLErrorKey];
         [errorUserInfo removeObjectForKey:NSURLErrorFailingURLStringErrorKey];
-        
+
         if (failedUrl)
         {
             // Remove parameters from failed url.
             NSURLComponents *components = [NSURLComponents componentsWithURL:failedUrl resolvingAgainstBaseURL:YES];
             components.queryItems = nil;
             failedUrl = components.URL;
-            
+
             errorUserInfo[NSURLErrorFailingURLErrorKey] = failedUrl;
             errorUserInfo[NSURLErrorFailingURLStringErrorKey] = failedUrl.absoluteString;
         }
     }
-    
+
     __auto_type error = [[NSError alloc] initWithDomain:self.domain code:self.code userInfo:errorUserInfo];
-    
+
     return error;
 }
 

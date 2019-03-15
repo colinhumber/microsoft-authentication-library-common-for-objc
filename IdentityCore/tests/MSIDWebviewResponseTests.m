@@ -44,7 +44,7 @@
 {
     NSError *error = nil;
     MSIDWebviewResponse *response = [[MSIDWebviewResponse alloc] initWithURL:nil context:nil error:&error];
-    
+
     XCTAssertNil(response);
     XCTAssertNotNil(error);
     XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
@@ -54,16 +54,16 @@
 {
     NSError *error = nil;
     NSURL *url = [NSURL URLWithString:@"https://contoso.com?key1=val1&key2=val2"];
-    
+
     MSIDWebviewResponse *response = [[MSIDWebviewResponse alloc] initWithURL:url
                                                                      context:nil
                                                                        error:&error];
-    
+
     XCTAssertNotNil(response);
     XCTAssertTrue(response.parameters.allKeys.count == 2);
     XCTAssertEqualObjects(response.parameters[@"key1"], @"val1");
     XCTAssertEqualObjects(response.parameters[@"key2"], @"val2");
-    
+
     XCTAssertEqualObjects(response.url, url);
 }
 

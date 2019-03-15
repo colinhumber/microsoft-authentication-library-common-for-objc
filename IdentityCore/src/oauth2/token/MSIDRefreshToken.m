@@ -45,12 +45,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:MSIDRefreshToken.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDRefreshToken *)object];
 }
 
@@ -68,7 +68,7 @@
     {
         return NO;
     }
-    
+
     BOOL result = [super isEqualToItem:token];
     result &= (!self.refreshToken && !token.refreshToken) || [self.refreshToken isEqualToString:token.refreshToken];
     result &= (!self.familyId && !token.familyId) || [self.familyId isEqualToString:token.familyId];
@@ -80,20 +80,20 @@
 - (instancetype)initWithTokenCacheItem:(MSIDCredentialCacheItem *)tokenCacheItem
 {
     self = [super initWithTokenCacheItem:tokenCacheItem];
-    
+
     if (self)
     {
         _refreshToken = tokenCacheItem.secret;
-        
+
         if (!_refreshToken)
         {
             MSID_LOG_ERROR(nil, @"Trying to initialize refresh token when missing refresh token field");
             return nil;
         }
-        
+
         _familyId = tokenCacheItem.familyId;
     }
-    
+
     return self;
 }
 

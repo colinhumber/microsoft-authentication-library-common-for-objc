@@ -50,14 +50,14 @@
     NSString *state = [self generateStateValue];
     NSURL *startURL = [self startURLFromConfiguration:configuration requestState:state];
     NSURL *redirectURL = [NSURL URLWithString:configuration.redirectUri];
-    
+
     MSIDOAuth2EmbeddedWebviewController *embeddedWebviewController
     = [[MSIDOAuth2EmbeddedWebviewController alloc] initWithStartURL:startURL
                                                              endURL:redirectURL
                                                             webview:webview
                                                       customHeaders:configuration.customHeaders
                                                             context:context];
-    
+
 #if TARGET_OS_IPHONE
     embeddedWebviewController.parentController = configuration.parentController;
     embeddedWebviewController.presentationType = configuration.presentationType;
@@ -67,7 +67,7 @@
                                                                                 factory:self
                                                                            requestState:state
                                                                      ignoreInvalidState:configuration.ignoreInvalidState];
-                                   
+
     return session;
 }
 
@@ -83,14 +83,14 @@
     NSString *state = [self generateStateValue];
     NSURL *startURL = [self startURLFromConfiguration:configuration requestState:state];
     NSURL *redirectURL = [NSURL URLWithString:configuration.redirectUri];
-    
+
     MSIDSystemWebviewController *systemWVC = [[MSIDSystemWebviewController alloc] initWithStartURL:startURL
                                                                                  callbackURLScheme:redirectURL.scheme
                                                                                   parentController:configuration.parentController
                                                                           useAuthenticationSession:useAuthenticationSession
                                                                          allowSafariViewController:allowSafariViewController
                                                                                            context:context];
-    
+
     MSIDWebviewSession *session = [[MSIDWebviewSession alloc] initWithWebviewController:systemWVC
                                                                                 factory:self
                                                                            requestState:state
@@ -111,13 +111,13 @@
     parameters[MSID_OAUTH2_RESPONSE_TYPE] = MSID_OAUTH2_CODE;
     parameters[MSID_OAUTH2_REDIRECT_URI] = configuration.redirectUri;
     parameters[MSID_OAUTH2_LOGIN_HINT] = configuration.loginHint;
-    
+
     // Extra query params
     if (configuration.extraQueryParameters)
     {
         [parameters addEntriesFromDictionary:configuration.extraQueryParameters];
     }
-    
+
     // PKCE
     if (configuration.pkce)
     {
@@ -127,7 +127,7 @@
 
     // State
     parameters[MSID_OAUTH2_STATE] = state.msidBase64UrlEncode;
-    
+
     return parameters;
 }
 
@@ -135,14 +135,14 @@
 {
     if (!configuration) return nil;
     if (configuration.explicitStartURL) return configuration.explicitStartURL;
-    
+
     if (!configuration.authorizationEndpoint) return nil;
-    
+
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:configuration.authorizationEndpoint resolvingAgainstBaseURL:NO];
     NSDictionary *parameters = [self authorizationParametersFromConfiguration:configuration requestState:state];
-    
+
     urlComponents.percentEncodedQuery = [parameters msidURLEncode];
-    
+
     return urlComponents.URL;
 }
 
@@ -165,7 +165,7 @@
         if (error)  *error = responseCreationError;
         return nil;
     }
-    
+
     return response;
 }
 

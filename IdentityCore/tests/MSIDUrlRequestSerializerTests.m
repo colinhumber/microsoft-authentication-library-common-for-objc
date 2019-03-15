@@ -35,7 +35,7 @@
 - (void)setUp
 {
     [super setUp];
-    
+
     self.urlRequestSerializer = [MSIDUrlRequestSerializer new];
 }
 
@@ -51,9 +51,9 @@
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:baseUrl];
     urlRequest.HTTPMethod = @"POST";;
     __auto_type expectedBody = [[parameters msidWWWFormURLEncode] dataUsingEncoding:NSUTF8StringEncoding];
-    
+
     __auto_type newUrlRequest = [self.urlRequestSerializer serializeWithRequest:urlRequest parameters:parameters];
-    
+
     XCTAssertEqualObjects(expectedBody, newUrlRequest.HTTPBody);
     XCTAssertEqualObjects(baseUrl, newUrlRequest.URL);
     __auto_type headers = newUrlRequest.allHTTPHeaderFields;
@@ -66,9 +66,9 @@
     __auto_type parameters = @{@"p1" : @"v1", @"p2" : @"v2"};
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:baseUrl];
     urlRequest.HTTPMethod = @"GET";;
-    
+
     __auto_type newUrlRequest = [self.urlRequestSerializer serializeWithRequest:urlRequest parameters:parameters];
-    
+
     XCTAssertNil(newUrlRequest.HTTPBody);
     XCTAssertEqualObjects(@"https://fake.url?p2=v2&p1=v1", newUrlRequest.URL.absoluteString);
 }

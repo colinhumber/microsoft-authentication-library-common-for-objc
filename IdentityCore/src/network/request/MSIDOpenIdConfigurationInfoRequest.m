@@ -35,24 +35,24 @@
     if (self)
     {
         NSParameterAssert(endpoint);
-        
+
         _context = context;
-        
+
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest new];
         urlRequest.URL = endpoint;
         urlRequest.HTTPMethod = @"GET";
         _urlRequest = urlRequest;
-        
+
         _context = context;
-        
+
         __auto_type requestConfigurator = [MSIDAADRequestConfigurator new];
         [requestConfigurator configure:self];
-        
+
         __auto_type responseSerializer = [MSIDAADOpenIdConfigurationInfoResponseSerializer new];
         responseSerializer.endpoint = endpoint;
         _responseSerializer = responseSerializer;
     }
-    
+
     return self;
 }
 

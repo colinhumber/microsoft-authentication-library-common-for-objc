@@ -35,7 +35,7 @@ static NSSet<NSString *> *s_trustedHostList;
     if (self == [MSIDAADNetworkConfiguration self])
     {
         s_defaultConfiguration = [MSIDAADNetworkConfiguration new];
-        
+
         s_trustedHostList = [NSSet setWithObjects:MSIDTrustedAuthority,
                              MSIDTrustedAuthorityUS,
                              MSIDTrustedAuthorityChina,
@@ -56,7 +56,7 @@ static NSSet<NSString *> *s_trustedHostList;
         _aadAuthorityDiscoveryApiVersion = @"1.1";
         _drsDiscoveryApiVersion = @"1.0";
     }
-    
+
     return self;
 }
 
@@ -73,7 +73,7 @@ static NSSet<NSString *> *s_trustedHostList;
 - (BOOL)isAADPublicCloud:(NSString *)host
 {
     if (!host) return NO;
-    
+
     return [s_trustedHostList containsObject:host];
 }
 

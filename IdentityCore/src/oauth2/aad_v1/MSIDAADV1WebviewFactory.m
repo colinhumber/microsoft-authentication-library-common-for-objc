@@ -31,9 +31,9 @@
 {
     NSMutableDictionary<NSString *, NSString *> *parameters = [super authorizationParametersFromConfiguration:configuration
                                                                                                  requestState:state];
-    
+
     parameters[MSID_OAUTH2_RESOURCE] = configuration.resource;
-    
+
     return parameters;
 }
 

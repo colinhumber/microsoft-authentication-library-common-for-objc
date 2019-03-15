@@ -29,15 +29,15 @@
 - (NSURLRequest *)serializeWithRequest:(NSURLRequest *)request parameters:(NSDictionary *)parameters
 {
     NSParameterAssert(request);
-    
+
     if (!parameters) return request;
-    
+
     NSMutableURLRequest *mutableRequest = [request mutableCopy];
-    
+
     if ([self shouldEncodeParametersInURL:request])
     {
         NSAssert(mutableRequest.URL, NULL);
-        
+
         NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:mutableRequest.URL resolvingAgainstBaseURL:NO];
         NSMutableDictionary *urlParameters = [[mutableRequest.URL msidQueryParameters] mutableCopy] ?: [NSMutableDictionary new];
         [urlParameters addEntriesFromDictionary:parameters];
@@ -49,7 +49,7 @@
         mutableRequest.HTTPBody = [[parameters msidWWWFormURLEncode] dataUsingEncoding:NSUTF8StringEncoding];
         [mutableRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     }
-    
+
     return mutableRequest;
 }
 
@@ -58,7 +58,7 @@
 - (BOOL)shouldEncodeParametersInURL:(NSURLRequest *)request
 {
     __auto_type urlMethods = @[@"GET", @"HEAD", @"DELETE"];
-    
+
     return [urlMethods containsObject:request.HTTPMethod.uppercaseString];
 }
 

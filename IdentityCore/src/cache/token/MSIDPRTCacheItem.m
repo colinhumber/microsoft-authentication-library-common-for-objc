@@ -38,7 +38,7 @@
 - (void)encodeWithCoder:(NSCoder *)coder
 {
     [super encodeWithCoder:coder];
-    
+
     [coder encodeObject:self.sessionKey forKey:@"sessionKey"];
 }
 
@@ -61,24 +61,24 @@
     {
         return nil;
     }
-    
+
     if (json[MSID_SESSION_KEY_CACHE_KEY])
     {
         _sessionKey = [NSData msidDataFromBase64UrlEncodedString:json[MSID_SESSION_KEY_CACHE_KEY]];
     }
-    
+
     return self;
 }
 
 - (NSDictionary *)jsonDictionary
 {
     NSMutableDictionary *dictionary = [[super jsonDictionary] mutableCopy];
-    
+
     if (!dictionary)
     {
         dictionary = [NSMutableDictionary new];
     }
-    
+
     dictionary[MSID_SESSION_KEY_CACHE_KEY] = [self.sessionKey msidBase64UrlEncodedString];
     return dictionary;
 }
@@ -91,12 +91,12 @@
     {
         return YES;
     }
-    
+
     if (![object isKindOfClass:self.class])
     {
         return NO;
     }
-    
+
     return [self isEqualToItem:(MSIDPRTCacheItem *)object];
 }
 

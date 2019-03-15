@@ -35,15 +35,15 @@
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     self = [super init];
-    
+
     if (self)
     {
         NSString *queueName = [NSString stringWithFormat:@"com.microsoft.msidcache-%@", [NSUUID UUID].UUIDString];
         _synchronizationQueue = dispatch_queue_create([queueName cStringUsingEncoding:NSASCIIStringEncoding], DISPATCH_QUEUE_CONCURRENT);
-        
+
         _container = dictionary ? [dictionary mutableCopy] : [NSMutableDictionary new];
     }
-    
+
     return self;
 }
 
@@ -58,7 +58,7 @@
     dispatch_sync(self.synchronizationQueue, ^{
         object = self.container[key];
     });
-    
+
     return object;
 }
 
@@ -89,7 +89,7 @@
     dispatch_sync(self.synchronizationQueue, ^{
         dictionary = [self.container copy];
     });
-    
+
     return dictionary;
 }
 
@@ -99,7 +99,7 @@
     dispatch_sync(self.synchronizationQueue, ^{
         count = self.container.allKeys.count;
     });
-    
+
     return count;
 }
 
@@ -109,7 +109,7 @@
 {
     MSIDCache *item = [[self.class allocWithZone:zone] init];
     item->_container = [_container copyWithZone:zone];
-    
+
     return item;
 }
 

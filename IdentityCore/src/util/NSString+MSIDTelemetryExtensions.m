@@ -48,11 +48,11 @@
     NSMutableDictionary *telemetryDict = [NSMutableDictionary dictionary];
 
     MSID_LOG_VERBOSE(nil, @"Parsing telemetry header: %@", self);
-    
+
     if (![NSString msidIsStringNilOrBlank:self])
     {
         NSArray *telemetryComponents = [self componentsSeparatedByString:@","];
-        
+
         // Check that there're at least 5 components, as required by version 1 and 2
         if ([telemetryComponents count] >= 5)
         {
@@ -67,7 +67,7 @@
             MSID_LOG_WARN(nil, @"Received unsupported telemetry header. Telemetry version = %@", telemetryComponents[0]);
         }
     }
-    
+
     return telemetryDict;
 }
 

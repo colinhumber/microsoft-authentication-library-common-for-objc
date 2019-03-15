@@ -49,7 +49,7 @@
                                                                                    @"ADBrokerPRTCacheItem" : MSIDPRTCacheItem.class
                                                                                    }];
     }
-    
+
     return self;
 }
 
@@ -61,9 +61,9 @@
     {
         return nil;
     }
-    
+
     NSMutableData *data = [NSMutableData data];
-    
+
     // In order to customize the archiving process Apple recommends to create an instance of the archiver and
     // customize it (instead of using share NSKeyedArchiver).
     // See here: https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Archiving/Articles/creating.html
@@ -75,7 +75,7 @@
     }
     [archiver encodeObject:item forKey:NSKeyedArchiveRootObjectKey];
     [archiver finishEncoding];
-    
+
     return data;
 }
 
@@ -85,7 +85,7 @@
     {
         return nil;
     }
-    
+
     NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
     // Maintain backward compatibility with ADAL.
     [unarchiver setClass:className forClassName:@"ADTokenCacheStoreItem"];
@@ -93,10 +93,10 @@
     {
         [unarchiver setClass:_defaultDecodeClassMap[defaultClassName] forClassName:defaultClassName];
     }
-    
+
     MSIDLegacyTokenCacheItem *token = [unarchiver decodeObjectOfClass:className forKey:NSKeyedArchiveRootObjectKey];
     [unarchiver finishDecoding];
-    
+
     return token;
 }
 
@@ -116,14 +116,14 @@
 - (MSIDCredentialCacheItem *)deserializeCredentialCacheItem:(NSData *)data
 {
     MSIDLegacyTokenCacheItem *item = [self deserialize:data className:MSIDLegacyTokenCacheItem.class];
-    
+
     // Because theoretically any item data can be passed in here for deserialization,
     // we need to ensure that the correct item got deserialized
     if ([item isKindOfClass:[MSIDLegacyTokenCacheItem class]])
     {
         return (MSIDLegacyTokenCacheItem *) item;
     }
-    
+
     return nil;
 }
 
@@ -132,14 +132,14 @@
 - (void)addEncodeClassMapping:(NSDictionary *)classMap
 {
     if (!classMap) return;
-    
+
     [_defaultEncodeClassMap addEntriesFromDictionary:classMap];
 }
 
 - (void)addDecodeClassMapping:(NSDictionary *)classMap
 {
     if (!classMap) return;
-    
+
     [_defaultDecodeClassMap addEntriesFromDictionary:classMap];
 }
 

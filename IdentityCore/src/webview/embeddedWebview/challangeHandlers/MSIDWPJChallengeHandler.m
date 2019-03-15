@@ -34,18 +34,18 @@
 {
     // See if this is a challenge for the WPJ cert.
     NSArray<NSData*> *distinguishedNames = challenge.protectionSpace.distinguishedNames;
-    
+
     if ([self isWPJChallenge:distinguishedNames])
     {
         return [self handleWPJChallenge:challenge context:context completionHandler:completionHandler];
     }
-    
+
     return NO;
 }
 
 + (BOOL)isWPJChallenge:(NSArray *)distinguishedNames
 {
-    
+
     for (NSData *distinguishedName in distinguishedNames)
     {
         NSString *distinguishedNameString = [[[NSString alloc] initWithData:distinguishedName encoding:NSISOLatin1StringEncoding] lowercaseString];
@@ -54,7 +54,7 @@
             return YES;
         }
     }
-    
+
     return NO;
 }
 
@@ -67,7 +67,7 @@
     {
         MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"Device is not workplace joined");
         MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"Device is not workplace joined. host: %@", challenge.protectionSpace.host);
-        
+
         // In other cert auth cases we send Cancel to ensure that we continue to get
         // auth challenges, however when we do that with WPJ we don't get the subsequent
         // enroll dialog *after* the failed clientTLS challenge.
@@ -79,16 +79,16 @@
         completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
         return YES;
     }
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"Responding to WPJ cert challenge");
     MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"Responding to WPJ cert challenge. host: %@", challenge.protectionSpace.host);
-    
+
     NSURLCredential *creds = [NSURLCredential credentialWithIdentity:info.securityIdentity
                                                         certificates:@[(__bridge id)info.certificate]
                                                          persistence:NSURLCredentialPersistenceNone];
-    
+
     completionHandler(NSURLSessionAuthChallengeUseCredential, creds);
-    
+
     return YES;
 }
 

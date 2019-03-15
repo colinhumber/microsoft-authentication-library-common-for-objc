@@ -35,7 +35,7 @@
 - (void)setUp
 {
     [super setUp];
-    
+
     self.expectedUpn = @"test_upn@test_devex.com";
 #if TARGET_OS_IPHONE
     self.expectedUpn = @"dGVzdF91cG5AdGVzdF9kZXZleC5jb20";

@@ -38,9 +38,9 @@
     MSIDTelemetryUIEvent *event = [[MSIDTelemetryUIEvent alloc] initWithName:@"testEvent"
                                                                    requestId:@"requestId"
                                                                correlationId:[NSUUID UUID]];
-    
+
     [event setLoginHint:@"eric_cartman@contoso.com"];
-    
+
     XCTAssertEqualObjects([event propertyWithName:MSID_TELEMETRY_KEY_LOGIN_HINT], [[[@"eric_cartman@contoso.com" dataUsingEncoding:NSUTF8StringEncoding] msidSHA256] msidHexString]);
 }
 

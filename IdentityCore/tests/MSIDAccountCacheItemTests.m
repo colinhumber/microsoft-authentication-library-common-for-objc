@@ -50,7 +50,7 @@
     cacheItem.username = @"username";
     cacheItem.alternativeAccountId = @"alt";
     cacheItem.name = @"test user";
-    
+
     NSDictionary *expectedDictionary = @{@"authority_type": @"AAD",
                                          @"environment": DEFAULT_TEST_ENVIRONMENT,
                                          @"realm": @"contoso.com",
@@ -64,7 +64,7 @@
                                          @"alternative_account_id": @"alt",
                                          @"name": @"test user"
                                          };
-    
+
     XCTAssertEqualObjects(cacheItem.jsonDictionary, expectedDictionary);
 }
 
@@ -85,10 +85,10 @@
                                      @"alternative_account_id": @"alt",
                                      @"name": @"test user"
                                      };
-    
+
     NSError *error = nil;
     MSIDAccountCacheItem *cacheItem = [[MSIDAccountCacheItem alloc] initWithJSONDictionary:jsonDictionary error:&error];
-    
+
     XCTAssertNotNil(cacheItem);
     XCTAssertEqualObjects(cacheItem.environment, DEFAULT_TEST_ENVIRONMENT);
     XCTAssertEqualObjects(cacheItem.realm, @"contoso.com");
@@ -109,22 +109,22 @@
     MSIDAccountCacheItem *firstAccount = [MSIDAccountCacheItem new];
     firstAccount.additionalAccountFields = @{@"field1": @"value1",
                                              @"field2": @"value2"};
-    
+
     MSIDAccountCacheItem *secondAccount = [MSIDAccountCacheItem new];
     secondAccount.additionalAccountFields = @{@"field1": @"new_value",
                                               @"field3": @"value3"};
     secondAccount.accountType = MSIDAccountTypeAADV1;
-    
+
     [secondAccount updateFieldsFromAccount:firstAccount];
-    
+
     NSDictionary *jsonDictionary = [secondAccount jsonDictionary];
-    
+
     NSDictionary *expectedDictionary = @{@"field1": @"new_value",
                                          @"field2": @"value2",
                                          @"field3": @"value3",
                                          @"authority_type": @"AAD"
                                          };
-    
+
     XCTAssertEqualObjects(jsonDictionary, expectedDictionary);
 }
 
@@ -150,7 +150,7 @@
     firstAccount.alternativeAccountId = @"alternative_clientID";
     firstAccount.additionalAccountFields = @{@"test": @"test2",
                                              @"test3": @"test4"};
-    
+
     MSIDAccountCacheItem *secondAccount = [MSIDAccountCacheItem new];
     secondAccount.accountType = MSIDAccountTypeAADV1;
     secondAccount.environment = DEFAULT_TEST_ENVIRONMENT;

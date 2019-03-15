@@ -42,7 +42,7 @@
 {
     MSIDLegacySingleResourceToken *token = [self createToken];
     MSIDLegacySingleResourceToken *tokenCopy = [token copy];
-    
+
     XCTAssertEqualObjects(tokenCopy, token);
 }
 
@@ -52,7 +52,7 @@
 {
     MSIDLegacySingleResourceToken *lhs = [self createToken];
     MSIDLegacySingleResourceToken *rhs = [self createToken];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -64,7 +64,7 @@
     [lhs setValue:@"token 1" forKey:@"accessToken"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"token 2" forKey:@"accessToken"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -74,7 +74,7 @@
     [lhs setValue:@"token 1" forKey:@"accessToken"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"token 1" forKey:@"accessToken"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -84,7 +84,7 @@
     [lhs setValue:@"value 1" forKey:@"idToken"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"value 2" forKey:@"idToken"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -94,7 +94,7 @@
     [lhs setValue:@"value 1" forKey:@"idToken"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"value 1" forKey:@"idToken"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -104,7 +104,7 @@
     [lhs setValue:[NSDate dateWithTimeIntervalSince1970:1500000000] forKey:@"expiresOn"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:[NSDate dateWithTimeIntervalSince1970:2000000000] forKey:@"expiresOn"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -114,7 +114,7 @@
     [lhs setValue:[NSDate dateWithTimeIntervalSince1970:1500000000] forKey:@"expiresOn"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:[NSDate dateWithTimeIntervalSince1970:1500000000] forKey:@"expiresOn"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -124,7 +124,7 @@
     [lhs setValue:[NSDate dateWithTimeIntervalSince1970:1500000000] forKey:@"cachedAt"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:[NSDate dateWithTimeIntervalSince1970:2000000000] forKey:@"cachedAt"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -134,7 +134,7 @@
     [lhs setValue:[NSDate dateWithTimeIntervalSince1970:1500000000] forKey:@"cachedAt"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:[NSDate dateWithTimeIntervalSince1970:1500000000] forKey:@"cachedAt"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -144,7 +144,7 @@
     [lhs setValue:@"1 2" forKey:@"target"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"1 3" forKey:@"target"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -154,7 +154,7 @@
     [lhs setValue:@"1 2" forKey:@"target"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"1 2" forKey:@"target"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -164,7 +164,7 @@
     [lhs setValue:@"value 1" forKey:@"target"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"value 2" forKey:@"target"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -174,7 +174,7 @@
     [lhs setValue:@"value 1" forKey:@"target"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"value 1" forKey:@"target"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -184,7 +184,7 @@
     [lhs setValue:@"value 1" forKey:@"refreshToken"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"value 2" forKey:@"refreshToken"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -194,7 +194,7 @@
     [lhs setValue:@"value 1" forKey:@"refreshToken"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"value 1" forKey:@"refreshToken"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -204,7 +204,7 @@
     [lhs setValue:@"value 1" forKey:@"familyId"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"value 2" forKey:@"familyId"];
-    
+
     XCTAssertNotEqualObjects(lhs, rhs);
 }
 
@@ -214,7 +214,7 @@
     [lhs setValue:@"value 1" forKey:@"familyId"];
     MSIDLegacySingleResourceToken *rhs = [MSIDLegacySingleResourceToken new];
     [rhs setValue:@"value 1" forKey:@"familyId"];
-    
+
     XCTAssertEqualObjects(lhs, rhs);
 }
 
@@ -230,7 +230,7 @@
 {
     MSIDCredentialCacheItem *cacheItem = [MSIDCredentialCacheItem new];
     cacheItem.credentialType = MSIDIDTokenType;
-    
+
     MSIDLegacySingleResourceToken *token = [[MSIDLegacySingleResourceToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNil(token);
 }
@@ -245,15 +245,15 @@
     cacheItem.homeAccountId = @"uid.utid";
     cacheItem.clientId = @"client id";
     cacheItem.secret = @"token";
-    
+
     NSDate *expiresOn = [NSDate date];
     NSDate *cachedAt = [NSDate date];
-    
+
     cacheItem.expiresOn = expiresOn;
     cacheItem.cachedAt = cachedAt;
     cacheItem.target = @"target";
     cacheItem.familyId = @"1";
-    
+
     MSIDLegacySingleResourceToken *token = [[MSIDLegacySingleResourceToken alloc] initWithTokenCacheItem:cacheItem];
     XCTAssertNotNil(token);
     XCTAssertEqualObjects(token.authority.url.absoluteString, @"https://login.microsoftonline.com/common");
@@ -265,7 +265,7 @@
     XCTAssertEqualObjects(token.resource, @"target");
     XCTAssertEqualObjects(token.accessToken, @"token");
     XCTAssertEqualObjects(token.familyId, @"1");
-    
+
     MSIDCredentialCacheItem *newCacheItem = [token tokenCacheItem];
     XCTAssertEqualObjects(cacheItem, newCacheItem);
 }

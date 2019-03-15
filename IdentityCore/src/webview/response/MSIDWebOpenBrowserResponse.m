@@ -33,7 +33,7 @@
                       error:(NSError **)error
 {
     NSString *scheme = url.scheme;
-    
+
     if (!([scheme isEqualToString:@"browser"]))
     {
         if (error)
@@ -45,14 +45,14 @@
         }
         return nil;
     }
-    
+
     self = [super initWithURL:url context:context error:error];
     if (self)
     {
         _browserURL = [NSURL URLWithString:[url.absoluteString stringByReplacingOccurrencesOfString:@"browser://"
                                                                                          withString:@"https://"]];
     }
-    
+
     return self;
 }
 @end

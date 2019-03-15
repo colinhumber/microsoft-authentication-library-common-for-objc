@@ -165,18 +165,18 @@
     _enrollmentId = json[MSID_ENROLLMENT_ID_CACHE_KEY];
 
     // Additional Info
-    
+
     NSString *speInfo = json[MSID_SPE_INFO_CACHE_KEY];
     NSDate *extendedExpiresOn = [NSDate msidDateFromTimeStamp:json[MSID_EXTENDED_EXPIRES_ON_CACHE_KEY]];
     NSMutableDictionary *additionalInfo = [NSMutableDictionary dictionary];
     additionalInfo[MSID_SPE_INFO_CACHE_KEY] = speInfo;
     additionalInfo[MSID_EXTENDED_EXPIRES_ON_CACHE_KEY] = extendedExpiresOn;
-    
+
     if ([additionalInfo count])
     {
         _additionalInfo = additionalInfo;
     }
-    
+
     return self;
 }
 
@@ -214,7 +214,7 @@
     {
         return YES;
     }
-    
+
     NSOrderedSet *inputSet = [NSOrderedSet msidOrderedSetFromString:target normalize:YES];
     NSOrderedSet *tokenSet = [NSOrderedSet msidOrderedSetFromString:self.target normalize:YES];
 

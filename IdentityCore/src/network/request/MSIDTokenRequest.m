@@ -35,20 +35,20 @@
     {
         NSParameterAssert(clientId);
         NSParameterAssert(endpoint);
-        
+
         self.context = context;
-        
+
         NSMutableDictionary *parameters = [NSMutableDictionary new];
         parameters[MSID_OAUTH2_CLIENT_ID] = clientId;
         parameters[MSID_OAUTH2_SCOPE] = scope;
         _parameters = parameters;
-        
+
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest new];
         urlRequest.URL = endpoint;
         urlRequest.HTTPMethod = @"POST";
         _urlRequest = urlRequest;
     }
-    
+
     return self;
 }
 

@@ -49,7 +49,7 @@
 /*!
  Returns an array of authority URLs for the provided URL, in the order that cache lookups
  should be attempted.
- 
+
  @param  authority   The authority the developer provided for the authority context
  */
 - (NSArray<NSURL *> *)cacheAliasesForAuthority:(MSIDAADAuthority *)authority;

@@ -55,7 +55,7 @@ static NSString *s_redirectScheme = nil;
  */
 - (void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully
 {
-    
+
 }
 
 - (NSArray<UIActivity*>*)safariViewController:(SFSafariViewController *)controller activityItemsForURL:(NSURL *)URL title:(NSString *)title
@@ -91,17 +91,17 @@ static NSString *s_redirectScheme = nil;
 {
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, nil, @"Complete cert auth challenge with end URL: %@", endUrl.host);
     MSID_LOG_PII(MSIDLogLevelInfo, nil, nil, @"Complete cert auth challenge with end URL: %@", [endUrl msidPIINullifiedURL]);
-    
+
     if (s_certAuthInProgress)
     {
         s_certAuthInProgress = NO;
-        
+
         MSIDWebviewSession *currentSession = [MSIDWebviewAuthorization currentSession];
         MSIDOAuth2EmbeddedWebviewController *embeddedViewController = (MSIDOAuth2EmbeddedWebviewController  *)currentSession.webviewController;
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [s_safariController dismissViewControllerAnimated:YES completion:nil];
-            
+
             if (endUrl)
             {
                 [embeddedViewController endWebAuthWithURL:endUrl error:nil];
@@ -112,10 +112,10 @@ static NSString *s_redirectScheme = nil;
                 [embeddedViewController endWebAuthWithURL:nil error:error];
             }
         });
-        
+
         return YES;
     }
-    
+
     return NO;
 }
 
@@ -130,24 +130,24 @@ static NSString *s_redirectScheme = nil;
 {
 #if !MSID_EXCLUDE_SYSTEMWV
     MSIDWebviewSession *currentSession = [MSIDWebviewAuthorization currentSession];
-    
+
     if (!currentSession)
     {
         MSID_LOG_ERROR(context, @"There is no current session open to continue with the cert auth challenge.");
         return NO;
     }
-    
+
     MSID_LOG_NO_PII(MSIDLogLevelInfo, nil, context, @"Received CertAuthChallenge");
     MSID_LOG_PII(MSIDLogLevelInfo, nil, context, @"Received CertAuthChallengehost from : %@", challenge.protectionSpace.host);
-    
+
     NSURL *requestURL = [currentSession.webviewController startURL];
-    
+
     if (s_redirectScheme)
     {
         NSURLComponents *requestURLComponents = [NSURLComponents componentsWithURL:requestURL resolvingAgainstBaseURL:NO];
         NSArray<NSURLQueryItem *> *queryItems = [requestURLComponents queryItems];
         NSMutableDictionary *newQueryItems = [NSMutableDictionary new];
-        
+
         for (NSURLQueryItem *item in queryItems)
         {
             if ([item.name isEqualToString:MSID_OAUTH2_REDIRECT_URI]
@@ -163,24 +163,24 @@ static NSString *s_redirectScheme = nil;
         requestURLComponents.percentEncodedQuery = [newQueryItems msidURLEncode];
         requestURL = requestURLComponents.URL;
     }
-    
+
     s_safariController = nil;
     s_challengeCompletionHandler = completionHandler;
     s_certAuthInProgress = YES;
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         // This will launch a Safari view within the current Application, removing the app flip. Our control of this
         // view is extremely limited. Safari is still running in a separate sandbox almost completely isolated from us.
         s_safariController = [[SFSafariViewController alloc] initWithURL:requestURL];
         s_safariController.delegate = s_safariDelegate;
-        
+
         UIViewController *currentViewController = [UIApplication msidCurrentViewController];
         [currentViewController presentViewController:s_safariController animated:YES completion:nil];
     });
-    
+
     // Cancel the Cert Auth Challenge happened in UIWebview, as we have already handled it in SFSafariViewController
     completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, NULL);
-    
+
     return YES;
 #else
     return NO;

@@ -1995,7 +1995,7 @@
          XCTAssertNil(error);
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 
     // Save first token
@@ -2047,9 +2047,9 @@
 #pragma mark - Get App Metadata
 - (void)testSaveTokensWithFactory_whenMultiResourceFOCIResponse_savesAppMetadata
 {
-    
+
     MSIDAADTokenResponse *response = [MSIDTestTokenResponse v1DefaultTokenResponseWithAdditionalFields:@{@"foci": @"familyId"}];
-    
+
     NSError *error = nil;
     MSIDConfiguration *configuration = [MSIDTestConfiguration defaultParams];
     BOOL result = [_legacyAccessor saveTokensWithConfiguration:configuration
@@ -2057,14 +2057,14 @@
                                                        factory:[MSIDAADV1Oauth2Factory new]
                                                        context:nil
                                                          error:&error];
-    
+
     XCTAssertTrue(result);
     XCTAssertNil(error);
-    
+
     NSArray<MSIDAppMetadataCacheItem *> *appMetadataEntries = [_otherAccessor getAppMetadataEntries:configuration
                                                                                             context:nil
                                                                                               error:nil];
-    
+
     XCTAssertEqual([appMetadataEntries count], 1);
     XCTAssertEqualObjects(appMetadataEntries[0].clientId, DEFAULT_TEST_CLIENT_ID);
     XCTAssertEqualObjects(appMetadataEntries[0].environment, configuration.authority.environment);

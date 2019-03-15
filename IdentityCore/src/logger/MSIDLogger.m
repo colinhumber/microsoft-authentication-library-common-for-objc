@@ -45,17 +45,17 @@ static long s_maxQueueSize = 1000;
     {
         return nil;
     }
-    
+
     // The default log level should be info, anything more restrictive then this
     // and we'll probably not have enough diagnostic information, however verbose
     // will most likely be too noisy for most usage.
     _level = MSIDLogLevelInfo;
     _PiiLoggingEnabled = NO;
-    
+
     NSString *queueName = [NSString stringWithFormat:@"com.microsoft.msidlogger-%@", [NSUUID UUID].UUIDString];
     _loggerQueue = dispatch_queue_create([queueName cStringUsingEncoding:NSASCIIStringEncoding], DISPATCH_QUEUE_SERIAL);
     _queueSemaphore = dispatch_semaphore_create(s_maxQueueSize);
-    
+
     return self;
 }
 
@@ -63,11 +63,11 @@ static long s_maxQueueSize = 1000;
 {
     static dispatch_once_t once;
     static MSIDLogger *s_logger;
-    
+
     dispatch_once(&once, ^{
         s_logger = [MSIDLogger new];
     });
-    
+
     return s_logger;
 }
 
@@ -77,7 +77,7 @@ static long s_maxQueueSize = 1000;
     {
         @throw @"MSID logging callback can only be set once per process and should never changed once set.";
     }
- 
+
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         _callback = callback;
@@ -111,26 +111,26 @@ static NSDateFormatter *s_dateFormatter = nil;
     // If this is not PII and PII is enabled
     // we want to avoid logging double lines, so we pass an extra flag to tell logger to ignore this line
     if (ignoreIfPIIEnabled && self.PiiLoggingEnabled && !isPii) return;
-    
+
     va_list args;
     va_start(args, format);
     NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
     va_end(args);
-    
+
     __uint64_t tid;
     pthread_threadid_np(NULL, &tid);
-    
+
     // Prevent queue from growing infinitely large.
     dispatch_semaphore_wait(self.queueSemaphore, DISPATCH_TIME_FOREVER);
-    
+
     dispatch_async(self.loggerQueue, ^{
         @autoreleasepool
         {
             NSString *logComponent = [context logComponent];
             NSString *componentStr = logComponent ? [NSString stringWithFormat:@" [%@]", logComponent] : @"";
-            
+
             NSString *correlationIdStr = @"";
-            
+
             if (correlationId)
             {
                 correlationIdStr = [NSString stringWithFormat:@" - %@", correlationId.UUIDString];
@@ -139,35 +139,35 @@ static NSDateFormatter *s_dateFormatter = nil;
             {
                 correlationIdStr = [NSString stringWithFormat:@" - %@", [context correlationId]];
             }
-            
+
             NSString *dateStr = [s_dateFormatter stringFromDate:[NSDate date]];
-            
+
             NSString *sdkName = [MSIDVersion sdkName];
             NSString *sdkVersion = [MSIDVersion sdkVersion];
-            
+
             __auto_type threadName = [[NSThread currentThread] isMainThread] ? @" (main thread)" : nil;
             if (!threadName) {
                 threadName = [NSThread currentThread].name ?: @"";
             }
-            
+
             __auto_type threadInfo = [[NSString alloc] initWithFormat:@"TID=%llu%@", tid, threadName];
-            
+
             if (self.NSLoggingEnabled)
             {
                 NSString *levelStr = [self stringForLogLevel:_level];
-                
+
                 NSString *log = [NSString stringWithFormat:@"%@ %@ %@ %@ [%@%@]%@ %@: %@", threadInfo, sdkName, sdkVersion, [MSIDDeviceId deviceOSId], dateStr, correlationIdStr, componentStr, levelStr, message];
-                
+
                 NSLog(@"%@", log);
             }
-            
+
             if (self.callback)
             {
                 NSString *log = [NSString stringWithFormat:@"%@ %@ %@ %@ [%@%@]%@ %@", threadInfo, sdkName, sdkVersion, [MSIDDeviceId deviceOSId], dateStr, correlationIdStr, componentStr, message];
-                
+
                 self.callback(level, log, isPii);
             }
-            
+
             dispatch_semaphore_signal(self.queueSemaphore);
         }
     });
@@ -192,19 +192,19 @@ static NSDateFormatter *s_dateFormatter = nil;
          context:(id<MSIDRequestContext>)context
 {
     NSMutableString *logString = nil;
-    
+
     if (context)
     {
         [logString appendFormat:@"%@ ", additionalLog];
     }
-    
+
     [logString appendFormat:@"%@ (%@)", tokenType, [token msidTokenHash]];
-    
+
     if (expiresOn)
     {
         [logString appendFormat:@" expires on %@", expiresOn];
     }
-    
+
     MSID_LOG_INFO_PII(context, @"%@", logString);
 }
 

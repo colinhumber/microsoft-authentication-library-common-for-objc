@@ -57,7 +57,7 @@ static NSInteger kGeneralTypePrefix = 3000;
                      generalType:(MSIDGeneralCacheItemType)type
 {
     self = [super init];
-    
+
     if (self)
     {
         _clientId = clientId;
@@ -65,7 +65,7 @@ static NSInteger kGeneralTypePrefix = 3000;
         _generalType = type;
         _familyId = familyId;
     }
-    
+
     return self;
 }
 

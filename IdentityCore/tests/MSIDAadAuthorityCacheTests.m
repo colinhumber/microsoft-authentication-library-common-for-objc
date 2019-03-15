@@ -63,9 +63,9 @@
     [cache setObject:[MSIDAadAuthorityCacheRecord new] forKey:@"fakeauthority.com"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache networkUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(authority.url, cachedAuthorityUrl);
 }
@@ -76,9 +76,9 @@
     [cache setObject:[MSIDAadAuthorityCacheRecord new] forKey:@"fakeauthority.com:444"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com:444/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache networkUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(authority.url, cachedAuthorityUrl);
 }
@@ -91,9 +91,9 @@
     [cache setObject:record forKey:@"fakeauthority.com"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache networkUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(authority.url, cachedAuthorityUrl);
 }
@@ -106,9 +106,9 @@
     [cache setObject:record forKey:@"fakeauthority.com"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com:444/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache networkUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNil(cachedAuthorityUrl);
 }
 
@@ -121,9 +121,9 @@
     [cache setObject:record forKey:@"fakeauthority.com"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache networkUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(authority.url, cachedAuthorityUrl);
 }
@@ -138,9 +138,9 @@
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSURL *expectedAuthorityUrl = [NSURL URLWithString:@"https://preferredauthority.com/common"];
-    
+
     NSURL *cachedAuthorityUrl = [cache networkUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(expectedAuthorityUrl, cachedAuthorityUrl);
 }
@@ -155,9 +155,9 @@
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com:444/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSURL *expectedAuthorityUrl = [NSURL URLWithString:@"https://preferredauthority.com:444/common"];
-    
+
     NSURL *cachedAuthorityUrl = [cache networkUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(expectedAuthorityUrl, cachedAuthorityUrl);
 }
@@ -172,9 +172,9 @@
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com:443/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSURL *expectedAuthorityUrl = [NSURL URLWithString:@"https://preferredauthority.com/common"];
-    
+
     NSURL *cachedAuthorityUrl = [cache networkUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(expectedAuthorityUrl, cachedAuthorityUrl);
 }
@@ -187,9 +187,9 @@
     MSIDAadAuthorityCache *cache = [[MSIDAadAuthorityCache alloc] init];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache cacheUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNil(cachedAuthorityUrl);
 }
 
@@ -199,9 +199,9 @@
     [cache setObject:[MSIDAadAuthorityCacheRecord new] forKey:@"fakeauthority.com"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache cacheUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(authority.url, cachedAuthorityUrl);
 }
@@ -212,9 +212,9 @@
     [cache setObject:[MSIDAadAuthorityCacheRecord new] forKey:@"fakeauthority.com:444"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com:444/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache cacheUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(authority.url, cachedAuthorityUrl);
 }
@@ -225,9 +225,9 @@
     [cache setObject:[MSIDAadAuthorityCacheRecord new] forKey:@"fakeauthority.com"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com:444/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache cacheUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNil(cachedAuthorityUrl);
 }
 
@@ -240,9 +240,9 @@
     [cache setObject:record forKey:@"fakeauthority.com"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache cacheUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(authority.url, cachedAuthorityUrl);
 }
@@ -256,9 +256,9 @@
     [cache setObject:record forKey:@"fakeauthority.com"];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSURL *cachedAuthorityUrl = [cache cacheUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(authority.url, cachedAuthorityUrl);
 }
@@ -273,9 +273,9 @@
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSURL *expectedAuthorityUrl = [NSURL URLWithString:@"https://preferredauthority.com/common"];
-    
+
     NSURL *cachedAuthorityUrl = [cache cacheUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(expectedAuthorityUrl, cachedAuthorityUrl);
 }
@@ -290,9 +290,9 @@
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com:443/common/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSURL *expectedAuthorityUrl = [NSURL URLWithString:@"https://preferredauthority.com/common"];
-    
+
     NSURL *cachedAuthorityUrl = [cache cacheUrlForAuthorityImpl:authority];
-    
+
     XCTAssertNotNil(cachedAuthorityUrl);
     XCTAssertEqualObjects(expectedAuthorityUrl, cachedAuthorityUrl);
 }
@@ -303,9 +303,9 @@
 - (void)testCacheAliasesForAuthority_whenNilAuhority_shouldReturnEmptyArray
 {
     MSIDAadAuthorityCache *cache = [MSIDAadAuthorityCache new];
-    
+
     NSArray *aliases = [cache cacheAliasesForAuthority:nil];
-    
+
     XCTAssertEqualObjects(aliases, @[]);
 }
 
@@ -314,9 +314,9 @@
     MSIDAadAuthorityCache *cache = [[MSIDAadAuthorityCache alloc] init];
     NSURL *authorityUrl = [NSURL URLWithString:@"https://login.contoso.com/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
-    
+
     NSArray *aliases = [cache cacheAliasesForAuthority:authority];
-    
+
     XCTAssertEqualObjects(aliases, @[authority.url]);
 }
 
@@ -328,9 +328,9 @@
     __auto_type record = [MSIDAadAuthorityCacheRecord new];
     record.validated = YES;
     [cache setObject:record forKey:@"login.contoso.com"];
-    
+
     NSArray *aliases = [cache cacheAliasesForAuthority:authority];
-    
+
     XCTAssertEqualObjects(aliases, @[authority.url]);
 }
 
@@ -345,9 +345,9 @@
     record.cacheHost = @"login.contoso.com";
     record.aliases = @[ @"login.contoso.com" ];
     [cache setObject:record forKey:@"login.contoso.com"];
-    
+
     NSArray *aliases = [cache cacheAliasesForAuthority:authority];
-    
+
     XCTAssertEqualObjects(aliases, @[authority.url]);
 }
 
@@ -369,9 +369,9 @@
                           // And then any remaining hosts in the alias list
                           [NSURL URLWithString:@"https://sts.contoso.com/endpoint"],
                           [NSURL URLWithString:@"https://sts.contoso.net/endpoint"]];
-    
+
     NSArray *aliases = [cache cacheAliasesForAuthority:authority];
-    
+
     XCTAssertEqualObjects(aliases, expected);
 }
 
@@ -393,9 +393,9 @@
                           // And then any remaining hosts in the alias list
                           [NSURL URLWithString:@"https://sts.contoso.com/endpoint"],
                           [NSURL URLWithString:@"https://sts.contoso.net/endpoint"]];
-    
+
     NSArray *aliases = [cache cacheAliasesForAuthority:authority];
-    
+
     XCTAssertEqualObjects(aliases, expected);
 }
 
@@ -408,7 +408,7 @@
     NSURL *authorityUrl = [NSURL URLWithString:@"https://fakeauthority.com/v2/oauth/endpoint"];
     __auto_type authority = [[MSIDAADAuthority alloc] initWithURL:authorityUrl context:nil error:nil];
     NSString *expectedHost = @"fakeauthority.com";
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Process Metadata."];
     [cache processMetadata:nil openIdConfigEndpoint:nil authority:authority context:nil completion:^(BOOL result, NSError *error)
      {
@@ -419,10 +419,10 @@
          XCTAssertEqualObjects(expectedHost, record.networkHost);
          XCTAssertEqualObjects(expectedHost, record.cacheHost);
          XCTAssertNil(record.aliases);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -438,7 +438,7 @@
     NSArray *metadata = @[ @{ @"preferred_network" : expectedNetworkHost,
                               @"preferred_cache" :  expectedCacheHost,
                               @"aliases" : expectedAliases } ];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Process Metadata."];
     [cache processMetadata:metadata openIdConfigEndpoint:nil authority:authority context:nil completion:^(BOOL result, NSError *error)
      {
@@ -461,10 +461,10 @@
          XCTAssertEqualObjects(expectedNetworkHost, record.networkHost);
          XCTAssertEqualObjects(expectedCacheHost, record.cacheHost);
          XCTAssertEqualObjects(expectedAliases, record.aliases);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -490,10 +490,10 @@
          XCTAssertEqualObjects(expectedHost, record.networkHost);
          XCTAssertEqualObjects(expectedHost, record.cacheHost);
          XCTAssertEqualObjects(@[ expectedHost ], record.aliases);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -506,7 +506,7 @@
     NSArray *metadata = @[ @{ @"preferred_network" : expectedHost,
                               @"preferred_cache" :  expectedHost,
                               @"aliases" : @[ expectedHost ] } ];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Process Metadata."];
     [cache processMetadata:metadata openIdConfigEndpoint:nil authority:authority context:nil completion:^(BOOL result, NSError *error)
      {
@@ -519,10 +519,10 @@
          XCTAssertEqualObjects(expectedHost, record.networkHost);
          XCTAssertEqualObjects(expectedHost, record.cacheHost);
          XCTAssertEqualObjects(@[ expectedHost ], record.aliases);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -546,10 +546,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -573,10 +573,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -598,10 +598,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -625,10 +625,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -652,10 +652,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -679,10 +679,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -706,10 +706,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -725,7 +725,7 @@
     NSArray *metadata = @[ @{ @"preferred_network" : @"sts.contoso.com:4sde3as",
                               @"preferred_cache" :  expectedCacheHost,
                               @"aliases" : expectedAliases } ];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Process Metadata."];
     [cache processMetadata:metadata openIdConfigEndpoint:nil authority:authority context:nil completion:^(BOOL result, NSError *error)
      {
@@ -733,10 +733,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -752,7 +752,7 @@
     NSArray *metadata = @[ @{ @"preferred_network" : expectedNetworkHost,
                               @"preferred_cache" :  @"sts.contoso.com:43as",
                               @"aliases" : expectedAliases } ];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Process Metadata."];
     [cache processMetadata:metadata openIdConfigEndpoint:nil authority:authority context:nil completion:^(BOOL result, NSError *error)
      {
@@ -760,10 +760,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -787,10 +787,10 @@
          // Verify the correct error code is returned and no records were added to the cache
          XCTAssertNotNil(error);
          XCTAssertEqual(error.code, MSIDErrorServerInvalidResponse);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -806,15 +806,15 @@
     NSArray *metadata = @[ @{ @"preferred_network" : expectedNetworkHost,
                               @"preferred_cache" :  expectedCacheHost,
                               @"aliases" : expectedAliases } ];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Process Metadata."];
     [cache processMetadata:metadata openIdConfigEndpoint:nil authority:authority context:nil completion:^(BOOL result, NSError *error)
      {
          XCTAssertFalse([NSThread isMainThread]);
-         
+
          [expectation fulfill];
      }];
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -830,7 +830,7 @@
     NSArray *metadata = @[ @{ @"preferred_network" : expectedNetworkHost,
                               @"preferred_cache" :  expectedCacheHost,
                               @"aliases" : expectedAliases } ];
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Process Metadata."];
     dispatch_queue_global_t bgQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(bgQueue, ^{
@@ -839,11 +839,11 @@
          {
              const char *l2 = dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL);
              XCTAssertEqual(l1, l2);
-             
+
              [expectation fulfill];
          }];
     });
-    
+
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 

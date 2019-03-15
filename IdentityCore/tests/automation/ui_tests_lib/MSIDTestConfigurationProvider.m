@@ -219,20 +219,20 @@
         completionHandler(self.labAPIPassword, nil);
         return;
     }
-    
+
     NSURL *url = [NSURL URLWithString:self.resetAPIKeyvaultPath];
     [Secret getWithUrl:url completion:^(NSError *error, Secret *secret) {
-        
+
         if (error)
         {
             if (completionHandler)
             {
                 completionHandler(nil, error);
             }
-            
+
             return;
         }
-        
+
         self.labAPIPassword = secret.value;
         if (completionHandler) completionHandler(secret.value, nil);
     }];
@@ -262,21 +262,21 @@
             completionHandler:(void (^)(BOOL result, NSError *error))completionHandler
 {
     [self passwordForLabAPIWithCompletionHandler:^(NSString *password, NSError *error) {
-        
+
         if (!password)
         {
             if (completionHandler)
             {
                 completionHandler(NO, error);
             }
-            
+
             return;
         }
-        
+
         [self getAccessTokenAndCallLabAPI:request
                               apiPassword:password
                         completionHandler:completionHandler];
-       
+
     }];
 }
 
@@ -289,32 +289,32 @@
                                                   clientId:self.resetAPIConfiguration[@"reset_api_client_id"]
                                           clientCredential:self.resetAPIConfiguration[@"reset_api_client_secret"]
                                          completionHandler:^(NSString *accessToken, NSError *error) {
-                                             
+
                                              NSURL *resultURL = [request requestURLWithAPIPath:self.resetAPIPath labPassword:apiPassword];
-                                             
+
                                              NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:resultURL];
                                              NSString *bearerHeader = [NSString stringWithFormat:@"Bearer %@", accessToken];
                                              [urlRequest addValue:bearerHeader forHTTPHeaderField:@"Authorization"];
-                                             
+
                                              [[[NSURLSession sharedSession] dataTaskWithRequest:urlRequest
                                                                               completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
                                                {
                                                    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-                                                   
+
                                                    if (httpResponse.statusCode == 200)
                                                    {
                                                        NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                        // TODO: ask lab to return operation success in a more reasonable way
                                                        BOOL operationSuccessful = [responseString containsString:@"successful"];
-                                                       
+
                                                        if (completionHandler)
                                                        {
                                                            completionHandler(operationSuccessful, nil);
                                                        }
-                                                       
+
                                                        return;
                                                    }
-                                                   
+
                                                    completionHandler(NO, error);
                                                }] resume];
                                          }];
@@ -349,16 +349,16 @@
     MSIDAutomationTestRequest *request = [MSIDAutomationTestRequest new];
     NSString *confName = brokerEnabled ? @"brokered_converged" : @"default_converged";
     NSDictionary *defaultConf = self.defaultClients[confName];
-    
+
     if (defaultConf)
     {
         request.clientId = defaultConf[@"client_id"];
         request.redirectUri = defaultConf[@"redirect_uri"];
         request.validateAuthority = YES;
         request.webViewType = self.defaultWebviewTypeForPlatform;
-        
+
         NSString *testEnvironment = environment ? environment : self.wwEnvironment;
-        
+
         request.requestScopes = [self scopesForEnvironment:testEnvironment type:@"ms_graph"];
         request.expectedResultScopes = [NSString msidCombinedScopes:request.requestScopes withScopes:[self scopesForEnvironment:testEnvironment type:@"oidc"]];
         request.configurationAuthority = [self defaultAuthorityForIdentifier:testEnvironment];
@@ -366,7 +366,7 @@
         request.cacheAuthority = [self defaultAuthorityForIdentifier:testEnvironment tenantId:targetTenantId];
         request.brokerEnabled = brokerEnabled;
     }
-    
+
     return request;
 }
 
@@ -382,9 +382,9 @@
         request.redirectUri = defaultConf[@"redirect_uri"];
         request.validateAuthority = YES;
         request.webViewType = self.defaultWebviewTypeForPlatform;
-        
+
         NSString *testEnvironment = environment ? environment : self.wwEnvironment;
-        
+
         request.expectedResultAuthority = [self defaultAuthorityForIdentifier:testEnvironment tenantId:targetTenantId];
         request.cacheAuthority = [self defaultAuthorityForIdentifier:testEnvironment tenantId:targetTenantId];
     }
@@ -430,7 +430,7 @@
 {
     MSIDAutomationTestRequest *request = [MSIDAutomationTestRequest new];
     NSDictionary *defaultConf = self.defaultClients[requestIdentifier];
-    
+
     if (defaultConf)
     {
         request.clientId = defaultConf[@"client_id"];
@@ -438,7 +438,7 @@
         request.validateAuthority = YES;
         request.webViewType = self.defaultWebviewTypeForPlatform;
     }
-    
+
     return request;
 }
 
@@ -458,7 +458,7 @@
 {
     NSString *identifier = environmentIdentifier ? environmentIdentifier : self.wwEnvironment;
     NSString *environment = [self defaultEnvironmentForIdentifier:identifier];
-    
+
     return [self authorityWithHost:environment tenantId:tenantId];
 }
 
@@ -482,7 +482,7 @@
     {
         environment = self.wwEnvironment;
     }
-    
+
     return self.defaultScopes[type][environment];
 }
 
@@ -497,7 +497,7 @@
     {
         environment = self.wwEnvironment;
     }
-    
+
     return self.defaultResources[type][environment];
 }
 
@@ -512,7 +512,7 @@
     if (!request.configurationAuthority)
     {
         request.configurationAuthority = [self authorityWithHost:configuration.authorityHost tenantId:account.homeTenantId];
-        
+
     }
     return request;
 }

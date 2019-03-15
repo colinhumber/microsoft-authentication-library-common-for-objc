@@ -47,10 +47,10 @@
     __auto_type responseJson = @{@"IdentityProviderService" : @{@"PassiveAuthEndpoint" : @"https://example.com/adfs/ls"}};
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDDRSDiscoveryResponseSerializer new];
-    
+
     NSError *error = nil;
     NSURL *url = [responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNil(error);
     XCTAssertEqualObjects(url.absoluteString, @"https://example.com/adfs/ls");
 }
@@ -60,10 +60,10 @@
     __auto_type responseJson = @{};
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDDRSDiscoveryResponseSerializer new];
-    
+
     NSError *error = nil;
     NSURL *url = [responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(url);
 }
@@ -73,10 +73,10 @@
     __auto_type responseJson = @{@"IdentityProviderService" : @"qwe"};
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDDRSDiscoveryResponseSerializer new];
-    
+
     NSError *error = nil;
     NSURL *url = [responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(url);
 }
@@ -86,10 +86,10 @@
     __auto_type responseJson = @{@"IdentityProviderService" : @{@"qwe" : @"https://example.com/adfs/ls"}};
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDDRSDiscoveryResponseSerializer new];
-    
+
     NSError *error = nil;
     NSURL *url = [responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(url);
 }
@@ -99,10 +99,10 @@
     __auto_type responseJson = @{@"IdentityProviderService" : @{@"PassiveAuthEndpoint" : @1}};
     NSData *data = [NSJSONSerialization dataWithJSONObject:responseJson options:0 error:nil];
     __auto_type responseSerializer = [MSIDDRSDiscoveryResponseSerializer new];
-    
+
     NSError *error = nil;
     NSURL *url = [responseSerializer responseObjectForResponse:[NSHTTPURLResponse new] data:data context:nil error:&error];
-    
+
     XCTAssertNotNil(error);
     XCTAssertNil(url);
 }
