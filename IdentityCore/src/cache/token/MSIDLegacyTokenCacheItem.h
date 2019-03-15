@@ -36,4 +36,6 @@
 
 @property (readwrite, nonnull) NSURL *authority;
 
+@property (readwrite, nullable) NSDictionary *additionalInfo;
+
 @end
